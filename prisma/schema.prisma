@@ -9,6 +9,150 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  full_name String
+  url_profile String
+  secure_url_profile String
+  public_id_profile String
+  email String @unique
+  password String
+  role Role @default(user)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  logs Log[]
+  refresh_token RefreshToken[]
+  puskesmas Puskesmas[]
+  staff_puskesms StaffPusekesmas[]
+  posyandu Posyandu[]
+  staff_posyandu StaffPosyandu[]
+  chiid Child[]
+  med_check_up MedCheckUp[]
+}
+
+enum Role {
+  super_admin
+  admin_puskesmas
+  admin_posyandu
+  user
+}
+
+model Log{
+  id Int @id @default(autoincrement())
+  user_id Int
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  action String
+  description String @db.Text
+  created_at DateTime @default(now())
+}
+
+model RefreshToken {
+  id Int @id @default(autoincrement())
+  user_id Int
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  refresh_token String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Puskesmas {
+  id Int @id @default(autoincrement())
+  name String
+  address String
+  phone Int
+  user_id Int
+  created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  staff StaffPusekesmas[]
+  posyandu Posyandu[]
+}
+
+model StaffPusekesmas {
+  id Int @id @default(autoincrement())
+  name String
+  address String
+  phone Int
+  user_id Int
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  puskesmas_id Int
+  puskesmas Puskesmas @relation(fields: [puskesmas_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Posyandu {
+  id Int @id @default(autoincrement())
+  name String
+  address String
+  phone Int
+  user_id Int
+  created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  puskesmas_id Int
+  puskesmas Puskesmas @relation(fields: [puskesmas_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  staff StaffPosyandu[]
+  child Child[]
+}
+
+model StaffPosyandu {
+  id Int @id @default(autoincrement())
+  name String
+  address String
+  phone Int
+  user_id Int
+  created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  posyandu_id Int
+  posyandu Posyandu @relation(fields: [posyandu_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Child {
+  id Int @id @default(autoincrement())
+  name String
+  admin_id Int
+  admin User @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  posyandu_id Int
+  posyandu Posyandu @relation(fields: [posyandu_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  med_check_up MedCheckUp[]
+}
+
+model MedCheckUp {
+  id Int @id @default(autoincrement())
+  child_id Int
+  child Child @relation(fields: [child_id], references: [id], onDelete: Cascade)
+  height Float
+  Weight Float
+  Age Float
+  circumference Float
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user_id Int
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  result_med_check_up ResultMedCheckUp[]
+}
+
+model ResultMedCheckUp {
+  id Int @id @default(autoincrement())
+  imt Float
+  ipb Float
+  status StuntingStatus @default(false)
+  med_check_up_id Int
+  med_check_up MedCheckUp @relation(fields: [med_check_up_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+enum StuntingStatus {
+  true
+  false
+}
+
