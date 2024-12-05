@@ -27,7 +27,7 @@ model User {
   logs Log[]
   refresh_token RefreshToken[]
   puskesmas Puskesmas[]
-  staff_puskesms StaffPusekesmas[]
+  staff_puskesms StaffPuskesmas[]
   posyandu Posyandu[]
   staff_posyandu StaffPosyandu[]
   chiid Child[]
@@ -68,11 +68,11 @@ model Puskesmas {
   created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  staff StaffPusekesmas[]
+  staff StaffPuskesmas[]
   posyandu Posyandu[]
 }
 
-model StaffPusekesmas {
+model StaffPuskesmas {
   id Int @id @default(autoincrement())
   name String
   address String
@@ -130,7 +130,7 @@ model MedCheckUp {
   child_id Int
   child Child @relation(fields: [child_id], references: [id], onDelete: Cascade)
   height Float
-  Weight Float
+  weight Float
   Age Float
   circumference Float
   created_at DateTime @default(now())
