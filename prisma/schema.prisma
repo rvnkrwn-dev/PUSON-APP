@@ -44,12 +44,12 @@ enum Role {
 
 model DetailUser {
   id          Int      @id @default(autoincrement())
-  phone       String
-  address     String
-  city        String
-  postalCode  String
-  bod         DateTime
-  user_id     Int
+  phone       BigInt?
+  address     String?
+  city        String?
+  postalCode  Int?
+  bod         DateTime?
+  user_id     Int @unique
   user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
