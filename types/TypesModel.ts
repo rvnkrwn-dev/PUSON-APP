@@ -30,7 +30,7 @@ export interface UserType {
     staff_puskesmas: StaffPuskesmasType[];
     posyandu: PosyanduType[];
     staff_posyandu: StaffPosyanduType[];
-    chiid: ChildType[];
+    child: ChildType[];
     med_check_up: MedCheckUpType[];
 }
 

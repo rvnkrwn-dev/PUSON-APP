@@ -1,16 +1,9 @@
 import {prisma} from "~/server/config/db";
-import type { User as UserType } from "@prisma/client";
+import {RegisterRequest} from "~/types/AuthType";
+import {TRUE} from "openapi-typescript";
 
 export class User {
-    static createUser = (data: {
-        password: any;
-        full_name: any;
-        role: any;
-        secure_url_profile: any;
-        public_id_profile: any;
-        email: any;
-        url_profile: any
-    }) => {
+    static createUser = (data: RegisterRequest) => {
         return prisma.user.create({
             data: {
                 full_name: data.full_name,
@@ -24,32 +17,49 @@ export class User {
         });
     };
 
-    static updateUser = (id: number, data: UserType) => {
+    static updateUser = (id: number, data: RegisterRequest) => {
         return prisma.user.update({
-            where: { id },
+            where: {id},
             data,
         });
     };
 
     static getUserByEmail = (email: string) => {
         return prisma.user.findUnique({
-            where: { email },
+            where: {email},
+            select: {
+                id: true,
+                full_name: true,
+                email: true,
+                password: true,
+                created_at: true,
+                updated_at: true,
+                role: true,
+                url_profile: true,
+                secure_url_profile: true,
+                public_id_profile: true,
+                detail_user: true
+            }
         });
     };
 
     static getUserById = (id: number) => {
         return prisma.user.findUnique({
-            where: { id },
+            where: {id},
         });
     };
 
     static getAllUsers = () => {
-        return prisma.user.findMany();
+        return prisma.user.findMany({
+            include:{
+                child: true
+            }
+        });
     };
 
     static deleteUser = (id: number) => {
         return prisma.user.delete({
-            where: { id },
+            where: {id},
         });
     };
 

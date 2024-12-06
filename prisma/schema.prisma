@@ -24,13 +24,14 @@ model User {
   role Role @default(user)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  detail_user DetailUser[]
   logs Log[]
   refresh_token RefreshToken[]
   puskesmas Puskesmas[]
   staff_puskesms StaffPuskesmas[]
   posyandu Posyandu[]
   staff_posyandu StaffPosyandu[]
-  chiid Child[]
+  child Child[]
   med_check_up MedCheckUp[]
 }
 
@@ -39,6 +40,17 @@ enum Role {
   admin_puskesmas
   admin_posyandu
   user
+}
+
+model DetailUser {
+  id          Int      @id @default(autoincrement())
+  phone       BigInt?
+  address     String?
+  city        String?
+  postalCode  Int?
+  bod         DateTime?
+  user_id     Int @unique
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Log{
@@ -75,8 +87,6 @@ model Puskesmas {
 model StaffPuskesmas {
   id Int @id @default(autoincrement())
   name String
-  address String
-  phone Int
   user_id Int
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   puskesmas_id Int
@@ -103,8 +113,6 @@ model Posyandu {
 model StaffPosyandu {
   id Int @id @default(autoincrement())
   name String
-  address String
-  phone Int
   user_id Int
   created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   posyandu_id Int
