@@ -1,23 +1,23 @@
 import bcrypt from 'bcryptjs';
-import { User } from '~/server/model/User';
-import {str} from "@redocly/ajv";
+import {User} from '~/server/model/User';
 
 export default defineEventHandler(async (event) => {
     try {
         // Membaca body dari request
-        const { full_name, email, password, role, url_profile, secure_url_profile, public_id_profile } = await readBody(event);
+        const {
+            full_name,
+            email,
+            password,
+            role,
+            url_profile,
+            secure_url_profile,
+            public_id_profile
+        } = await readBody(event);
 
         // Validasi input
         if (!full_name || !email || !password) {
             setResponseStatus(event, 400);
-            return { code: 400, message: "Please provide all required fields (full_name, email, password)." };
-        }
-
-        // Periksa apakah email sudah ada
-        const existingUser = await User.getUserByEmail(email);
-        if (existingUser) {
-            setResponseStatus(event, 400);
-            return { code: 400, message: "Email already in use." };
+            return {code: 400, message: "Please provide all required fields (full_name, email, password)."};
         }
 
         // Hash password
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
             role: role || 'user', // Default role
             url_profile: url_profile || '',
             secure_url_profile: secure_url_profile || '',
-            public_id_profile: public_id_profile || '',
+            public_id_profile: public_id_profile || ''
         });
 
         // Mengatur status dan mengembalikan respons sukses
@@ -39,18 +39,20 @@ export default defineEventHandler(async (event) => {
         return {
             code: 201,
             message: "User registered successfully!",
-            user: {
-                id: user.id,
-                full_name: user.full_name,
-                email: user.email,
-                role: user.role,
+            data: {
+                user: {
+                    id: user.id,
+                    full_name: user.full_name,
+                    email: user.email,
+                    role: user.role,
+                }
             },
         };
     } catch (error: any) {
         // Mengembalikan error jika ada
         return sendError(
             event,
-            createError({ statusCode: 500, statusMessage: error.message || "Internal Server Error" })
+            createError({statusCode: 500, statusMessage: error.message || "Internal Server Error"})
         );
     }
 });
