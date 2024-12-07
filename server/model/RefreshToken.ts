@@ -21,4 +21,12 @@ export class RefreshToken {
             where: { refresh_token: token },
         });
     }
+
+    static async getToken(refreshToken: string) {
+        return prisma.refreshToken.findFirst({
+            where: {
+                refresh_token: refreshToken,
+            },
+        });
+    }
 }
