@@ -1,49 +1,63 @@
 import jwt from 'jsonwebtoken';
+import { useRuntimeConfig } from '#imports';
 
-const config = useRuntimeConfig()
 const generateRefreshToken = (payload: any) => {
-    return jwt.sign(payload, config.REFRESH_TOKEN_SECRET, {
+    const config = useRuntimeConfig();
+    console.log(config.JWT_REFRESH_TOKEN);
+    return jwt.sign(payload, config.JWT_REFRESH_TOKEN as string, {
         expiresIn: '4h',
-    })
-}
+    });
+};
 
-const generateAccessToken = (payload: any) => {
-    return jwt.sign(payload, config.ACCESS_TOKEN_SECRET, {
+export const generateAccessToken = (payload: any) => {
+    const config = useRuntimeConfig();
+    return jwt.sign(payload, config.JWT_ACCESS_TOKEN as string, {
         expiresIn: '10m',
-    })
-}
+    });
+};
 
 export const generateToken = (payload: any) => {
     const refreshToken = generateRefreshToken(payload);
     const accessToken = generateAccessToken(payload);
 
-    return {refreshToken, accessToken};
-}
+    return { refreshToken, accessToken };
+};
 
 export const decodeAccessToken = (token: string) => {
+    const config = useRuntimeConfig();
     try {
-        return jwt.verify(token, config.ACCESS_TOKEN_SECRET) as any
+        return jwt.verify(token, config.JWT_ACCESS_TOKEN as string) as any;
     } catch (e) {
-        return false
+        return false;
     }
-}
+};
+
+export const verifyToken = (token: string) => {
+    const config = useRuntimeConfig();
+    try {
+        return jwt.verify(token, config.JWT_ACCESS_TOKEN as string) as any;
+    } catch (error) {
+        throw new Error('Invalid token');
+    }
+};
 
 export const decodeRefreshToken = (token: string) => {
+    const config = useRuntimeConfig();
     try {
-        return jwt.verify(token, config.REFRESH_TOKEN_SECRET) as any
+        return jwt.verify(token, config.JWT_REFRESH_TOKEN as string) as any;
     } catch (e) {
-        return false
+        return false;
     }
-}
+};
 
 export const sendRefreshToken = (event: any, token: string) => {
-    setCookie(event, "refresh_token", token, {
+    setCookie(event, 'refresh_token', token, {
         httpOnly: true,
         sameSite: true,
-        secure: true
-    })
-}
+        secure: true,
+    });
+};
 
 export const deleteRefreshToken = (event: any) => {
-    deleteCookie(event, 'refresh_token')
-}
+    deleteCookie(event, 'refresh_token');
+};

@@ -1,44 +1,44 @@
-import jwt from 'jsonwebtoken';
 import { RefreshToken } from '~/server/model/RefreshToken';
 import { prisma } from '~/server/config/db';
-
-const ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_TOKEN!;
-const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_TOKEN!;
-
-const generateAccessToken = (user: any) => {
-    return jwt.sign({ id: user.id, email: user.email }, ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
-};
+import { decodeRefreshToken, generateAccessToken } from '~/server/utils/jwt';
+import { defineEventHandler, setResponseStatus, sendError, getCookie } from 'h3';
+import { useRuntimeConfig } from '#imports';
 
 export default defineEventHandler(async (event) => {
+    const config = useRuntimeConfig();
     try {
-        // Ambil refresh token dari cookie
-        const refreshToken = event.node.req.headers.cookie?.split('; ').find(row => row.startsWith('refreshToken='))?.split('=')[1];
+        // Retrieve refresh token from cookie using getCookie
+        const refreshToken = getCookie(event, 'refresh_token'); // Ensure the cookie name matches
+        console.log('Received Refresh Token:', refreshToken);
 
         if (!refreshToken) {
             setResponseStatus(event, 400);
             return { code: 400, message: 'No refresh token found in cookies.' };
         }
 
-        // Periksa apakah refresh token ada di database
+        // Check if the refresh token exists in the database
         const storedToken = await RefreshToken.findToken(refreshToken);
+        console.log('Stored Token:', storedToken);
         if (!storedToken) {
             setResponseStatus(event, 403);
             return { code: 403, message: 'Invalid refresh token.' };
         }
 
-        // Verifikasi refresh token
+        // Verify the refresh token
         let decoded: any;
         try {
-            decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+            decoded = decodeRefreshToken(refreshToken);
+            console.log('Decoded Token:', decoded);
         } catch (error) {
             setResponseStatus(event, 403);
             return { code: 403, message: 'Invalid refresh token.' };
         }
 
-        // Periksa apakah user ada
+        // Check if the user exists
         const user = await prisma.user.findUnique({
-            where: { id: decoded.id }
+            where: { id: decoded.id },
         });
+        console.log('User:', user);
         if (!user) {
             setResponseStatus(event, 403);
             return { code: 403, message: 'Invalid user associated with refresh token.' };
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
         console.error('Refresh token error:', error);
         return sendError(
             event,
-            createError({ statusCode: 500, statusMessage: error.message || 'Internal Server Error' })
+            createError({ statusCode: 500, statusMessage: error.message || 'Internal Server Error' }),
         );
     }
 });
