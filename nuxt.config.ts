@@ -1,6 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
-
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: {enabled: true},
@@ -15,5 +13,20 @@ export default defineNuxtConfig({
         SMTP_USER: process.env.SMTP_USER ?? "",
         SMTP_PASSWORD: process.env.SMTP_PASSWORD ?? "",
         MAIL_FROM_EMAIL: process.env.MAIL_FROM_EMAIL ?? "",
+    },
+    modules: [
+        '@nuxtjs/tailwindcss'
+    ],
+    plugins: ["~/plugins/preline.client.ts"],
+    app: {
+        head: {
+            title: "PUSON | Posyandu Untuk Stunting Online",
+            htmlAttrs: {
+                lang: 'id'
+            },
+            meta: [
+                {name: 'description', content: 'PUSON (Posyandu Untuk Stunting Online) adalah platform digital yang memudahkan pemantauan dan penanganan stunting melalui layanan posyandu online. Dapatkan informasi, layanan kesehatan, dan dukungan untuk mencegah dan menangani stunting secara efisien dan terjangkau.'}
+            ]
+        }
     }
 })
