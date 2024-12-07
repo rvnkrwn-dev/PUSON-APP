@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import {User} from '~/server/model/User';
+import {SendEmailRegister} from "~/server/utils/SendEmailRegister";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -7,14 +8,11 @@ export default defineEventHandler(async (event) => {
         const {
             full_name,
             email,
-            password,
-            role,
-            url_profile,
-            secure_url_profile,
-            public_id_profile
+            password
         } = await readBody(event);
 
         // Validasi input
+        // @ts-ignore
         if (!full_name || !email || !password) {
             setResponseStatus(event, 400);
             return {code: 400, message: "Please provide all required fields (full_name, email, password)."};
@@ -27,15 +25,12 @@ export default defineEventHandler(async (event) => {
         const user = await User.createUser({
             full_name,
             email,
-            password: hashedPassword,
-            role: role || 'user', // Default role
-            url_profile: url_profile || '',
-            secure_url_profile: secure_url_profile || '',
-            public_id_profile: public_id_profile || ''
+            password: hashedPassword
         });
 
         // Mengatur status dan mengembalikan respons sukses
         setResponseStatus(event, 201);
+        await SendEmailRegister(email, full_name);
         return {
             code: 201,
             message: "User registered successfully!",

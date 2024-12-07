@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { RefreshToken } from '~/server/model/RefreshToken';
 import {User} from "~/server/model/User";
-import {DetailUser} from "~/server/model/DetailUser";
 
 
 const ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_TOKEN!;

@@ -16,8 +16,8 @@ datasource db {
 model User {
   id Int @id @default(autoincrement())
   full_name String
-  url_profile String?
-  secure_url_profile String?
+  url_profile String? @default("http://res.cloudinary.com/dmjb33clr/image/upload/v1733470093/puson_app/profile/avatar.png")
+  secure_url_profile String? @default("https://res.cloudinary.com/dmjb33clr/image/upload/v1733470093/puson_app/profile/avatar.png")
   public_id_profile String?
   email String @unique
   password String
@@ -44,7 +44,7 @@ enum Role {
 
 model DetailUser {
   id          Int      @id @default(autoincrement())
-  phone       BigInt?
+  phone       String?
   address     String?
   city        String?
   postalCode  Int?

@@ -1,10 +1,10 @@
 import {prisma} from "~/server/config/db";
-import {RegisterRequest} from "~/types/AuthType";
+import {CreateRequest, RegisterRequest} from "~/types/AuthType";
 import {UserType} from "~/types/TypesModel";
 import {Role} from "@prisma/client";
 
 export class User {
-    static createUser = (data: RegisterRequest) => {
+    static createUser = (data: CreateRequest) => {
         return prisma.user.create({
             data: {
                 full_name: data.full_name,
@@ -14,6 +14,16 @@ export class User {
                 email: data.email,
                 password: data.password,
                 role: data?.role
+            },
+        });
+    };
+
+    static registerUser = (data: RegisterRequest) => {
+        return prisma.user.create({
+            data: {
+                full_name: data.full_name,
+                email: data.email,
+                password: data.password
             },
         });
     };

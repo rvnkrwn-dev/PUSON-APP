@@ -32,6 +32,17 @@ export interface UserType {
     staff_posyandu: StaffPosyanduType[];
     child: ChildType[];
     med_check_up: MedCheckUpType[];
+    detail_user: DetailUserType[];
+}
+
+export interface DetailUserType {
+    phone?: number | null;
+    address?: string | null;
+    city?: string | null;
+    postalCode?: number | null;
+    bod?: Date | null;
+    user_id: number;
+    user?: UserType[] | null;
 }
 
 export interface LogType {
@@ -68,8 +79,6 @@ export interface PuskesmasType {
 export interface StaffPuskesmasType {
     id: number;
     name: string;
-    address: string;
-    phone: number;
     user_id: number;
     user: UserType;
     puskesmas_id: number;
@@ -96,8 +105,6 @@ export interface PosyanduType {
 export interface StaffPosyanduType {
     id: number;
     name: string;
-    address: string;
-    phone: number;
     user_id: number;
     created_by: UserType;
     posyandu_id: number;
