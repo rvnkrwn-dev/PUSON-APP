@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
         await RefreshToken.create(user.id, resetToken);
 
         // Buat URL reset kata sandi
-        const resetUrl = `${base_url}/reset-password?token=${resetToken}`;
+        const resetUrl = `${base_url}/auth/reset-password?token=${resetToken}`;
 
         // Buat konten email dalam format HTML
         const emailHtml = `
