@@ -16,9 +16,9 @@ export enum StuntingStatus {
 export interface UserType {
     id: number;
     full_name: string;
-    url_profile: string | null;  // Optional field
-    secure_url_profile: string | null;  // Optional field
-    public_id_profile: string | null;  // Optional field
+    url_profile?: string | null;  // Optional field
+    secure_url_profile?: string | null;  // Optional field
+    public_id_profile?: string | null;  // Optional field
     email: string;
     password: string;
     role: Role;
