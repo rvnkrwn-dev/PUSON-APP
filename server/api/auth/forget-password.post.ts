@@ -7,7 +7,7 @@ const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_TOKEN!;
 
 export default defineEventHandler(async (event) => {
     try {
-        const { email } = await readBody(event);
+        const { email, base_url } = await readBody(event);
 
         // Validasi email
         const user = await prisma.user.findUnique({
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
         await RefreshToken.create(user.id, resetToken);
 
         // Buat URL reset kata sandi
-        const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+        const resetUrl = `${base_url}/reset-password?token=${resetToken}`;
 
         // Buat konten email dalam format HTML
         const emailHtml = `
