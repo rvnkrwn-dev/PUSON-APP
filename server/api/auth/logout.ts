@@ -1,5 +1,6 @@
 import { RefreshToken } from '~/server/model/RefreshToken';
 import { addToBlacklist } from '~/server/utils/tokenBlacklist';
+import {deleteRefreshToken} from "~/server/utils/jwt";
 
 export default defineEventHandler(async (event) => {
 
@@ -27,7 +28,7 @@ export default defineEventHandler(async (event) => {
 
         // Hapus refresh token dari database
         await RefreshToken.deleteToken(refreshToken);
-
+        deleteRefreshToken(event);
         // Hapus refresh token dari cookie
         appendHeader(event, 'Set-Cookie', 'refreshToken=; HttpOnly; Path=/; Max-Age=0');
 

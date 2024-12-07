@@ -3,8 +3,8 @@ export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: {enabled: true},
     runtimeConfig: {
-        JWT_REFRESH_TOKEN: process.env.JWT_REFRESH_TOKEN ?? "",
-        JWT_ACCESS_TOKEN: process.env.JWT_ACCESS_TOKEN ?? "",
+        JWT_REFRESH_TOKEN: process.env.JWT_REFRESH_TOKEN,
+        JWT_ACCESS_TOKEN: process.env.JWT_ACCESS_TOKEN,
         CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME ?? "",
         CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY ?? "",
         CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET ?? "",
