@@ -28,7 +28,7 @@ export class User {
         });
     };
 
-    static updateUser = (id: number, data: Partial<UserType>) => {
+    static updateUser = (id: number, data: UserType) => {
         return prisma.user.update({
             where: {id},
             data: {
