@@ -1,6 +1,7 @@
 import {prisma} from "~/server/config/db";
 import {RegisterRequest} from "~/types/AuthType";
-import {TRUE} from "openapi-typescript";
+import {UserType} from "~/types/TypesModel";
+import {Role} from "@prisma/client";
 
 export class User {
     static createUser = (data: RegisterRequest) => {
@@ -17,10 +18,18 @@ export class User {
         });
     };
 
-    static updateUser = (id: number, data: RegisterRequest) => {
+    static updateUser = (id: number, data: Partial<UserType>) => {
         return prisma.user.update({
             where: {id},
-            data,
+            data: {
+                full_name: data.full_name,
+                url_profile: data.url_profile,
+                secure_url_profile: data.secure_url_profile,
+                public_id_profile: data.public_id_profile,
+                email: data.email,
+                password: data.password,
+                role: data?.role
+            },
         });
     };
 
@@ -49,13 +58,31 @@ export class User {
         });
     };
 
-    static getAllUsers = () => {
+    static getAllUsers = async ()=> {
         return prisma.user.findMany({
-            include:{
-                child: true
+            select: {
+                id: true,
+                full_name: true,
+                email: true,
+                password: false,
+                role: true,
+                url_profile: true,
+                secure_url_profile: true,
+                public_id_profile: true,
+                created_at: true,
+                updated_at: true,
+                child: true,
+                detail_user: true,
+                logs: false,
+                refresh_token: false,
+                puskesmas: false,
+                posyandu: false,
+                staff_posyandu: false,
+                med_check_up: false,
             }
         });
     };
+
 
     static deleteUser = (id: number) => {
         return prisma.user.delete({
