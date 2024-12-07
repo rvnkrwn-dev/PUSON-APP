@@ -60,11 +60,6 @@ const {$toast} = useNuxtApp();
 const email = ref<string | null>(null); // email untuk form login
 const isLoading = ref<boolean>(false); // flag untuk menandakan proses loading
 
-// Mendefinisikan tipe data untuk response IP address
-interface ResponseIpAddress {
-  ip: string; // properti ip pada response
-}
-
 // Fungsi untuk menangani submit form forget password
 const handleSubmit = async () => {
   try {
