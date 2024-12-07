@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
         const hashedPassword = bcrypt.hashSync(password, 10);
 
         // Membuat user baru
-        const user = await User.createUser({
+        const user = await User.registerUser({
             full_name,
             email,
             password: hashedPassword,
