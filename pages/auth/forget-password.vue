@@ -31,7 +31,7 @@
               <!-- End Form Group -->
 
               <button type="submit"
-                      :disabled="isLoading"
+                      :disabled="isLoading || isDisabled"
                       class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
                 {{ isLoading ? "Loading..." : "Kirim" }}
               </button>
@@ -59,6 +59,7 @@ const {$toast} = useNuxtApp();
 // Mendeklarasikan state dengan tipe data yang sesuai untuk form login
 const email = ref<string | null>(null); // email untuk form login
 const isLoading = ref<boolean>(false); // flag untuk menandakan proses loading
+const isDisabled = ref<boolean>(false);
 
 // Fungsi untuk menangani submit form forget password
 const handleSubmit = async () => {
@@ -79,6 +80,7 @@ const handleSubmit = async () => {
     return $toast('Silahkan periksa email anda.', 'success');
   } finally {
     isLoading.value = false; // Menandakan proses loading selesai, baik berhasil maupun gagal
+    isDisabled.value = true;
   }
 }
 </script>

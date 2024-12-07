@@ -193,7 +193,8 @@
 </template>
 
 <script setup lang="ts">
-import AppLogo from "~/components/AppLogo.vue"; // Impor komponen AppLogo untuk digunakan di template
+import AppLogo from "~/components/AppLogo.vue";
+import {sleep} from "@antfu/utils"; // Impor komponen AppLogo untuk digunakan di template
 
 // Menyediakan akses ke nuxtApp untuk mengambil instance nuxt dan memanfaatkan toast untuk notifikasi
 const {$toast} = useNuxtApp();
@@ -222,7 +223,7 @@ const handleSubmit = async () => {
   try {
     isLoading.value = true; // Menandakan proses loading saat pengiriman form
     // Melakukan request POST ke endpoint API login dengan data form
-    await $fetch(`/api/auth/forget-password?token=${token}`, {
+    await $fetch(`/api/auth/reset-password?token=${token}`, {
       method: 'POST',
       body: {
         newPassword: password.value,
@@ -230,9 +231,11 @@ const handleSubmit = async () => {
       }
     });
 
-    return $toast('Silahkan periksa email anda.', 'success');
+    $toast('Berhasil memperbaharui kata sandi.', 'success');
+    await sleep(500)
+    return navigateTo('/auth/login')
   } catch (error: any) {
-    return $toast('Silahkan periksa email anda.', 'success');
+    return $toast('Gagal memperbaharui kata sandi.', 'error');
   } finally {
     isLoading.value = false; // Menandakan proses loading selesai, baik berhasil maupun gagal
   }
