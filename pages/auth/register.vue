@@ -243,7 +243,7 @@
             </div>
           </form>
           <!-- End Form -->
-          <p class="mt-2 text-sm text-gray-600 text-center">
+          <p class="mt-5 text-sm text-gray-600 text-center">
             Sudah punya akun?
             <a href="/auth/login"
                class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">Masuk

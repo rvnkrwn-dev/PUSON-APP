@@ -4,7 +4,7 @@
       <div class="p-4 sm:p-10">
         <div class="text-center">
           <AppLogo/>
-          <h1 class="block text-2xl font-bold text-gray-800 mt-4">Masuk</h1>
+          <h1 class="block text-2xl font-bold text-gray-800 mt-4">Lupa Kata Sandi</h1>
         </div>
 
         <div class="mt-5">
@@ -32,13 +32,13 @@
 
               <button type="submit"
                       :disabled="isLoading || isDisabled"
-                      class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                      class="w-full mt-2 py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
                 {{ isLoading ? "Loading..." : "Kirim" }}
               </button>
             </div>
           </form>
           <!-- End Form -->
-          <p class="mt-2 text-sm text-gray-600 text-center">
+          <p class="mt-5 text-sm text-gray-600 text-center">
             Belum punya akun?
             <a href="/auth/register"
                class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">Daftar
