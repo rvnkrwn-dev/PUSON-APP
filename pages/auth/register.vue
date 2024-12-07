@@ -1,7 +1,7 @@
 <template>
   <div class="w-full min-h-screen flex items-center justify-center md:block px-6 py-10 md:py-[172px]">
     <div class="bg-white sm:border sm:border-gray-200 rounded-xl sm:shadow-sm w-[500px] md:max-w-[500px] mx-auto">
-      <div class="p-4 sm:p-7">
+      <div class="p-4 sm:p-10">
         <div class="text-center">
           <AppLogo />
           <h1 class="block text-2xl font-bold text-gray-800 mt-4">DAFTAR</h1>
@@ -224,11 +224,11 @@
               <!-- Checkbox -->
               <div class="flex items-center">
                 <div class="flex">
-                  <input v-model="isAgree" id="remember-me" name="remember-me" type="checkbox"
+                  <input v-model="isAgree" id="is-agree" name="is-agree" type="checkbox"
                          class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500">
                 </div>
                 <div class="ms-3">
-                  <label for="remember-me" class="text-sm">Saya menerima <a
+                  <label for="is-agree" class="text-sm">Saya menerima <a
                       class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
                       href="#">syarat dan ketentuan.</a></label>
                 </div>
@@ -243,6 +243,12 @@
             </div>
           </form>
           <!-- End Form -->
+          <p class="mt-2 text-sm text-gray-600 text-center">
+            Sudah punya akun?
+            <a href="/auth/login"
+               class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">Masuk
+              disini</a>
+          </p>
         </div>
       </div>
     </div>
