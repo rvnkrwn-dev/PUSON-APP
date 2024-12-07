@@ -14,25 +14,25 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  full_name String
-  url_profile String? @default("http://res.cloudinary.com/dmjb33clr/image/upload/v1733470093/puson_app/profile/avatar.png")
-  secure_url_profile String? @default("https://res.cloudinary.com/dmjb33clr/image/upload/v1733470093/puson_app/profile/avatar.png")
-  public_id_profile String?
-  email String @unique
-  password String
-  role Role @default(user)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  detail_user DetailUser[]
-  logs Log[]
-  refresh_token RefreshToken[]
-  puskesmas Puskesmas[]
-  staff_puskesms StaffPuskesmas[]
-  posyandu Posyandu[]
-  staff_posyandu StaffPosyandu[]
-  child Child[]
-  med_check_up MedCheckUp[]
+  id                 Int              @id @default(autoincrement())
+  full_name          String
+  url_profile        String?          @default("http://res.cloudinary.com/dmjb33clr/image/upload/v1733470093/puson_app/profile/avatar.png")
+  secure_url_profile String?          @default("https://res.cloudinary.com/dmjb33clr/image/upload/v1733470093/puson_app/profile/avatar.png")
+  public_id_profile  String?
+  email              String           @unique
+  password           String
+  role               Role             @default(user)
+  created_at         DateTime         @default(now())
+  updated_at         DateTime         @updatedAt
+  detail_user        DetailUser[]
+  logs               Log[]
+  refresh_token      RefreshToken[]
+  puskesmas          Puskesmas[]
+  staff_puskesms     StaffPuskesmas[]
+  posyandu           Posyandu[]
+  staff_posyandu     StaffPosyandu[]
+  child              Child[]
+  med_check_up       MedCheckUp[]
 }
 
 enum Role {
@@ -43,124 +43,131 @@ enum Role {
 }
 
 model DetailUser {
-  id          Int      @id @default(autoincrement())
-  phone       String?
-  address     String?
-  city        String?
-  postalCode  Int?
-  bod         DateTime?
-  user_id     Int @unique
-  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id             Int       @id @default(autoincrement())
+  phone          String?
+  address        String?
+  city           String?
+  postalCode     Int?
+  bod            DateTime?
+  kk             String?
+  url_kk         String?
+  secure_url_kk  String?
+  public_id_kk   String?
+  ktp            String?
+  url_ktp        String?
+  secure_url_ktp String?
+  public_id_ktp  String?
+  user_id        Int       @unique
+  user           User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
-model Log{
-  id Int @id @default(autoincrement())
-  user_id Int
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  action String
-  description String @db.Text
-  created_at DateTime @default(now())
+model Log {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  action      String
+  description String   @db.Text
+  created_at  DateTime @default(now())
 }
 
 model RefreshToken {
-  id Int @id @default(autoincrement())
-  user_id Int
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  refresh_token String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  user_id       Int
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  refresh_token String   @db.VarChar(1024)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 }
 
 model Puskesmas {
-  id Int @id @default(autoincrement())
-  name String
-  address String
-  phone Int
-  user_id Int
-  created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  staff StaffPuskesmas[]
-  posyandu Posyandu[]
+  id         Int              @id @default(autoincrement())
+  name       String
+  address    String
+  phone      Int
+  user_id    Int
+  created_by User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
+  staff      StaffPuskesmas[]
+  posyandu   Posyandu[]
 }
 
 model StaffPuskesmas {
-  id Int @id @default(autoincrement())
-  name String
-  user_id Int
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id           Int       @id @default(autoincrement())
+  name         String
+  user_id      Int
+  user         User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   puskesmas_id Int
-  puskesmas Puskesmas @relation(fields: [puskesmas_id], references: [id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  puskesmas    Puskesmas @relation(fields: [puskesmas_id], references: [id], onDelete: Cascade)
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
 }
 
 model Posyandu {
-  id Int @id @default(autoincrement())
-  name String
-  address String
-  phone Int
-  user_id Int
-  created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id           Int             @id @default(autoincrement())
+  name         String
+  address      String
+  phone        Int
+  user_id      Int
+  created_by   User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
   puskesmas_id Int
-  puskesmas Puskesmas @relation(fields: [puskesmas_id], references: [id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  staff StaffPosyandu[]
-  child Child[]
+  puskesmas    Puskesmas       @relation(fields: [puskesmas_id], references: [id], onDelete: Cascade)
+  created_at   DateTime        @default(now())
+  updated_at   DateTime        @updatedAt
+  staff        StaffPosyandu[]
+  child        Child[]
 }
 
 model StaffPosyandu {
-  id Int @id @default(autoincrement())
-  name String
-  user_id Int
-  created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id          Int      @id @default(autoincrement())
+  name        String
+  user_id     Int
+  created_by  User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   posyandu_id Int
-  posyandu Posyandu @relation(fields: [posyandu_id], references: [id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  posyandu    Posyandu @relation(fields: [posyandu_id], references: [id], onDelete: Cascade)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
 
 model Child {
-  id Int @id @default(autoincrement())
-  name String
-  admin_id Int
-  admin User @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  posyandu_id Int
-  posyandu Posyandu @relation(fields: [posyandu_id], references: [id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id           Int          @id @default(autoincrement())
+  name         String
+  admin_id     Int
+  admin        User         @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  posyandu_id  Int
+  posyandu     Posyandu     @relation(fields: [posyandu_id], references: [id], onDelete: Cascade)
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
   med_check_up MedCheckUp[]
 }
 
 model MedCheckUp {
-  id Int @id @default(autoincrement())
-  child_id Int
-  child Child @relation(fields: [child_id], references: [id], onDelete: Cascade)
-  height Float
-  weight Float
-  Age Float
-  circumference Float
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  user_id Int
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id                  Int                @id @default(autoincrement())
+  child_id            Int
+  child               Child              @relation(fields: [child_id], references: [id], onDelete: Cascade)
+  height              Float
+  weight              Float
+  Age                 Float
+  circumference       Float
+  created_at          DateTime           @default(now())
+  updated_at          DateTime           @updatedAt
+  user_id             Int
+  user                User               @relation(fields: [user_id], references: [id], onDelete: Cascade)
   result_med_check_up ResultMedCheckUp[]
 }
 
 model ResultMedCheckUp {
-  id Int @id @default(autoincrement())
-  imt Float
-  ipb Float
-  status StuntingStatus @default(false)
+  id              Int            @id @default(autoincrement())
+  imt             Float
+  ipb             Float
+  status          StuntingStatus @default(false)
   med_check_up_id Int
-  med_check_up MedCheckUp @relation(fields: [med_check_up_id], references: [id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  med_check_up    MedCheckUp     @relation(fields: [med_check_up_id], references: [id], onDelete: Cascade)
+  created_at      DateTime       @default(now())
+  updated_at      DateTime       @updatedAt
 }
 
 enum StuntingStatus {
   true
   false
 }
-
