@@ -258,6 +258,10 @@
 <script setup lang="ts">
 import AppLogo from "~/components/AppLogo.vue";
 
+definePageMeta({
+  layout: false
+})
+
 const { $toast } = useNuxtApp();
 
 const fullName = ref<string | null>(null)

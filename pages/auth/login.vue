@@ -97,6 +97,10 @@
 <script setup lang="ts">
 import AppLogo from "~/components/AppLogo.vue"; // Impor komponen AppLogo untuk digunakan di template
 
+definePageMeta({
+  layout: false
+})
+
 // Menyediakan akses ke nuxtApp untuk mengambil instance nuxt dan memanfaatkan toast untuk notifikasi
 const {$toast} = useNuxtApp();
 

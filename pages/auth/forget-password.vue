@@ -39,9 +39,9 @@
           </form>
           <!-- End Form -->
           <p class="mt-5 text-sm text-gray-600 text-center">
-            Belum punya akun?
-            <a href="/auth/register"
-               class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">Daftar
+            Sudah ingat kata sandi?
+            <a href="/auth/login"
+               class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">Masuk
               disini</a>
           </p>
         </div>
@@ -52,6 +52,10 @@
 
 <script setup lang="ts">
 import AppLogo from "~/components/AppLogo.vue"; // Impor komponen AppLogo untuk digunakan di template
+
+definePageMeta({
+  layout: false
+})
 
 // Menyediakan akses ke nuxtApp untuk mengambil instance nuxt dan memanfaatkan toast untuk notifikasi
 const {$toast} = useNuxtApp();

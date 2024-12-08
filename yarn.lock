@@ -973,6 +973,26 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
+"@preline/combobox@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@preline/combobox/-/combobox-2.6.0.tgz#13bb18b79963601e90bca6282aa6be88d5436d96"
+  integrity sha512-5VAy3HSu2rcYClVks/WGYYPwVlv63rjEhACHOABvVzJcej5ih83hXd71Y5a+kym65VGB/cAEDJA7KPDdNgHRQA==
+
+"@preline/file-upload@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@preline/file-upload/-/file-upload-2.6.0.tgz#5aa6951bf4b1b71de49759255ecba30206b9805b"
+  integrity sha512-0dNJ1+kh1rrmphBUV7UjYJ4CBh5+QqButNlCsfn/ek5U5Eq1x1Z/Sroo6nrWHXGCrz9tvN2Z155zBxnJUBk6+A==
+
+"@preline/select@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@preline/select/-/select-2.6.0.tgz#5a0876aaada7f3d91db3cce1e1f902864a7a2ddb"
+  integrity sha512-plQ2DDmMx8qr6TaObutbbC9H+Pf3HxJe0jV8vcOiFXch+ze+sCuZV2UmQLno2frSaBzqoNDOdO2W1ywpAzPJfA==
+
+"@preline/stepper@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@preline/stepper/-/stepper-2.6.0.tgz#5b2a0a6d0526eb37dc96cdfe0395ae9db9769d92"
+  integrity sha512-//xjKqegeQcsJ/2s8TsA8EzbBK0z++ihca2oBIbLZov/HPAq6IYPiYoQ3Za3nzsmnzY1Oma6+2NUuRpK/HFA5A==
+
 "@prisma/client@^6.0.1":
   version "6.0.1"
   resolved "https://registry.npmjs.org/@prisma/client/-/client-6.0.1.tgz"
@@ -1212,6 +1232,11 @@
   resolved "https://registry.npmjs.org/@sindresorhus/merge-streams/-/merge-streams-2.3.0.tgz"
   integrity sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==
 
+"@swc/helpers@^0.2.13":
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.2.14.tgz#20288c3627442339dd3d743c944f7043ee3590f0"
+  integrity sha512-wpCQMhf5p5GhNg2MmGKXzUNwxe7zRiCsmqYsamez2beP7mKPCSiu+BjZcdN95yYSzO857kr0VfQewmGpS77nqA==
+
 "@trysound/sax@0.2.0":
   version "0.2.0"
   resolved "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz"
@@ -1221,6 +1246,13 @@
   version "2.4.6"
   resolved "https://registry.npmjs.org/@types/bcryptjs/-/bcryptjs-2.4.6.tgz"
   integrity sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==
+
+"@types/dropzone@^5.7.9":
+  version "5.7.9"
+  resolved "https://registry.yarnpkg.com/@types/dropzone/-/dropzone-5.7.9.tgz#0a1211a1b54734bbbaf05074cb90d62ab0cdc65f"
+  integrity sha512-c6IlUz+DeQ4gANzJKn8fdP5rO6UyDNOyWLjfPbDRUHCNsXaAVKQOpuOv6LWEyvaK7pLqmoIpvSIlvBgGsk1vGw==
+  dependencies:
+    "@types/jquery" "*"
 
 "@types/estree@*", "@types/estree@1.0.6", "@types/estree@^1.0.0":
   version "1.0.6"
@@ -1234,12 +1266,24 @@
   dependencies:
     "@types/node" "*"
 
+"@types/jquery@*":
+  version "3.5.32"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.32.tgz#3eb0da20611b92c7c49ebed6163b52a4fdc57def"
+  integrity sha512-b9Xbf4CkMqS02YH8zACqN1xzdxc3cO735Qe5AbSUFmyOiaWAbcpqh9Wna+Uk0vgACvoQHpWDg2rGdHkYPLmCiQ==
+  dependencies:
+    "@types/sizzle" "*"
+
 "@types/jsonwebtoken@^9.0.7":
   version "9.0.7"
   resolved "https://registry.npmjs.org/@types/jsonwebtoken/-/jsonwebtoken-9.0.7.tgz"
   integrity sha512-ugo316mmTYBl2g81zDFnZ7cfxlut3o+/EQdaP7J8QN2kY6lJ22hmQYCK5EHcJHbrW+dkCGSCPgbG8JtYj6qSrg==
   dependencies:
     "@types/node" "*"
+
+"@types/lodash@^4.17.13":
+  version "4.17.13"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.13.tgz#786e2d67cfd95e32862143abe7463a7f90c300eb"
+  integrity sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==
 
 "@types/node@*":
   version "22.10.1"
@@ -1259,6 +1303,11 @@
   version "1.20.2"
   resolved "https://registry.npmjs.org/@types/resolve/-/resolve-1.20.2.tgz"
   integrity sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==
+
+"@types/sizzle@*":
+  version "2.3.9"
+  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.9.tgz#d4597dbd4618264c414d7429363e3f50acb66ea2"
+  integrity sha512-xzLEyKB50yqCUPUJkIsrVvoWNfFUbIZI+RspLWt8u+tIW/BetMBZtgV2LY/2o+tYH8dRvQ+eoPf3NdhQCcLE2w==
 
 "@types/toastify-js@^1.12.3":
   version "1.12.3"
@@ -2404,6 +2453,14 @@ dotenv@^16.4.5:
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.4.7.tgz"
   integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
 
+dropzone@^6.0.0-beta.2:
+  version "6.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-6.0.0-beta.2.tgz#098be8fa84bdc08674cf0b74f4c889e2679083d6"
+  integrity sha512-k44yLuFFhRk53M8zP71FaaNzJYIzr99SKmpbO/oZKNslDjNXQsBTdfLs+iONd0U0L94zzlFzRnFdqbLcs7h9fQ==
+  dependencies:
+    "@swc/helpers" "^0.2.13"
+    just-extend "^5.0.0"
+
 duplexer@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/duplexer/-/duplexer-0.1.2.tgz"
@@ -3320,6 +3377,11 @@ jsonwebtoken@^9.0.2:
     lodash.once "^4.0.0"
     ms "^2.1.1"
     semver "^7.5.4"
+
+just-extend@^5.0.0:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/just-extend/-/just-extend-5.1.1.tgz#4f33b1fc719964f816df55acc905776694b713ab"
+  integrity sha512-b+z6yF1d4EOyDgylzQo5IminlUmzSeqR1hs/bzjBNjuGras4FXq/6TrzjxfN0j+TmI0ltJzTNlqXUMCniciwKQ==
 
 jwa@^1.4.1:
   version "1.4.1"

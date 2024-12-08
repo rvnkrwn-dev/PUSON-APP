@@ -196,6 +196,10 @@
 import AppLogo from "~/components/AppLogo.vue";
 import {sleep} from "@antfu/utils"; // Impor komponen AppLogo untuk digunakan di template
 
+definePageMeta({
+  layout: false
+})
+
 // Menyediakan akses ke nuxtApp untuk mengambil instance nuxt dan memanfaatkan toast untuk notifikasi
 const {$toast} = useNuxtApp();
 
