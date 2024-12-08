@@ -1,9 +1,15 @@
 import { PuskesmasRequest } from '~/types/AuthType';
-import { PuskesmasType } from '~/types/TypesModel';
 import {Puskesmas} from "~/server/model/Puskesmas";
 
 export default defineEventHandler(async (event) => {
     try {
+        const id = parseInt(event.context.params?.id as string);
+
+        // Validate ID
+        if (!id || isNaN(id)) {
+            setResponseStatus(event, 400);
+            return {code: 400, message: 'Invalid puskesmas ID.'};
+        }
 
         // Check if users exists
         const user = event.context.auth.user
@@ -22,7 +28,7 @@ export default defineEventHandler(async (event) => {
         };
 
         // Update Puskesmas in the database
-        const puskesmas: PuskesmasType = await Puskesmas.updatePuskesmas(user.id, updatedData);
+        const puskesmas = await Puskesmas.updatePuskesmas(id, updatedData);
 
         // Return the updated Puskesmas
         return {

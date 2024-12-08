@@ -2,30 +2,28 @@ import { User } from '~/server/model/User';
 import {createLog} from "~/server/utils/atLog";
 
 export default defineEventHandler(async (event) => {
-
     try {
-        const query = getQuery(event);
-        const id = query.id ? Number(query.id) : null;
+        const id = parseInt(event.context.params?.id as string);
 
         // Validate ID
-        if (!query.id || id == null) {
+        if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return { code: 400, message: "Invalid users ID." };
+            return {code: 400, message: 'Invalid users ID.'};
         }
 
-        // Delete the users
-        await User.deleteUser(id);
-
-        await createLog(id, "Hapus User", `Berhasil mengahapus pengguna`)
+        // get the user
+        const user = await User.getUserById(id);
 
         // Set response status and return success response
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "User deleted successfully!",
+            message: "User retrieved successfully.",
+            data: {
+                user: user
+            },
         };
     } catch (error: any) {
-        console.error('Error deleting users:', error);
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: error.message || "Internal Server Error" })

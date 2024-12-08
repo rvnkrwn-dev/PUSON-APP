@@ -6,8 +6,12 @@ export default defineEventHandler( async (event) => {
     try {
         const endpoints = [
             '/api/auth/users',
-            '/api/auth/users?id=:id',
-            '/api/auth/users?page=:page&pagesize=:pagesize'
+            '/api/auth/users/:id',
+            '/api/auth/users?page=:page&pagesize=:pagesize',
+            '/api/auth/logs?page=:page&pagesize=:pagesize',
+            '/api/auth/puskesmas',
+            '/api/auth/puskesmas?id=:id',
+            '/api/auth/puskesmas?page=:page&pagesize=:pagesize'
         ]
 
         const isHandledByThisMiddleware = endpoints.some(endopoint => {
