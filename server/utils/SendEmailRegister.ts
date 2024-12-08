@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import {configOptionsMailer} from "~/server/config/mailer";
-import exp from "node:constants";
 
 const config = useRuntimeConfig()
 

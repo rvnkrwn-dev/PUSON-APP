@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { useRuntimeConfig } from '#imports';
 
 const generateRefreshToken = (payload: any) => {
     const config = useRuntimeConfig();

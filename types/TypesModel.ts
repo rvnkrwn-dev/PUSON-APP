@@ -1,134 +1,165 @@
-// Enum definitions
+export enum UserStatus {
+    Active = "active",
+    Suspend = "suspend",
+    Pending = "pending",
+}
+
 export enum Role {
-    super_admin = 'super_admin',
-    admin_puskesmas = 'admin_puskesmas',
-    admin_posyandu = 'admin_posyandu',
-    user = 'user',
+    SuperAdmin = "super_admin",
+    AdminPuskesmas = "admin_puskesmas",
+    AdminPosyandu = "admin_posyandu",
+    User = "user",
 }
 
 export enum StuntingStatus {
-    true = 'true',
-    false = 'false',
+    True = "true",
+    False = "false",
 }
 
-// Model interfaces with specific names
-
-export interface UserType {
+export interface User {
     id: number;
     full_name: string;
-    url_profile?: string | null;  // Optional field
-    secure_url_profile?: string | null;  // Optional field
-    public_id_profile?: string | null;  // Optional field
+    url_profile?: string;
+    secure_url_profile?: string;
+    public_id_profile?: string;
     email: string;
     password: string;
     role: Role;
+    status: UserStatus;
     created_at: Date;
     updated_at: Date;
-    logs: LogType[];
-    refresh_token: RefreshTokenType[];
-    puskesmas: PuskesmasType[];
-    staff_puskesmas: StaffPuskesmasType[];
-    posyandu: PosyanduType[];
-    staff_posyandu: StaffPosyanduType[];
-    child: ChildType[];
-    med_check_up: MedCheckUpType[];
-    detail_user: DetailUserType[];
+    detail_user?: DetailUser[];
+    logs?: Log[];
+    refresh_token?: RefreshToken[];
+    puskesmas?: Puskesmas[];
+    staff_puskesmas?: StaffPuskesmas[];
+    posyandu?: Posyandu[];
+    staff_posyandu?: StaffPosyandu[];
+    child?: Child[];
+    med_check_up?: MedCheckUp[];
+    kk?: KK[];
+    nik?: NIK[];
 }
 
-export interface DetailUserType {
-    phone?: number | null;
-    address?: string | null;
-    city?: string | null;
-    postalCode?: number | null;
-    bod?: Date | null;
+export interface DetailUser {
+    id: number;
+    phone?: string;
+    address?: string;
+    city?: string;
+    postalCode?: number;
+    bod?: Date;
     user_id: number;
-    user?: UserType[] | null;
+    user: User;
 }
 
-export interface LogType {
+export interface KK {
+    id: number;
+    number: bigint;
+    url_kk?: string;
+    secure_url_kk?: string;
+    public_id_kk?: string;
+    user_id: number;
+    user: User;
+    nik?: NIK[];
+}
+
+export interface NIK {
+    id: number;
+    number: bigint;
+    url_ktp?: string;
+    secure_url_ktp?: string;
+    public_id_ktp?: string;
+    user_id: number;
+    user: User;
+    kk_id: number;
+    kk: KK;
+}
+
+export interface Log {
     id: number;
     user_id: number;
-    user: UserType;
+    user: User;
     action: string;
     description: string;
     created_at: Date;
 }
 
-export interface RefreshTokenType {
+export interface RefreshToken {
     id: number;
     user_id: number;
-    user: UserType;
+    user: User;
     refresh_token: string;
     created_at: Date;
     updated_at: Date;
 }
 
-export interface PuskesmasType {
+export interface Puskesmas {
     id: number;
     name: string;
     address: string;
-    phone: number;
+    phone: string;
     user_id: number;
-    created_by: UserType;
+    created_by: User;
     created_at: Date;
     updated_at: Date;
-    staff: StaffPuskesmasType[];
-    posyandu: PosyanduType[];
+    staff?: StaffPuskesmas[];
+    posyandu?: Posyandu[];
 }
 
-export interface StaffPuskesmasType {
+export interface StaffPuskesmas {
     id: number;
     name: string;
     user_id: number;
-    user: UserType;
+    user: User;
     puskesmas_id: number;
-    puskesmas: PuskesmasType;
+    puskesmas: Puskesmas;
     created_at: Date;
     updated_at: Date;
 }
 
-export interface PosyanduType {
+export interface Posyandu {
     id: number;
     name: string;
     address: string;
-    phone: number;
+    phone: string;
     user_id: number;
-    created_by: UserType;
+    created_by: User;
     puskesmas_id: number;
-    puskesmas: PuskesmasType;
+    puskesmas: Puskesmas;
     created_at: Date;
     updated_at: Date;
-    staff: StaffPosyanduType[];
-    child: ChildType[];
+    staff?: StaffPosyandu[];
+    child?: Child[];
 }
 
-export interface StaffPosyanduType {
+export interface StaffPosyandu {
     id: number;
     name: string;
     user_id: number;
-    created_by: UserType;
+    created_by: User;
     posyandu_id: number;
-    posyandu: PosyanduType;
+    posyandu: Posyandu;
     created_at: Date;
     updated_at: Date;
 }
 
-export interface ChildType {
+export interface Child {
     id: number;
     name: string;
+    dob: Date;
     admin_id: number;
-    admin: UserType;
+    admin: User;
     posyandu_id: number;
-    posyandu: PosyanduType;
+    posyandu: Posyandu;
     created_at: Date;
     updated_at: Date;
-    med_check_up: MedCheckUpType[];
+    med_check_up?: MedCheckUp[];
 }
 
-export interface MedCheckUpType {
+export interface MedCheckUp {
     id: number;
     child_id: number;
-    child: ChildType;
+    child: Child;
     height: number;
     weight: number;
     Age: number;
@@ -136,17 +167,17 @@ export interface MedCheckUpType {
     created_at: Date;
     updated_at: Date;
     user_id: number;
-    user: UserType;
-    result_med_check_up: ResultMedCheckUpType[];
+    user: User;
+    result_med_check_up?: ResultMedCheckUp[];
 }
 
-export interface ResultMedCheckUpType {
+export interface ResultMedCheckUp {
     id: number;
     imt: number;
     ipb: number;
     status: StuntingStatus;
     med_check_up_id: number;
-    med_check_up: MedCheckUpType;
+    med_check_up: MedCheckUp;
     created_at: Date;
     updated_at: Date;
 }

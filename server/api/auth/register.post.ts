@@ -1,37 +1,33 @@
 import bcrypt from 'bcryptjs';
 import {User} from '~/server/model/User';
 import {SendEmailRegister} from "~/server/utils/SendEmailRegister";
+import {RegisterRequest, RegisterResponse} from "~/types/AuthType";
 
 export default defineEventHandler(async (event) => {
     try {
         // Membaca body dari request
-        const {
-            full_name,
-            email,
-            password
-        } = await readBody(event);
+        const data: RegisterRequest= await readBody(event);
 
         // Validasi input
-        // @ts-ignore
-        if (!full_name || !email || !password) {
+        if (!data.full_name || !data.email || !data.password) {
             setResponseStatus(event, 400);
             return {code: 400, message: "Please provide all required fields (full_name, email, password)."};
         }
 
         // Hash password
-        const hashedPassword = bcrypt.hashSync(password, 10);
+        const hashedPassword = bcrypt.hashSync(data.password, 10);
 
         // Membuat user baru
         const user = await User.registerUser({
-            full_name,
-            email,
+            full_name: data.full_name,
+            email: data.email,
             password: hashedPassword
         });
 
         // Mengatur status dan mengembalikan respons sukses
         setResponseStatus(event, 201);
-        await SendEmailRegister(email, full_name);
-        return {
+        await SendEmailRegister(user.email, user.full_name);
+        return <RegisterResponse>{
             code: 201,
             message: "User registered successfully!",
             data: {

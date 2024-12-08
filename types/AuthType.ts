@@ -1,4 +1,4 @@
-import {Role} from "~/types/TypesModel";
+import type {Role, UserStatus, User} from "~/types/TypesModel";
 
 export interface RegisterRequest {
     full_name: string;
@@ -6,27 +6,34 @@ export interface RegisterRequest {
     password: string;
 }
 
-export interface CreateRequest {
-    full_name: string;
-    email: string;
-    password: string;
-    role: Role;  // Default can be 'user' or 'admin_puskesmas', etc.
-    url_profile?: string | null;  // Optional
-    secure_url_profile?: string | null;  // Optional
-    public_id_profile?: string | null;  // Optional
+export interface RegisterResponse {
+    code: number,
+    message: string,
+    data: {
+        user: User,
+    },
 }
 
 export interface LoginRequest {
     email: string;
     password: string;
+    ip_address: string;
 }
 
-export interface ForgotPasswordRequest {
-    email: string;
+export interface LoginResponse {
+    code: number,
+    message: string,
+    access_token: string,
+    data: {
+        user: User,
+    },
 }
 
-export interface ResetPasswordRequest {
-    reset_token: string;
-    new_password: string;
-    confirm_password: string;  // Optional, used for validation to ensure password confirmation matches
+export interface PuskesmasRequest {
+    name: string;
+    address: string;
+    phone: string;
+    user_id: number;
 }
+
+
