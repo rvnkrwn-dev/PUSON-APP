@@ -1,55 +1,51 @@
-import { User } from '~/server/model/User';
-import {createLog} from "~/server/utils/atLog";
-import {verifyToken} from "~/server/utils/jwt";
+import {User} from "~/server/model/User";
 
 export default defineEventHandler(async (event) => {
-    const authHeader = event.req.headers['authorization'];
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        setResponseStatus(event, 401);
-        return { error: 'Unauthorized' };
-    }
-
-    const token = authHeader.split(' ')[1];
-
     try {
-        verifyToken(token)
+        // Check if user exists
+        const user = event.context.auth?.user;
+        console.log(user)
+
+        if (!user) {
+            setResponseStatus(event, 403);
+            return { code: 403, message: 'Invalid user' };
+        }
+
         const query = getQuery(event);
         const id = query.id ? Number(query.id) : null;
 
         // Validate ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return { code: 400, message: "Invalid user ID." };
+            return { code: 400, message: 'Invalid user ID.' };
         }
 
-        const {password, ...data} = await readBody(event);
+        const data = await readBody(event);
+        delete data.password;
 
         // Update the user
-        const user = await User.updateUser(id, data);
+        const updatedUser = await User.updateUser(id, data);
 
-        await createLog(user.id, "Perbarui User", `Berhasil memperbarui pengguna baru`)
+        await createLog(user.id, 'Perbarui User', 'Berhasil memperbarui pengguna baru');
+
+        // Exclude password from the response
+        const { password, ...userData } = updatedUser;
 
         // Set response status and return success response
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "User updated successfully!",
+            message: 'User updated successfully!',
             data: {
-                user: {
-                    id: user.id,
-                    full_name: user.full_name,
-                    email: user.email,
-                    role: user.role,
-                }
+                user: userData,
             },
         };
     } catch (error: any) {
-        // Return error if any
+        // Log and return error if any
         console.error('Error updating user:', error);
         return sendError(
             event,
-            createError({ statusCode: 500, statusMessage: error.message || "Internal Server Error" })
+            createError({ statusCode: 500, statusMessage: error.message || 'Internal Server Error' })
         );
     }
 });

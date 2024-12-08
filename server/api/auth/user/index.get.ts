@@ -1,32 +1,41 @@
-import { User } from '~/server/model/User';
-import {setResponseStatus} from "h3";
-import {verifyToken} from "~/server/utils/jwt";
-
+import { User } from "~/server/model/User";
 
 export default defineEventHandler(async (event) => {
-    const authHeader = event.req.headers['authorization'];
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        setResponseStatus(event, 401);
-        return { error: 'Unauthorized' };
-    }
-
-    const token = authHeader.split(' ')[1];
-
     try {
-        verifyToken(token)
+        // Ambil parameter `page` dan `pagesize` dari query string
+        const query = getQuery(event);
+        const page = parseInt(query.page as string, 10) || 1;
+        const pagesize = parseInt(query.pagesize as string, 10) || 10;
 
-        const authHeader = event.req.headers['authorization'];
-        // Panggil fungsi untuk mengambil semua pengguna
-        const users = await User.getAllUsers();
+        // Validasi input
+        if (page <= 0 || pagesize <= 0) {
+            throw createError({
+                statusCode: 400,
+                message: "Page and pagesize must be positive integers.",
+            });
+        }
 
-        // Mengembalikan respons sukses
-        return { users };
-    } catch (error: any) {
-        console.error('Error fetching users:', error);
-        return sendError(event, createError({
+        // Panggil fungsi `getAllUsers` dari UserService
+        const users = await User.getAllUsers(page, pagesize);
+
+        // Return hasil data
+        return {
+            message: "Users retrieved successfully.",
+            data: users,
+        };
+    } catch (error) {
+        // Pastikan tipe error
+        if (error instanceof Error) {
+            throw createError({
+                statusCode: (error as any).statusCode || 500, // Gunakan `any` jika custom error tidak punya tipe khusus
+                message: error.message || "An error occurred while retrieving users.",
+            });
+        }
+
+        // Jika error bukan instance dari `Error`, kembalikan error generik
+        throw createError({
             statusCode: 500,
-            statusMessage: 'Internal Server Error'
-        }));
+            message: "An unknown error occurred.",
+        });
     }
 });

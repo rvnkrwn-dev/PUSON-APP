@@ -1,4 +1,3 @@
-import { defineEventHandler, readBody, setResponseStatus, sendError, createError } from 'h3';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma } from '~/server/config/db';
@@ -10,6 +9,7 @@ export default defineEventHandler(async (event) => {
     try {
         const { newPassword, confirmNewPassword } = await readBody(event);
         const token = event.node.req.url?.split('token=')[1];
+        console.log('Token:', token);
 
         if (!token || !newPassword || !confirmNewPassword) {
             setResponseStatus(event, 400);
@@ -27,9 +27,6 @@ export default defineEventHandler(async (event) => {
             setResponseStatus(event, 403);
             return { code: 403, message: 'Invalid or expired token.' };
         }
-
-        // Hapus refresh token dari database sebelum verifikasi
-        await RefreshToken.deleteToken(token);
 
         // Verifikasi token reset
         let decoded: any;
@@ -49,16 +46,26 @@ export default defineEventHandler(async (event) => {
             return { code: 403, message: 'Invalid user associated with token.' };
         }
 
-        // Hash kata sandi baru
+        // Check if the new password is different from the old password
+        const isPasswordSame = bcrypt.compareSync(newPassword, user.password);
+        if (isPasswordSame) {
+            setResponseStatus(event, 400);
+            return { code: 400, message: 'New password cannot be the same as the old password.' };
+        }
+
+        // Hash new password
         const hashedPassword = bcrypt.hashSync(newPassword, 10);
 
-        // Perbarui kata sandi user
+        // Update user password
         await prisma.user.update({
             where: { id: user.id },
             data: { password: hashedPassword }
         });
 
-        // Mengembalikan respons sukses
+        // Hapus refresh token dari database setelah perubahan password berhasil
+        await RefreshToken.deleteToken(token);
+
+        // Return success response
         return { code: 200, message: 'Password has been reset successfully.' };
 
     } catch (error: any) {

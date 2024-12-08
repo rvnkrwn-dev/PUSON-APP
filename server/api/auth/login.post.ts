@@ -3,16 +3,17 @@ import { RefreshToken } from '~/server/model/RefreshToken';
 import { User } from '~/server/model/User';
 import { createLog } from '~/server/utils/atLog';
 import { generateToken, sendRefreshToken } from '~/server/utils/jwt';
-import { defineEventHandler, readBody, setResponseStatus, sendError } from 'h3';
+import { LoginRequest, LoginResponse } from '~/types/AuthType';
+import { UserStatus } from '~/types/TypesModel';
 
 export default defineEventHandler(async (event) => {
     try {
-        const data = await readBody(event);
+        const data: LoginRequest = await readBody(event);
 
         // Validate input
         if (!data.email || !data.password || !data.ip_address) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Please provide email and password.' };
+            return { code: 400, message: 'Please provide email, password, and IP address.' };
         }
 
         // Check if user exists
@@ -23,6 +24,12 @@ export default defineEventHandler(async (event) => {
             return { code: 400, message: 'Invalid credentials.' };
         }
 
+        // Check user status
+        if (user.status !== UserStatus.Active) {
+            setResponseStatus(event, 403);
+            return { code: 403, message: `User account is ${user.status}. Please contact support.` };
+        }
+
         // Check password
         const isPasswordValid = bcrypt.compareSync(data.password, user.password);
         if (!isPasswordValid) {
@@ -31,7 +38,11 @@ export default defineEventHandler(async (event) => {
         }
 
         // Generate tokens
-        const { refreshToken, accessToken } = generateToken(user);
+        const { refreshToken, accessToken } = generateToken({
+            id: user.id,
+            email: user.email,
+            role: user.role
+        });
         const { password, ...userData } = user;
 
         // Store refresh token in the database
@@ -43,7 +54,7 @@ export default defineEventHandler(async (event) => {
         await createLog(user.id, 'Login', `User logged in from IP ${data.ip_address}`);
 
         // Return access token in response
-        return {
+        return <LoginResponse> {
             code: 200,
             message: 'Login successful!',
             access_token: accessToken,

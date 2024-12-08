@@ -1,10 +1,9 @@
 import {prisma} from "~/server/config/db";
-import {CreateRequest, RegisterRequest} from "~/types/AuthType";
-import {UserType} from "~/types/TypesModel";
-import {Role} from "@prisma/client";
+import {RegisterRequest} from "~/types/AuthType";
+import {getUserByEmailType, UpdateUserType} from "~/types/UserType";
 
 export class User {
-    static createUser = (data: CreateRequest) => {
+    static createUser = (data: any ) => {
         return prisma.user.create({
             data: {
                 full_name: data.full_name,
@@ -13,7 +12,8 @@ export class User {
                 public_id_profile: data.public_id_profile,
                 email: data.email,
                 password: data.password,
-                role: data?.role
+                role: data?.role,
+                status: data.status
             },
         });
     };
@@ -28,24 +28,17 @@ export class User {
         });
     };
 
-    static updateUser = (id: number, data: UserType) => {
+    static updateUser = (id: number, data: UpdateUserType) => {
         return prisma.user.update({
-            where: {id},
-            data: {
-                full_name: data.full_name,
-                url_profile: data.url_profile,
-                secure_url_profile: data.secure_url_profile,
-                public_id_profile: data.public_id_profile,
-                email: data.email,
-                password: data.password,
-                role: data?.role
-            },
+            where: { id },
+            data: data
         });
     };
 
+
     static getUserByEmail = (email: string) => {
         return prisma.user.findUnique({
-            where: {email},
+            where: { email },
             select: {
                 id: true,
                 full_name: true,
@@ -57,9 +50,10 @@ export class User {
                 url_profile: true,
                 secure_url_profile: true,
                 public_id_profile: true,
-                detail_user: true
-            }
-        });
+                status: true,
+                detail_user: true,
+            },
+        }) as Promise<getUserByEmailType | null>;
     };
 
     static getUserById = (id: number) => {
@@ -68,7 +62,10 @@ export class User {
         });
     };
 
-    static getAllUsers = async ()=> {
+    static getAllUsers = async (page: number, pagesize: number) => {
+        const skip = (page - 1) * pagesize; // Hitung data yang dilewatkan
+        const take = pagesize; // Jumlah data per halaman
+
         return prisma.user.findMany({
             select: {
                 id: true,
@@ -76,6 +73,7 @@ export class User {
                 email: true,
                 password: false,
                 role: true,
+                status: true,
                 url_profile: true,
                 secure_url_profile: true,
                 public_id_profile: true,
@@ -89,9 +87,12 @@ export class User {
                 posyandu: false,
                 staff_posyandu: false,
                 med_check_up: false,
-            }
+            },
+            skip: skip, // Mulai dari data keberapa
+            take: take, // Ambil berapa data
         });
     };
+
 
 
     static deleteUser = (id: number) => {

@@ -1,33 +1,28 @@
-import { prisma } from '~/server/config/db';
-import { verifyToken } from '~/server/utils/jwt';
-import { defineEventHandler, setResponseStatus, sendError } from 'h3';
+import { Log } from '~/server/model/Log';
 
-// Function to get all logs by user ID using access_token
 export default defineEventHandler(async (event) => {
-    const authHeader = event.req.headers['authorization'];
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        setResponseStatus(event, 401);
-        return { error: 'Unauthorized' };
-    }
-
-    const token = authHeader.split(' ')[1];
-
     try {
-        const decodedToken = verifyToken(token); // Assuming verifyToken function returns the decoded token
-        const user_id = decodedToken.user_id;
+        // Check if user exists
+        const user = event.context.auth.user;
 
-        const logs = await prisma.log.findMany({
-            where: {
-                user_id: user_id,
-            },
-        });
+        if (!user) {
+            setResponseStatus(event, 403);
+            return { code: 403, message: 'Invalid user' };
+        }
+
+        const user_id = user.id;
+        const query = getQuery(event);
+        const page = parseInt(query.page as string, 10) || 1;
+        const pagesize = parseInt(query.pagesize as string, 10) || 10;
+
+        const logs = await Log.getAllLogByUserId (user_id, page, pagesize);
 
         return {
             statusCode: 200,
             body: logs,
         };
     } catch (error) {
+        console.error('Error fetching logs:', error);
         setResponseStatus(event, 500);
         if (error instanceof Error) {
             return { error: error.message };
