@@ -23,19 +23,10 @@ export default defineEventHandler(async (event) => {
             message: "Users retrieved successfully.",
             data: users,
         };
-    } catch (error) {
-        // Pastikan tipe error
-        if (error instanceof Error) {
-            throw createError({
-                statusCode: (error as any).statusCode || 500, // Gunakan `any` jika custom error tidak punya tipe khusus
-                message: error.message || "An error occurred while retrieving users.",
-            });
-        }
-
-        // Jika error bukan instance dari `Error`, kembalikan error generik
-        throw createError({
-            statusCode: 500,
-            message: "An unknown error occurred.",
-        });
+    } catch (error: any) {
+        return sendError(
+            event,
+            createError({statusCode: 500, statusMessage: error?.message || 'Internal Server Error'})
+        );
     }
 });

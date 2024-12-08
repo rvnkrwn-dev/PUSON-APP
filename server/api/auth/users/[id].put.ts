@@ -3,21 +3,15 @@ import {UpdateUserType} from "~/types/UserType";
 
 export default defineEventHandler(async (event) => {
     try {
-        // Check if users exists
+        // Check if users auth
         const user = event.context.auth?.user;
 
-        if (!user) {
-            setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid users' };
-        }
-
-        const query = getQuery(event);
-        const id = query.id ? Number(query.id) : null;
+        const id = parseInt(event.context.params?.id as string);
 
         // Validate ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Invalid users ID.' };
+            return {code: 400, message: 'Invalid users ID.'};
         }
 
         const data: UpdateUserType = await readBody(event);
@@ -28,7 +22,7 @@ export default defineEventHandler(async (event) => {
         await createLog(user.id, 'Perbarui User', 'Berhasil memperbarui pengguna baru');
 
         // Exclude password from the response
-        const { password, ...userData } = updatedUser;
+        const {password, ...userData} = updatedUser;
 
         // Set response status and return success response
         setResponseStatus(event, 200);
@@ -42,7 +36,7 @@ export default defineEventHandler(async (event) => {
     } catch (error: any) {
         return sendError(
             event,
-            createError({ statusCode: 500, statusMessage: error?.message || 'Internal Server Error' })
+            createError({statusCode: 500, statusMessage: error?.message || 'Internal Server Error'})
         );
     }
 });
