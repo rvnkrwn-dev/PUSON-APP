@@ -4,12 +4,12 @@ import { createLog } from '~/server/utils/atLog';
 
 export default defineEventHandler(async (event) => {
     try {
-        // Check if user exists
+        // Check if users exists
         const user = event.context.auth.user;
 
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Invalid users' };
         }
 
         // Read the request body
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
         // Hash password
         const hashedPassword = bcrypt.hashSync(password, 10);
 
-        // Create new user
+        // Create new users
         const create_user = await User.createUser({
             full_name,
             email,
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
         };
     } catch (error: any) {
         // Log the error and return a 500 status code
-        console.error('Error creating user:', error);
+        console.error('Error creating users:', error);
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: error.message || 'Internal Server Error' })

@@ -5,17 +5,17 @@ import {Puskesmas} from "~/server/model/Puskesmas";
 export default defineEventHandler(async (event) => {
     try {
 
-        // Check if user exists
+        // Check if users exists
         const user = event.context.auth.user
 
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Invalid users' };
         }
 
         const data: PuskesmasRequest = await readBody(event);
 
-        // Assign user ID from the token
+        // Assign users ID from the token
         const updatedData = {
             ...data,
             user_id: user.id

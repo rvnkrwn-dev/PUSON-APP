@@ -37,13 +37,13 @@ export default defineEventHandler(async (event) => {
             return { code: 403, message: 'Invalid or expired token.' };
         }
 
-        // Periksa apakah user ada
+        // Periksa apakah users ada
         const user = await prisma.user.findUnique({
             where: { id: decoded.id }
         });
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user associated with token.' };
+            return { code: 403, message: 'Invalid users associated with token.' };
         }
 
         // Check if the new password is different from the old password
@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
         // Hash new password
         const hashedPassword = bcrypt.hashSync(newPassword, 10);
 
-        // Update user password
+        // Update users password
         await prisma.user.update({
             where: { id: user.id },
             data: { password: hashedPassword }

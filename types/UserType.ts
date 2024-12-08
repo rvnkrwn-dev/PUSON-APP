@@ -17,10 +17,10 @@ export type getUserByEmailType = {
 
 export type UpdateUserType = {
     full_name?: string;
-    url_profile?: string | null;
-    secure_url_profile?: string | null;
-    public_id_profile?: string | null;
+    url_profile?: string;
+    secure_url_profile?: string;
+    public_id_profile?: string;
     email?: string;
     password?: string;
-    role?: Role; // Pastikan tipe `Role` sudah diimpor atau didefinisikan
+    role?: Role;
 };
