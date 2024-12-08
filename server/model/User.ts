@@ -30,7 +30,9 @@ export class User {
 
     static updateUser = (id: number, data: UpdateUserType) => {
         return prisma.user.update({
-            where: { id },
+            where: {
+                id: id
+            },
             data: data
         });
     };

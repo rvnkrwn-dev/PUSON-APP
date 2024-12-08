@@ -2,12 +2,12 @@ import { Log } from '~/server/model/Log';
 
 export default defineEventHandler(async (event) => {
     try {
-        // Check if user exists
+        // Check if users exists
         const user = event.context.auth.user;
 
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Invalid users' };
         }
 
         const user_id = user.id;

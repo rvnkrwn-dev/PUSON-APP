@@ -28,11 +28,11 @@ export default defineEventHandler(async (event) => {
             return { code: 403, message: 'Invalid refresh token.' };
         }
 
-        // Check if the user exists
+        // Check if the users exists
         const user = await User.getUserById(decoded.id);
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user associated with refresh token.' };
+            return { code: 403, message: 'Invalid users associated with refresh token.' };
         }
 
         // Generate new access token

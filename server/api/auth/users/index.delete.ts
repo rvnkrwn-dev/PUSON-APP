@@ -10,10 +10,10 @@ export default defineEventHandler(async (event) => {
         // Validate ID
         if (!query.id || id == null) {
             setResponseStatus(event, 400);
-            return { code: 400, message: "Invalid user ID." };
+            return { code: 400, message: "Invalid users ID." };
         }
 
-        // Delete the user
+        // Delete the users
         await User.deleteUser(id);
 
         await createLog(id, "Hapus User", `Berhasil mengahapus pengguna`)
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
             message: "User deleted successfully!",
         };
     } catch (error: any) {
-        console.error('Error deleting user:', error);
+        console.error('Error deleting users:', error);
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: error.message || "Internal Server Error" })

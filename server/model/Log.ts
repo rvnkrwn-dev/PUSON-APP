@@ -17,7 +17,7 @@ export class Log {
         const take = pageSize;
 
         const [total, logs] = await Promise.all([
-            prisma.log.count({ where: { user_id } }), // Get total count of logs for the user
+            prisma.log.count({ where: { user_id } }), // Get total count of logs for the users
             prisma.log.findMany({
                 where: { user_id },
                 skip: skip,
@@ -26,7 +26,7 @@ export class Log {
                     user_id: true,
                     action: true,
                     description: true,
-                    user: true // Include related user data if needed
+                    user: true // Include related users data if needed
                 }
             })
         ]);
@@ -45,7 +45,7 @@ export class Log {
                     user_id: true,
                     action: true,
                     description: true,
-                    user: true // Include related user data if needed
+                    user: true // Include related users data if needed
                 }
             })
         ]);

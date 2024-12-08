@@ -3,12 +3,12 @@ import { PuskesmasRequest } from '~/types/AuthType';
 
 export default defineEventHandler(async (event) => {
     try {
-        // Check if user exists
+        // Check if users exists
         const user = event.context?.auth?.user;
 
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Invalid users' };
         }
 
         const data: PuskesmasRequest = await readBody(event);
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
             return { code: 400, message: 'Puskesmas with the same name already exists.' };
         }
 
-        // Assign user ID from the token
+        // Assign users ID from the token
         const newData = {
             ...data,
             user_id: user.id

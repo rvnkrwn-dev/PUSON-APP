@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
             return { code: 400, message: 'Please provide email, password, and IP address.' };
         }
 
-        // Check if user exists
+        // Check if users exists
         const user = await User.getUserByEmail(data.email);
 
         if (!user) {
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
             return { code: 400, message: 'Invalid credentials.' };
         }
 
-        // Check user status
+        // Check users status
         if (user.status !== UserStatus.Active) {
             setResponseStatus(event, 403);
             return { code: 403, message: `User account is ${user.status}. Please contact support.` };

@@ -5,9 +5,9 @@ import {User} from "~/server/model/User";
 export default defineEventHandler( async (event) => {
     try {
         const endpoints = [
-            '/api/auth/user',
-            '/api/auth/detail-user',
-            '/api/auth/puskesmas',
+            '/api/auth/users',
+            '/api/auth/users?id=:id',
+            '/api/auth/users?page=:page&pagesize=:pagesize'
         ]
 
         const isHandledByThisMiddleware = endpoints.some(endopoint => {
