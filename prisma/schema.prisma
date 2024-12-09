@@ -36,6 +36,8 @@ model User {
   med_check_up       MedCheckUp[]
   kk                 KK[]
   nik                NIK[]
+  nik_child          NIKChild[]
+  notification Notification[]
 }
 
 enum UserStatus {
@@ -60,29 +62,49 @@ model DetailUser {
   bod        DateTime?
   user_id    Int       @unique
   user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 }
 
 model KK {
-  id            Int     @id @default(autoincrement())
-  number        BigInt  @unique
+  id            Int        @id @default(autoincrement())
+  number        String     @unique
   url_kk        String?
   secure_url_kk String?
   public_id_kk  String?
   user_id       Int
-  user          User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user          User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
   nik           NIK[]
+  nik_child     NIKChild[]
 }
 
 model NIK {
-  id             Int     @id @default(autoincrement())
-  number         BigInt  @unique
+  id             Int      @id @default(autoincrement())
+  number         String   @unique
   url_ktp        String?
   secure_url_ktp String?
   public_id_ktp  String?
   user_id        Int
-  user           User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   kk_id          Int
-  kk             KK      @relation(fields: [kk_id], references: [id], onDelete: Cascade)
+  kk             KK       @relation(fields: [kk_id], references: [id], onDelete: Cascade)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+}
+
+model NIKChild {
+  id             Int      @id @default(autoincrement())
+  number         String   @unique
+  user_id        Int
+  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  kk_id          Int
+  kk             KK       @relation(fields: [kk_id], references: [id], onDelete: Cascade)
+  child_id       Int?
+  Child          Child?   @relation(fields: [child_id], references: [id], onDelete: Cascade)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
 }
 
 model Log {
@@ -164,6 +186,7 @@ model Child {
   created_at   DateTime     @default(now())
   updated_at   DateTime     @updatedAt
   med_check_up MedCheckUp[]
+  NIK          NIKChild[]
 }
 
 enum ChildStatus {
@@ -201,4 +224,20 @@ model ResultMedCheckUp {
 enum StuntingStatus {
   true
   false
+}
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  type        String
+  title       String
+  message     String
+  url         String?  // Optional
+  is_read     Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  sent_at     DateTime?
+  meta_data   Json?    // Optional
+  priority    Int?     // Optional
+  user        User     @relation(fields: [user_id], references: [id])
 }

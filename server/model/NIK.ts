@@ -1,17 +1,14 @@
-import { prisma } from '~/server/config/db';
-import {DetailUserRequest} from "~/types/AuthType";
-import {DetailUserType} from "~/types/DetailUser";
+import { prisma } from "~/server/config/db";
+import { NIKType } from "~/types/NIKType";
+import { NIKRequest } from "~/types/AuthType"
 
-export class DetailUser {
-    static createDetailUser = (data: any) => {
-        return prisma.detailUser.create({
+export class NIK {
+    static createNIK = (data: NIKRequest) => {
+        return prisma.nIK.create({
             data: {
-                phone: data.phone,
-                address: data.address,
-                city: data.city,
-                postalCode: data.postalCode,
-                bod: data.bod,
+                number: data.number,
                 user_id: data.user_id,
+                kk_id: data.kk_id
             },
             include: {
                 user: {
@@ -38,19 +35,16 @@ export class DetailUser {
                     }
                 }
             }
-        })
+        }) as unknown as Promise<NIKType>;
     };
 
-    static updateDetailUser = (id: number, data: DetailUserRequest) => {
-        return prisma.detailUser.update({
+    static updateNIK = (id: number, data: NIKRequest) => {
+        return prisma.nIK.update({
             where: { id },
             data: {
-                phone: data.phone,
-                address: data.address,
-                city: data.city,
-                postalCode: data.postalCode,
-                bod: data.bod,
+                number: data.number,
                 user_id: data.user_id,
+                kk_id: data.kk_id,
             },
             include: {
                 user: {
@@ -80,8 +74,8 @@ export class DetailUser {
         })
     };
 
-    static deleteDetailUser = (id: number) => {
-        return prisma.detailUser.delete({
+    static deleteNIK = (id: number) => {
+        return prisma.nIK.delete({
             where: { id },
             include: {
                 user: {
@@ -108,11 +102,11 @@ export class DetailUser {
                     }
                 }
             }
-        })
+        }) as unknown as Promise<NIKType>;
     };
 
-    static getDetailUserById = (id: number) => {
-        return prisma.detailUser.findUnique({
+    static getNIKById = (id: number) => {
+        return prisma.nIK.findUnique({
             where: { id },
             include: {
                 user: {
@@ -139,41 +133,48 @@ export class DetailUser {
                     }
                 }
             }
-        })
+        }) as unknown as Promise<NIKType | null>;
     };
 
-    static getAllDetailUsers = (page: number, pagesize: number) => {
-        const skip = (page - 1) * pagesize; // Hitung data yang dilewatkan
-        const take = pagesize; // Jumlah data per halaman
+    static getAllNIKs = (page: number, pageSize: number) => {
+        const skip = (page - 1) * pageSize;
+        const take = pageSize;
 
-        return prisma.detailUser.findMany({
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        full_name: true,
-                        email: true,
-                        password: false,
-                        role: true,
-                        status: true,
-                        url_profile: false,
-                        secure_url_profile: false,
-                        public_id_profile: false,
-                        created_at: false,
-                        updated_at: false,
-                        child: false,
-                        detail_user: false,
-                        logs: false,
-                        refresh_token: false,
-                        puskesmas: false,
-                        posyandu: false,
-                        staff_posyandu: false,
-                        med_check_up: false,
+        return Promise.all([
+            prisma.nIK.count(), // Get total count of NIKs
+            prisma.nIK.findMany({
+                skip: skip,
+                take: take,
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            full_name: true,
+                            email: true,
+                            password: false,
+                            role: true,
+                            status: true,
+                            url_profile: false,
+                            secure_url_profile: false,
+                            public_id_profile: false,
+                            created_at: false,
+                            updated_at: false,
+                            child: false,
+                            detail_user: false,
+                            logs: false,
+                            refresh_token: false,
+                            puskesmas: false,
+                            posyandu: false,
+                            staff_posyandu: false,
+                            med_check_up: false,
+                        }
                     }
-                },
-            },
-            skip: skip, // Mulai dari data keberapa
-            take: take, // Ambil berapa data
-        })
+                }
+            })
+        ]).then(([total, niks]) => ({
+            data: niks as NIKType[],
+            total,
+            page,
+        }));
     };
 }

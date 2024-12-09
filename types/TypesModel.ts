@@ -61,6 +61,8 @@ export interface KK {
     user_id: number;
     user: User;
     nik?: NIK[];
+    created_at: Date;
+    updated_at: Date;
 }
 
 export interface NIK {
@@ -73,6 +75,10 @@ export interface NIK {
     user: User;
     kk_id: number;
     kk: KK;
+    child_id: number;
+    child?: Child;
+    created_at: Date;
+    updated_at: Date;
 }
 
 export interface Log {

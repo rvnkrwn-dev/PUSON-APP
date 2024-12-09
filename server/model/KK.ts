@@ -1,16 +1,12 @@
 import { prisma } from '~/server/config/db';
-import {DetailUserRequest} from "~/types/AuthType";
-import {DetailUserType} from "~/types/DetailUser";
+import {KKRequest} from "~/types/AuthType";
+import {KKType} from "~/types/KKType";
 
-export class DetailUser {
-    static createDetailUser = (data: any) => {
-        return prisma.detailUser.create({
+export class KK {
+    static createKK = (data: KKRequest): Promise<KKType> => {
+        return prisma.kK.create({
             data: {
-                phone: data.phone,
-                address: data.address,
-                city: data.city,
-                postalCode: data.postalCode,
-                bod: data.bod,
+                number: data.number,
                 user_id: data.user_id,
             },
             include: {
@@ -41,15 +37,11 @@ export class DetailUser {
         })
     };
 
-    static updateDetailUser = (id: number, data: DetailUserRequest) => {
-        return prisma.detailUser.update({
+    static updateKK = (id: number, data: KKRequest) => {
+        return prisma.kK.update({
             where: { id },
             data: {
-                phone: data.phone,
-                address: data.address,
-                city: data.city,
-                postalCode: data.postalCode,
-                bod: data.bod,
+                number: data.number,
                 user_id: data.user_id,
             },
             include: {
@@ -80,8 +72,8 @@ export class DetailUser {
         })
     };
 
-    static deleteDetailUser = (id: number) => {
-        return prisma.detailUser.delete({
+    static deleteKK = (id: number) => {
+        return prisma.kK.delete({
             where: { id },
             include: {
                 user: {
@@ -111,8 +103,8 @@ export class DetailUser {
         })
     };
 
-    static getDetailUserById = (id: number) => {
-        return prisma.detailUser.findUnique({
+    static getKKById = async (id: number) => {
+        return prisma.kK.findUnique({
             where: { id },
             include: {
                 user: {
@@ -142,38 +134,41 @@ export class DetailUser {
         })
     };
 
-    static getAllDetailUsers = (page: number, pagesize: number) => {
-        const skip = (page - 1) * pagesize; // Hitung data yang dilewatkan
-        const take = pagesize; // Jumlah data per halaman
+    static getAllKKs = async (page: number, pageSize: number) => {
+        const skip = (page - 1) * pageSize;
+        const take = pageSize;
 
-        return prisma.detailUser.findMany({
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        full_name: true,
-                        email: true,
-                        password: false,
-                        role: true,
-                        status: true,
-                        url_profile: false,
-                        secure_url_profile: false,
-                        public_id_profile: false,
-                        created_at: false,
-                        updated_at: false,
-                        child: false,
-                        detail_user: false,
-                        logs: false,
-                        refresh_token: false,
-                        puskesmas: false,
-                        posyandu: false,
-                        staff_posyandu: false,
-                        med_check_up: false,
+        return  Promise.all([
+            prisma.kK.count(), // Get total count of KKs
+            prisma.kK.findMany({
+                skip: skip,
+                take: take,
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            full_name: true,
+                            email: true,
+                            password: false,
+                            role: true,
+                            status: true,
+                            url_profile: false,
+                            secure_url_profile: false,
+                            public_id_profile: false,
+                            created_at: false,
+                            updated_at: false,
+                            child: false,
+                            detail_user: false,
+                            logs: false,
+                            refresh_token: false,
+                            puskesmas: false,
+                            posyandu: false,
+                            staff_posyandu: false,
+                            med_check_up: false,
+                        }
                     }
-                },
-            },
-            skip: skip, // Mulai dari data keberapa
-            take: take, // Ambil berapa data
-        })
+                }
+            })
+        ]);
     };
 }
