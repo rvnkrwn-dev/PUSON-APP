@@ -26,7 +26,7 @@ export default defineNuxtConfig({
             },
             meta: [
                 {name: 'description', content: 'PUSON (Posyandu Untuk Stunting Online) adalah platform digital yang memudahkan pemantauan dan penanganan stunting melalui layanan posyandu online. Dapatkan informasi, layanan kesehatan, dan dukungan untuk mencegah dan menangani stunting secara efisien dan terjangkau.'}
-            ]
-        }
-    }
+            ],
+        },
+    },
 })

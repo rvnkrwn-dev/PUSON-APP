@@ -13,7 +13,7 @@ export class User {
                 email: data.email,
                 password: data.password,
                 role: data?.role,
-                status: data.status
+                status: data.status,
             },
         });
     };
