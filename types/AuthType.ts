@@ -36,4 +36,22 @@ export interface PuskesmasRequest {
     user_id: number;
 }
 
+export interface DetailUserRequest {
+    phone?: string;
+    address?: string;
+    city?: string;
+    postalCode?: number;
+    bod?: Date;
+    user_id: number;
+}
 
+export interface KKRequest {
+    number: string;
+    user_id: number;
+}
+
+export interface NIKRequest {
+    number: string;
+    user_id: number;
+    kk_id: number;
+}

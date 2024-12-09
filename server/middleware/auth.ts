@@ -10,8 +10,17 @@ export default defineEventHandler( async (event) => {
             '/api/auth/users?page=:page&pagesize=:pagesize',
             '/api/auth/logs?page=:page&pagesize=:pagesize',
             '/api/auth/puskesmas',
-            '/api/auth/puskesmas?id=:id',
-            '/api/auth/puskesmas?page=:page&pagesize=:pagesize'
+            '/api/auth/puskesmas/:id',
+            '/api/auth/puskesmas?page=:page&pagesize=:pagesize',
+            '/api/auth/detail-user',
+            '/api/auth/detail-user/:id',
+            '/api/auth/detail-user?page=:page&pagesize=:pagesize',
+            '/api/auth/kk',
+            '/api/auth/kk/:id',
+            '/api/auth/kk?page=:page&pagesize=:pagesize',
+            '/api/auth/nik',
+            '/api/auth/nik/:id',
+            '/api/auth/nik?page=:page&pagesize=:pagesize',
         ]
 
         const isHandledByThisMiddleware = endpoints.some(endopoint => {
