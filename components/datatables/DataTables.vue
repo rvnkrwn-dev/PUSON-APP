@@ -12,7 +12,7 @@
               <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Perangkat</th>
               <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">IP Address</th>
               <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Lokasi</th>
-              <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
+              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
             </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -23,7 +23,7 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Mobile</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">192.168.1.1</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">New York, USA</td>
-              <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-gray-800">User logged in from mobile device.</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">User logged in from mobile device.</td>
             </tr>
             <tr>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">002</td>
@@ -32,7 +32,7 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Web</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">203.0.113.5</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Jakarta, ID</td>
-              <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-gray-800">Document uploaded: report.pdf</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Document uploaded: report.pdf</td>
             </tr>
             <tr>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">003</td>
@@ -41,7 +41,7 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Desktop</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">198.51.100.1</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">London, UK</td>
-              <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-gray-800">Purchase initiated for Laptop XYZ (Pending payment)</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Purchase initiated for Laptop XYZ (Pending payment)</td>
             </tr>
             </tbody>
 

@@ -187,7 +187,7 @@
           <div class="flex justify-between items-center">
             <div>
               <h2 class="text-sm text-gray-500">
-                Anak
+                Stunting
               </h2>
               <p class="text-xl sm:text-2xl font-medium text-gray-800">
                 100
@@ -300,11 +300,11 @@
 const chartData = ref([
   {
     name: 'Pendapatan',
-    data: [30, 40, 45, 50, 49, 60, 70], // Data untuk grafik
+    data: [30, 40, 45, 50, 49, 60, 70, 30, 40, 45, 50, 49], // Data untuk grafik
   },
   {
     name: 'Pengeluaran',
-    data: [20, 25, 35, 45, 40, 60, 65], // Data untuk grafik
+    data: [20, 25, 35, 45, 40, 60, 65, 20, 25, 35, 45, 40], // Data untuk grafik
   },
 ]);
 
@@ -315,7 +315,7 @@ const chartLabels = ref(['Produk A', 'Produk B']);
 
 // Kategori sumbu X (misalnya minggu atau bulan)
 const categories = ref([
-  'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'
+  'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
 ]);
 
 // Warna untuk setiap garis pada grafik
