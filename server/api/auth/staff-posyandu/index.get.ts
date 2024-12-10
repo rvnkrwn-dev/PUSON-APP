@@ -1,5 +1,4 @@
-import { NIK } from '~/server/model/NIK';
-import { defineEventHandler, getQuery, sendError, createError, setResponseStatus } from 'h3';
+import { StaffPosyandu } from '~/server/model/StaffPosyandu';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -23,29 +22,28 @@ export default defineEventHandler(async (event) => {
             });
         }
 
-        // Ambil data NIK
-        const nik = await NIK.getAllNIKs(page, pagesize);
+        // Panggil fungsi `getAllStaffPosyandu` dari UserService
+        const staff_posyandu = await StaffPosyandu.getAllStaffPosyandu(page, pagesize);
 
-        // Hitung total halaman
-        const totalNIKs = await NIK.countAllNIK();
-        const totalPages = Math.ceil(totalNIKs / pagesize);
+        // Hitung total halaman (ini hanya contoh, sesuaikan dengan kebutuhan Anda)
+        const totalUsers = await StaffPosyandu.countAllStaffPosyandu();
+        const totalPages = Math.ceil(totalUsers / pagesize);
 
         // Buat URL untuk prev dan next
-        const baseUrl = "/api/auth/nik";
+        const baseUrl = "/api/auth/staff-posyandu";
         const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
         const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
 
-        // Return hasil data
         return {
             code: 200,
-            message: 'NIK fetched successfully!',
-            data: nik,
+            message: 'Staff Posyandu fetched successfully!',
+            data: staff_posyandu,
             totalPages,
             prev: prevPage,
             next: nextPage,
         };
     } catch (error: any) {
-        console.error('Error retrieving NIKs:', error);
+        console.error('Error fetching Staff Posyandu:', error);
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

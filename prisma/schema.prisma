@@ -178,7 +178,7 @@ model StaffPosyandu {
 model Child {
   id           Int          @id @default(autoincrement())
   name         String
-  dob          DateTime     @db.Date
+  bod          DateTime
   gender       Gender // Tambah gende
   status       ChildStatus // Tambah status
   user_id      Int // Yang nambah data
@@ -188,7 +188,7 @@ model Child {
   created_at   DateTime     @default(now())
   updated_at   DateTime     @updatedAt
   med_check_up MedCheckUp[]
-  NIK          NIKChild[]
+  nik          NIKChild[]
 }
 
 enum ChildStatus {

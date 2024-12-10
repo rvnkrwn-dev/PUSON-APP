@@ -11,6 +11,16 @@ export enum Role {
     User = "user",
 }
 
+export enum ChildStatus {
+    Active = "active",
+    Suspend = "suspend",
+    Pending = "pending",
+}
+
+export enum Gender {
+    Male = "male",
+    Female = "female",
+}
 export enum StuntingStatus {
     True = "true",
     False = "false",

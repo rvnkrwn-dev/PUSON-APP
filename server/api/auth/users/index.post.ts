@@ -3,6 +3,7 @@ import { User } from '~/server/model/User';
 import { createLog } from '~/server/utils/atLog';
 import { customAlphabet } from "nanoid";
 import { defineEventHandler, setResponseStatus, createError, sendError, readBody } from 'h3';
+import { SendEmailCreateAccount } from '~/server/utils/SendEmailCreateAccount';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -18,7 +19,7 @@ export default defineEventHandler(async (event) => {
         const data = await readBody(event);
 
         // Validate input
-        const { full_name, email, role } = data;
+        const { full_name, email, role, status } = data;
 
         if (!full_name || !email) {
             setResponseStatus(event, 400);
@@ -26,7 +27,6 @@ export default defineEventHandler(async (event) => {
         }
 
         // Generate random password if not provided
-
         const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 10);
         const password = nanoid();
 
@@ -39,9 +39,13 @@ export default defineEventHandler(async (event) => {
             email,
             password: hashedPassword,
             role: role || 'user',
+            status: status || 'pending',
         });
 
         await createLog(user.id, 'Tambah User', 'Berhasil menambahkan pengguna baru');
+
+        // Send email with account details
+        await SendEmailCreateAccount(email, full_name, password);
 
         // Exclude password from the response
         const { password: _, ...userData } = create_user;

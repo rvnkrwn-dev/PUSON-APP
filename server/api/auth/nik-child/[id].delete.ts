@@ -1,4 +1,4 @@
-import { NIK } from '~/server/model/NIK';
+import { NIKChild } from '~/server/model/NIKChild';
 
 export default defineEventHandler(async (event) => {
     // Check if user exists
@@ -10,12 +10,12 @@ export default defineEventHandler(async (event) => {
 
     try {
         const id = parseInt(event.context.params?.id as string, 10);
-        const nik = await NIK.deleteNIK(id);
+        const nikchild = await NIKChild.deleteNIKChild(id);
 
         return {
             code: 200,
             message: 'NIK deleted successfully!',
-            data: nik,
+            data: nikchild,
         };
     } catch (error: any) {
         console.error('Error deleting NIK:', error);

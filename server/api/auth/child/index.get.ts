@@ -1,9 +1,8 @@
-import { NIK } from '~/server/model/NIK';
-import { defineEventHandler, getQuery, sendError, createError, setResponseStatus } from 'h3';
+import { Child } from "~/server/model/Child";
 
 export default defineEventHandler(async (event) => {
     try {
-        // Periksa apakah pengguna ada
+        // Check if user exists
         const user = event.context?.auth?.user;
         if (!user) {
             setResponseStatus(event, 403);
@@ -23,29 +22,30 @@ export default defineEventHandler(async (event) => {
             });
         }
 
-        // Ambil data NIK
-        const nik = await NIK.getAllNIKs(page, pagesize);
+        // Panggil fungsi `getAllUsers` dari UserService
+        const child = await Child.getAllChildren(page, pagesize);
 
-        // Hitung total halaman
-        const totalNIKs = await NIK.countAllNIK();
-        const totalPages = Math.ceil(totalNIKs / pagesize);
+        // Hitung total halaman (ini hanya contoh, sesuaikan dengan kebutuhan Anda)
+        const totalUsers = await Child.countAllChildren();
+        const totalPages = Math.ceil(totalUsers / pagesize);
 
         // Buat URL untuk prev dan next
-        const baseUrl = "/api/auth/nik";
+        const baseUrl = "/api/auth/child";
         const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
         const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
 
         // Return hasil data
         return {
-            code: 200,
-            message: 'NIK fetched successfully!',
-            data: nik,
+            message: "Users retrieved successfully.",
+            data: child,
             totalPages,
             prev: prevPage,
             next: nextPage,
         };
     } catch (error: any) {
-        console.error('Error retrieving NIKs:', error);
-        return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
+        return sendError(
+            event,
+            createError({statusCode: 500, statusMessage: error?.message || 'Internal Server Error'})
+        );
     }
 });

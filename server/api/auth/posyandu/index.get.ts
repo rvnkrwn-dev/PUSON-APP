@@ -1,5 +1,5 @@
-import { NIK } from '~/server/model/NIK';
-import { defineEventHandler, getQuery, sendError, createError, setResponseStatus } from 'h3';
+import { defineEventHandler, getQuery, sendError, createError } from 'h3';
+import { Posyandu } from '~/server/model/Posyandu';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -23,29 +23,29 @@ export default defineEventHandler(async (event) => {
             });
         }
 
-        // Ambil data NIK
-        const nik = await NIK.getAllNIKs(page, pagesize);
+        // Ambil data Posyandu
+        const posyandu = await Posyandu.getAllPosyandu(page, pagesize);
 
         // Hitung total halaman
-        const totalNIKs = await NIK.countAllNIK();
-        const totalPages = Math.ceil(totalNIKs / pagesize);
+        const totalUsers = await Posyandu.countAllPosyandu();
+        const totalPages = Math.ceil(totalUsers / pagesize);
 
         // Buat URL untuk prev dan next
-        const baseUrl = "/api/auth/nik";
+        const baseUrl = "/api/auth/posyandu";
         const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
         const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
 
         // Return hasil data
         return {
             code: 200,
-            message: 'NIK fetched successfully!',
-            data: nik,
+            message: 'Posyandu fetched successfully!',
+            data: posyandu,
             totalPages,
             prev: prevPage,
             next: nextPage,
         };
     } catch (error: any) {
-        console.error('Error retrieving NIKs:', error);
+        console.error('Error fetching Posyandu:', error);
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

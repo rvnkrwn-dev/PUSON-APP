@@ -1,6 +1,5 @@
 import { prisma } from '~/server/config/db';
 import {DetailUserRequest} from "~/types/AuthType";
-import {DetailUserType} from "~/types/DetailUser";
 
 export class DetailUser {
     static createDetailUser = (data: any) => {
@@ -175,5 +174,9 @@ export class DetailUser {
             skip: skip, // Mulai dari data keberapa
             take: take, // Ambil berapa data
         })
+    };
+
+    static countAllDetailUser = () => {
+        return prisma.detailUser.count();
     };
 }

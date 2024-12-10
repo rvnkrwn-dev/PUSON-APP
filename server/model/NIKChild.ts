@@ -1,17 +1,17 @@
-import { prisma } from '~/server/config/db';
-import { PuskesmasRequest } from '~/types/AuthType';
+import { prisma } from "~/server/config/db";
+import { NIKChildRequest } from "~/types/AuthType";
 
-export class Puskesmas {
-    static createPuskesmas = (data: PuskesmasRequest) => {
-        return prisma.puskesmas.create({
+export class NIKChild {
+    static createNIKChild = (data: NIKChildRequest) => {
+        return prisma.nIKChild.create({
             data: {
-                name: data.name,
-                address: data.address,
-                phone: data.phone,
-                user_id: data.user_id,
+                number: data.number,
+                user_id: data.userId,
+                kk_id: data.kkId,
+                child_id: data.childId || null
             },
             include: {
-                created_by:{
+                user: {
                     select: {
                         id: true,
                         full_name: true,
@@ -34,56 +34,23 @@ export class Puskesmas {
                         med_check_up: false,
                     }
                 },
-                staff: true,
-                posyandu: true
+                kk: true,
+                Child: true,
             }
-        })
+        });
     };
 
-    static updatePuskesmas = (id: number, data: PuskesmasRequest) => {
-        return prisma.puskesmas.update({
+    static updateNIKChild = (id: number, data: NIKChildRequest) => {
+        return prisma.nIKChild.update({
             where: { id },
             data: {
-                name: data.name,
-                address: data.address,
-                phone: data.phone,
-                user_id: data.user_id,
+                number: data.number,
+                user_id: data.userId,
+                kk_id: data.kkId,
+                child_id: data.childId || null,
             },
-                include: {
-                    created_by:{
-                        select: {
-                            id: true,
-                            full_name: true,
-                            email: true,
-                            password: false,
-                            role: true,
-                            status: true,
-                            url_profile: false,
-                            secure_url_profile: false,
-                            public_id_profile: false,
-                            created_at: false,
-                            updated_at: false,
-                            child: false,
-                            detail_user: false,
-                            logs: false,
-                            refresh_token: false,
-                            puskesmas: false,
-                            posyandu: false,
-                            staff_posyandu: false,
-                            med_check_up: false,
-                        }
-                    },
-                staff: true,
-                posyandu: true
-            }
-        })
-    };
-
-    static deletePuskesmas = (id: number) => {
-        return prisma.puskesmas.delete({
-            where: { id },
             include: {
-                created_by:{
+                user: {
                     select: {
                         id: true,
                         full_name: true,
@@ -106,18 +73,17 @@ export class Puskesmas {
                         med_check_up: false,
                     }
                 },
-                staff: true,
-                posyandu: true
+                kk: true,
+                Child: true,
             }
-        })
+        });
     };
 
-    static getPuskesmasById = (id: number) => {
-        return prisma.puskesmas.findUnique({
+    static deleteNIKChild = (id: number) => {
+        return prisma.nIKChild.delete({
             where: { id },
-
             include: {
-                created_by:{
+                user: {
                     select: {
                         id: true,
                         full_name: true,
@@ -140,22 +106,54 @@ export class Puskesmas {
                         med_check_up: false,
                     }
                 },
-                staff: true,
-                posyandu: true
+                kk: true,
+                Child: true,
             }
-        })
+        });
     };
 
-    static getAllPuskesmas = (page: number, pageSize: number) => {
+    static getNIKChildById = (id: number) => {
+        return prisma.nIKChild.findUnique({
+            where: { id },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        full_name: true,
+                        email: true,
+                        password: false,
+                        role: true,
+                        status: true,
+                        url_profile: false,
+                        secure_url_profile: false,
+                        public_id_profile: false,
+                        created_at: false,
+                        updated_at: false,
+                        child: false,
+                        detail_user: false,
+                        logs: false,
+                        refresh_token: false,
+                        puskesmas: false,
+                        posyandu: false,
+                        staff_posyandu: false,
+                        med_check_up: false,
+                    }
+                },
+                kk: true,
+                Child: true,
+            }
+        });
+    };
+
+    static getAllNIKChildren = (page: number, pageSize: number) => {
         const skip = (page - 1) * pageSize;
         const take = pageSize;
 
-        return prisma.puskesmas.findMany({
+        return prisma.nIKChild.findMany({
             skip: skip,
             take: take,
-
             include: {
-                created_by:{
+                user: {
                     select: {
                         id: true,
                         full_name: true,
@@ -178,46 +176,13 @@ export class Puskesmas {
                         med_check_up: false,
                     }
                 },
-                staff: true,
-                posyandu: true
+                kk: true,
+                Child: true,
             }
-        })
+        });
     };
 
-    static getPuskesmasByName = (name: string) => {
-        return prisma.puskesmas.findFirst({
-            where: { name },
-
-            include: {
-                created_by:{
-                    select: {
-                        id: true,
-                        full_name: true,
-                        email: true,
-                        password: false,
-                        role: true,
-                        status: true,
-                        url_profile: false,
-                        secure_url_profile: false,
-                        public_id_profile: false,
-                        created_at: false,
-                        updated_at: false,
-                        child: false,
-                        detail_user: false,
-                        logs: false,
-                        refresh_token: false,
-                        puskesmas: false,
-                        posyandu: false,
-                        staff_posyandu: false,
-                        med_check_up: false,
-                    }
-                },
-                staff: true,
-                posyandu: true
-            }
-        })
-    };
-    static countAllPuskesmas = () => {
-        return prisma.puskesmas.count();
+    static countAllNIKChildren = () => {
+        return prisma.nIKChild.count();
     };
 }
