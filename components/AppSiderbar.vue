@@ -22,7 +22,7 @@
           <ul class="flex flex-col space-y-1">
             <li>
               <NuxtLink class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                 to="#" active-class="bg-gray-100">
+                 to="/" active-class="bg-gray-100">
                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                      stroke-linejoin="round">
@@ -73,7 +73,7 @@
                   <li>
                     <NuxtLink
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="#" active-class="bg-gray-100">
+                        to="/health-centers" active-class="bg-gray-100">
                       <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"
                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                            stroke-linejoin="round" class="lucide lucide-list">
@@ -90,7 +90,7 @@
                   <li>
                     <NuxtLink
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="#" active-class="bg-gray-100">
+                        to="/health-centers/add" active-class="bg-gray-100">
                       <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"
                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                            stroke-linejoin="round" class="lucide lucide-circle-plus">
@@ -104,7 +104,7 @@
                   <li>
                     <NuxtLink
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="#" active-class="bg-gray-100">
+                        to="/health-centers/edit" active-class="bg-gray-100">
                       <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"
                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                            stroke-linejoin="round" class="lucide lucide-pencil">
@@ -265,79 +265,6 @@
               </div>
             </li>
 
-            <li class="hs-accordion" id="stunting-accordion">
-              <button type="button"
-                      class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                      aria-expanded="true" aria-controls="stunting-accordion-child">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                Stunting
-
-                <svg class="hs-accordion-active:block ms-auto hidden size-4" xmlns="http://www.w3.org/2000/svg"
-                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m18 15-6-6-6 6"/>
-                </svg>
-
-                <svg class="hs-accordion-active:hidden ms-auto block size-4" xmlns="http://www.w3.org/2000/svg"
-                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
-              </button>
-
-              <div id="stunting-accordion-child"
-                   class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-                   role="region" aria-labelledby="stunting-accordion">
-                <ul class="ps-4 pt-1 mt-2 space-y-1 border-l-2 ml-4">
-                  <li>
-                    <NuxtLink
-                        class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="#" active-class="bg-gray-100">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"
-                           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                           stroke-linejoin="round" class="lucide lucide-list">
-                        <path d="M3 12h.01"/>
-                        <path d="M3 18h.01"/>
-                        <path d="M3 6h.01"/>
-                        <path d="M8 12h13"/>
-                        <path d="M8 18h13"/>
-                        <path d="M8 6h13"/>
-                      </svg>
-                      Daftar
-                    </NuxtLink>
-                  </li>
-                  <li>
-                    <NuxtLink
-                        class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="#" active-class="bg-gray-100">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"
-                           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                           stroke-linejoin="round" class="lucide lucide-circle-plus">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M8 12h8"/>
-                        <path d="M12 8v8"/>
-                      </svg>
-                      Tambah
-                    </NuxtLink>
-                  </li>
-                  <li>
-                    <NuxtLink
-                        class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="#" active-class="bg-gray-100">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"
-                           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                           stroke-linejoin="round" class="lucide lucide-pencil">
-                        <path
-                            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
-                        <path d="m15 5 4 4"/>
-                      </svg>
-                      Ubah
-                    </NuxtLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
             <li class="hs-accordion" id="pemeriksaan-accordion">
               <button type="button"
                       class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
@@ -438,7 +365,7 @@
                   <li>
                     <NuxtLink
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="#" active-class="bg-gray-100">
+                        to="/users" active-class="bg-gray-100">
                       <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"
                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                            stroke-linejoin="round" class="lucide lucide-list">
@@ -486,14 +413,17 @@
 
             <li>
               <NuxtLink class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="#" active-class="bg-gray-100">
-                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                  <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-                Chat AI
+                        to="/report" active-class="bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+                Laporan Pemeriksaan
+              </NuxtLink>
+            </li>
+
+            <li>
+              <NuxtLink class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                        to="/report" active-class="bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                Keluar
               </NuxtLink>
             </li>
           </ul>
