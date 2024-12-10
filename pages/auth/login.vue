@@ -111,6 +111,8 @@ const ipAddress = ref<string | null>(null); // ipAddress untuk mencatat alamat I
 const isRemember = ref<boolean>(false); // flag untuk mengingat pengguna (not used dalam kode ini)
 const isLoading = ref<boolean>(false); // flag untuk menandakan proses loading
 
+const {login} = useAuth()
+
 // Mendefinisikan tipe data untuk response IP address
 interface ResponseIpAddress {
   ip: string; // properti ip pada response
@@ -134,15 +136,12 @@ const getIpAddressUser = async () => {
 const handleSubmit = async () => {
   try {
     isLoading.value = true; // Menandakan proses loading saat pengiriman form
+    if (!email.value || !password.value) {
+      return
+    }
+
     // Melakukan request POST ke endpoint API login dengan data form
-    await $fetch('/api/auth/login', {
-      method: 'POST',
-      body: {
-        email: email.value, // Mengirimkan email dari form
-        password: password.value, // Mengirimkan password dari form
-        ip_address: ipAddress.value, // Mengirimkan alamat IP pengguna
-      }
-    });
+    await login({email: email.value, password: password.value, ip_address: ipAddress.value})
 
     if (isRemember.value && email.value) {
       localStorage.setItem("email", email.value);

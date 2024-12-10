@@ -17,19 +17,20 @@ export default () => {
         authUser.value = newUser
     }
 
-    const login = ({ email, password }: {email: string, password: string}) => {
+    const login = ({ email, password, ip_address }: {email: string, password: string, ip_address: string}) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const data: any = await useFetchApi(`/api/auth/login`, {
+                const response: any = await useFetchApi(`/api/auth/login`, {
                     method: 'POST',
                     body: {
                         email,
-                        password
+                        password,
+                        ip_address
                     }
                 })
 
-                setToken(data?.access_token)
-                setUser(data?.user)
+                setToken(response?.access_token)
+                setUser(response?.data?.user)
                 isLoggedIn().value = String(true)
                 resolve(true)
             } catch (error) {
@@ -41,10 +42,10 @@ export default () => {
     const refreshToken = () => {
         return new Promise(async (resolve, reject) => {
             try {
-                const data = await useFetchApi(`${apiUrl}/auth/refresh`, {
+                const response: any = await useFetchApi(`/api/auth/refresh`, {
                     method: 'POST',
                 })
-                setToken(data.access_token)
+                setToken(response?.access_token)
                 resolve(true)
             } catch (error) {
                 await logout();
@@ -56,9 +57,9 @@ export default () => {
     const getUser = () => {
         return new Promise(async (resolve, reject) => {
             try {
-                const data = await useFetchApi(`${apiUrl}/auth/user`)
+                const response: any = await useFetchApi(`/api/auth/user`)
 
-                setUser(data.data)
+                setUser(response?.data?.user)
                 resolve(true)
             } catch (error) {
                 reject(error)
