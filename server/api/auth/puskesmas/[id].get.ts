@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
         // Validate ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return {code: 400, message: 'Invalid puskesmas ID.'};
+            return {code: 400, message: 'Invalid health-centers ID.'};
         }
 
         // get the user
