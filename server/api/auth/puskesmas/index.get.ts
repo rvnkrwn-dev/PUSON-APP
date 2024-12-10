@@ -2,12 +2,6 @@ import { Puskesmas } from "~/server/model/Puskesmas";
 
 export default defineEventHandler(async (event) => {
     try {
-        // Periksa apakah pengguna ada
-        const user = event.context?.auth?.user;
-        if (!user) {
-            setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
-        }
 
         // Ambil parameter `page` dan `pagesize` dari query string
         const query = getQuery(event);
@@ -46,11 +40,13 @@ export default defineEventHandler(async (event) => {
             code: 200,
             message: 'Puskesmas fetched successfully!',
             data: {
-                puskesmas,
+                puskesmas
+            },
+            meta: {
                 totalPages,
                 prev: prevPage,
                 next: nextPage,
-            },
+            }
         };
     } catch (error: any) {
         return sendError(

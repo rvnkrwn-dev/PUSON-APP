@@ -37,10 +37,14 @@ export default defineEventHandler(async (event) => {
         // Return hasil data
         return {
             message: "Users retrieved successfully.",
-            data: users,
-            totalPages,
-            prev: prevPage,
-            next: nextPage,
+            data: {
+                users
+            },
+            meta: {
+                totalPages,
+                prev: prevPage,
+                next: nextPage,
+            }
         };
     } catch (error: any) {
         return sendError(

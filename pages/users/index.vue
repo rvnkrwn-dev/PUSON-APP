@@ -42,24 +42,62 @@
       <DatatablesDataTable
           :title="'Pengguna'"
           :fields="[
-      { label: 'Nama', key: 'name' },
+      { label: 'Nama', key: 'full_name' },
       { label: 'Email', key: 'email' },
       { label: 'Status', key: 'status' },
       { label: 'Peran', key: 'role' },
-      { label: 'Aksi', key: 'action' }
     ]"
-          :data="[
-      { name: 'John Doe', email: 'john@example.com', status: 'Active', role: 'Admin', action: 'Edit' },
-      { name: 'Jane Smith', email: 'jane@example.com', status: 'Inactive', role: 'User', action: 'Delete' }
-    ]"
-          :perPage="5"
+          :data="users"
+          :perPage="pageSize"
+          :totalPages="totalPages"
+          :currentPage="currentPage"
+          :prevPage="prevPage"
+          :nextPage="nextPage"
+          @fetchData="(e) => handleChangeFetchData(e)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const page = ref(1)
+const pageSize = ref(5)
+const totalPages = ref(1)
+const currentPage = ref(1)
+const nextPage = ref()
+const prevPage = ref()
+const usersData = ref([])
 
+const users = computed(() => usersData.value)
+
+const fetchUsers = async () => {
+  try {
+    const response: any = await useFetchApi(`/api/auth/users?page=${page.value}&pagesize=${pageSize.value}`);
+    usersData.value = response?.data?.users;
+    totalPages.value = response?.meta?.totalPages;
+    nextPage.value = response?.meta?.next;
+    prevPage.value = response?.meta?.prev;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+const handleChangeFetchData = async (payload: any) => {
+  try {
+    const response: any = await useFetchApi(payload.url);
+    usersData.value = response?.data?.users;
+    totalPages.value = response?.meta?.totalPages;
+    nextPage.value = response?.meta?.next;
+    prevPage.value = response?.meta?.prev;
+    currentPage.value = payload.currentPage;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+onMounted(async () => {
+  await fetchUsers()
+})
 </script>
 
 <style scoped>

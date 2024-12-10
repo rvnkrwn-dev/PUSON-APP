@@ -6,3 +6,11 @@
     </NuxtLayout>
   </div>
 </template>
+
+<script lang="ts" setup>
+const {initAuth} = useAuth()
+
+onMounted(() => {
+  initAuth()
+})
+</script>

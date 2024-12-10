@@ -45,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
+import FormAddUsers from "~/components/form/users/FormAddUsers.vue";
 
-import FormAddUsers from "~/components/form/FormAddUsers.vue";
 </script>
 
 <style scoped>

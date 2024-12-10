@@ -29,7 +29,7 @@
           </svg>
         </li>
         <li class="text-sm font-semibold text-gray-800 truncate" aria-current="page">
-          Puskesmas
+          Pengguna
         </li>
       </ol>
       <!-- End Breadcrumb -->
@@ -39,27 +39,13 @@
 
   <div class="w-full lg:ps-64">
     <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-      <div
-          class="p-4 md:p-5 h-fit max-h-[410px] flex flex-col bg-white border shadow-sm rounded-xl">
-        <!-- Header -->
-        <div class="flex justify-between items-center p-2">
-          <h2 class="text-xl font-medium text-gray-800">
-            Aktivitas Terbaru
-          </h2>
-        </div>
-        <!-- End Header -->
-
-        <div id="recently-activities" class="h-full w-full mt-2">
-          <client-only>
-            <DatatablesDataTables/>
-          </client-only>
-        </div>
-      </div>
+      <FormAddHealthCenter />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import FormAddHealthCenter from "~/components/form/health-centers/FormAddHealthCenter.vue";
 
 </script>
 
