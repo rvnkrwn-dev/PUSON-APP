@@ -1,7 +1,14 @@
-import {Puskesmas} from "~/server/model/Puskesmas";
+import { Puskesmas } from "~/server/model/Puskesmas";
 
 export default defineEventHandler(async (event) => {
     try {
+        // Periksa apakah pengguna ada
+        const user = event.context?.auth?.user;
+        if (!user) {
+            setResponseStatus(event, 403);
+            return { code: 403, message: 'Invalid user' };
+        }
+
         // Ambil parameter `page` dan `pagesize` dari query string
         const query = getQuery(event);
         const page = parseInt(query.page as string, 10) || 1;
@@ -14,22 +21,35 @@ export default defineEventHandler(async (event) => {
                 message: "Page and pagesize must be positive integers.",
             });
         }
+
         // Fetch Puskesmas from the database
         const puskesmas = await Puskesmas.getAllPuskesmas(page, pagesize);
+
+        // Hitung total halaman (ini hanya contoh, sesuaikan dengan kebutuhan Anda)
+        const totalUsers = await Puskesmas.countAllPuskesmas();
+        const totalPages = Math.ceil(totalUsers / pagesize);
+
+        // Buat URL untuk prev dan next
+        const baseUrl = "/api/auth/puskesmas";
+        const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
+        const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
+
+
 
         if (!puskesmas) {
             setResponseStatus(event, 404);
             return { code: 404, message: 'Puskesmas not found' };
         }
 
-
         // Return the fetched Puskesmas
         return {
             code: 200,
             message: 'Puskesmas fetched successfully!',
-            data:{
+            data: {
                 puskesmas,
-
+                totalPages,
+                prev: prevPage,
+                next: nextPage,
             },
         };
     } catch (error: any) {

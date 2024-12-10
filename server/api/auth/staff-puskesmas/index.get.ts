@@ -1,5 +1,4 @@
-import { NIK } from '~/server/model/NIK';
-import { defineEventHandler, getQuery, sendError, createError, setResponseStatus } from 'h3';
+import { StaffPuskesmas } from '~/server/model/StaffPuskesmas';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -23,29 +22,29 @@ export default defineEventHandler(async (event) => {
             });
         }
 
-        // Ambil data NIK
-        const nik = await NIK.getAllNIKs(page, pagesize);
+        // Ambil data Staff Puskesmas
+        const staff_puskesmas = await StaffPuskesmas.getAllStaffPuskesmas(page, pagesize);
 
         // Hitung total halaman
-        const totalNIKs = await NIK.countAllNIK();
-        const totalPages = Math.ceil(totalNIKs / pagesize);
+        const totalUsers = await StaffPuskesmas.countAllStaffPuskesmas();
+        const totalPages = Math.ceil(totalUsers / pagesize);
 
         // Buat URL untuk prev dan next
-        const baseUrl = "/api/auth/nik";
+        const baseUrl = "/api/auth/staff-puskesmas";
         const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
         const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
 
         // Return hasil data
         return {
             code: 200,
-            message: 'NIK fetched successfully!',
-            data: nik,
+            message: 'Staff Puskesmas fetched successfully!',
+            data: staff_puskesmas,
             totalPages,
             prev: prevPage,
             next: nextPage,
         };
     } catch (error: any) {
-        console.error('Error retrieving NIKs:', error);
+        console.error('Error fetching Staff Puskesmas:', error);
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

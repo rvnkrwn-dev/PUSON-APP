@@ -34,10 +34,10 @@ export default defineEventHandler( async (event) => {
             '/api/auth/staff-posyandu?page=:page&pagesize=:pagesize',
             '/api/auth/child',
             '/api/auth/child/:id',
-            '/api/auth/uahsouahas?page=:page&pagesize=:pagesize',
+            '/api/auth/child?page=:page&pagesize=:pagesize',
             '/api/auth/nik-child',
             '/api/auth/nik-child/:id',
-            '/api/auth/nik-uahsouahas?page=:page&pagesize=:pagesize',
+            '/api/auth/nik-child?page=:page&pagesize=:pagesize',
         ]
 
         const isHandledByThisMiddleware = endpoints.some(endopoint => {

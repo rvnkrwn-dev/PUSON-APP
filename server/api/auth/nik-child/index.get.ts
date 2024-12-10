@@ -1,4 +1,4 @@
-import { NIK } from '~/server/model/NIK';
+import { NIKChild } from '~/server/model/NIKChild';
 import { defineEventHandler, getQuery, sendError, createError, setResponseStatus } from 'h3';
 
 export default defineEventHandler(async (event) => {
@@ -24,10 +24,10 @@ export default defineEventHandler(async (event) => {
         }
 
         // Ambil data NIK
-        const nik = await NIK.getAllNIKs(page, pagesize);
+        const nikchild = await NIKChild.getAllNIKChildren(page, pagesize);
 
         // Hitung total halaman
-        const totalNIKs = await NIK.countAllNIK();
+        const totalNIKs = await NIKChild.countAllNIKChildren();
         const totalPages = Math.ceil(totalNIKs / pagesize);
 
         // Buat URL untuk prev dan next
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
         return {
             code: 200,
             message: 'NIK fetched successfully!',
-            data: nik,
+            data: nikchild,
             totalPages,
             prev: prevPage,
             next: nextPage,

@@ -1,4 +1,4 @@
-import type {Role, UserStatus, User} from "~/types/TypesModel";
+import type {Role, UserStatus, User, ChildStatus, Gender} from "~/types/TypesModel";
 
 export interface RegisterRequest {
     full_name: string;
@@ -91,9 +91,9 @@ export interface NIKChildRequest {
 
 export interface ChildRequest {
     name: string;
-    dob: string; // ISO string format for date
-    gender: 'male' | 'female'; // Use enum values
-    status: 'active' | 'suspend' | 'pending'; // Use enum values
+    bod: Date; // ISO string format for date
+    gender: Gender; // Use enum values
+    status: ChildStatus; // Use enum values
     userId: number;
     posyanduId: number;
 }

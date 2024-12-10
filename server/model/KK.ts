@@ -1,9 +1,8 @@
 import { prisma } from '~/server/config/db';
 import {KKRequest} from "~/types/AuthType";
-import {KKType} from "~/types/KKType";
 
 export class KK {
-    static createKK = (data: KKRequest): Promise<KKType> => {
+    static createKK = (data: KKRequest) => {
         return prisma.kK.create({
             data: {
                 number: data.number,
@@ -134,9 +133,9 @@ export class KK {
         })
     };
 
-    static getAllKKs = async (page: number, pageSize: number) => {
-        const skip = (page - 1) * pageSize;
-        const take = pageSize;
+    static getAllKKs = (page: number, pagesize: number) => {
+        const skip = (page - 1) * pagesize;
+        const take = pagesize;
 
         return  Promise.all([
             prisma.kK.count(), // Get total count of KKs
@@ -170,5 +169,8 @@ export class KK {
                 }
             })
         ]);
+    };
+    static countAllKK = () => {
+        return prisma.kK.count();
     };
 }

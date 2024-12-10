@@ -1,4 +1,4 @@
-import { DetailUser } from '~/server/model/DetailUser';
+import { StaffPosyandu } from '~/server/model/StaffPosyandu';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -9,25 +9,17 @@ export default defineEventHandler(async (event) => {
             return { code: 403, message: 'Invalid user' };
         }
 
-        // Read the request body
+        const id = parseInt(event.context.params?.id as string, 10);
         const data = await readBody(event);
 
-        // Assign users ID from the token
-        const newData = {
-            ...data,
-            user_id: user.id
-        };
-
-
-        const detailUser = await DetailUser.createDetailUser(newData);
+        const updatedStaffPosyandu = await StaffPosyandu.updateStaffPosyandu(id, data);
 
         return {
-            code: 201,
-            message: 'Detail user created successfully!',
-            data: detailUser,
+            code: 200,
+            message: 'Staff Posyandu updated successfully!',
+            data: updatedStaffPosyandu,
         };
     } catch (error: any) {
-        console.error('Error creating detail user:', error);
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

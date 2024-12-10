@@ -1,4 +1,4 @@
-import { DetailUser } from '~/server/model/DetailUser';
+import { StaffPuskesmas } from '~/server/model/StaffPuskesmas';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -9,16 +9,20 @@ export default defineEventHandler(async (event) => {
             return { code: 403, message: 'Invalid user' };
         }
 
-        const id = parseInt(event.context.params?.id as string);
-        const detailUser = await DetailUser.deleteDetailUser(id);
+        const id = parseInt(event.context.params?.id as string, 10);
+        const staffPuskesmas = await StaffPuskesmas.getStaffPuskesmasById(id);
+
+        if (!staffPuskesmas) {
+            setResponseStatus(event, 404);
+            return { code: 404, message: 'Staff Puskesmas not found' };
+        }
 
         return {
             code: 200,
-            message: 'Detail user deleted successfully!',
-            data: detailUser,
+            message: 'Staff Puskesmas fetched successfully!',
+            data: staffPuskesmas,
         };
     } catch (error: any) {
-        console.error('Error deleting detail user:', error);
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });
