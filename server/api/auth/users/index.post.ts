@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import { User } from '~/server/model/User';
 import { createLog } from '~/server/utils/atLog';
+import { customAlphabet } from "nanoid";
+import { defineEventHandler, setResponseStatus, createError, sendError, readBody } from 'h3';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -16,12 +18,17 @@ export default defineEventHandler(async (event) => {
         const data = await readBody(event);
 
         // Validate input
-        const { full_name, email, password, role } = data;
+        const { full_name, email, role } = data;
 
-        if (!full_name || !email || !password) {
+        if (!full_name || !email) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Please provide all required fields (full_name, email, password).' };
+            return { code: 400, message: 'Please provide all required fields (full_name, email).' };
         }
+
+        // Generate random password if not provided
+
+        const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 10);
+        const password = nanoid();
 
         // Hash password
         const hashedPassword = bcrypt.hashSync(password, 10);
@@ -45,7 +52,8 @@ export default defineEventHandler(async (event) => {
             code: 201,
             message: 'Account created successfully!',
             data: {
-                user: userData
+                user: userData,
+                plainPassword: password // Return plain password if needed
             },
         };
     } catch (error: any) {

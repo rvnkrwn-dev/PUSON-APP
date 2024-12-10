@@ -1,4 +1,5 @@
-import { Log } from '~/server/model/Log';
+import {Log} from '~/server/model/Log';
+import {StaffPuskesmas} from "~/server/model/StaffPuskesmas";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -15,11 +16,24 @@ export default defineEventHandler(async (event) => {
         const page = parseInt(query.page as string, 10) || 1;
         const pagesize = parseInt(query.pagesize as string, 10) || 10;
 
-        const logs = await Log.getAllLogByUserId (user_id, page, pagesize);
+        const log = await Log.getAllLogsByUserId (user_id, page, pagesize);
+        // Hitung total halaman
+        const totalUsers = await Log.countAllLog();
+        const totalPages = Math.ceil(totalUsers / pagesize);
 
+        // Buat URL untuk prev dan next
+        const baseUrl = "/api/auth/log";
+        const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
+        const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
+
+        // Return hasil data
         return {
-            statusCode: 200,
-            body: logs,
+            code: 200,
+            message: 'Staff Puskesmas fetched successfully!',
+            data: log,
+            totalPages,
+            prev: prevPage,
+            next: nextPage,
         };
     } catch (error) {
         console.error('Error fetching logs:', error);

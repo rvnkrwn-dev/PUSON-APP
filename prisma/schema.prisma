@@ -37,7 +37,7 @@ model User {
   kk                 KK[]
   nik                NIK[]
   nik_child          NIKChild[]
-  notification Notification[]
+  notification       Notification[]
 }
 
 enum UserStatus {
@@ -95,16 +95,16 @@ model NIK {
 }
 
 model NIKChild {
-  id             Int      @id @default(autoincrement())
-  number         String   @unique
-  user_id        Int
-  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  kk_id          Int
-  kk             KK       @relation(fields: [kk_id], references: [id], onDelete: Cascade)
-  child_id       Int?
-  Child          Child?   @relation(fields: [child_id], references: [id], onDelete: Cascade)
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  number     String   @unique
+  user_id    Int
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  kk_id      Int
+  kk         KK       @relation(fields: [kk_id], references: [id], onDelete: Cascade)
+  child_id   Int?
+  Child      Child?   @relation(fields: [child_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Log {
@@ -179,8 +179,10 @@ model Child {
   id           Int          @id @default(autoincrement())
   name         String
   dob          DateTime     @db.Date
-  admin_id     Int
-  admin        User         @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  gender       Gender // Tambah gende
+  status       ChildStatus // Tambah status
+  user_id      Int // Yang nambah data
+  user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   posyandu_id  Int
   posyandu     Posyandu     @relation(fields: [posyandu_id], references: [id], onDelete: Cascade)
   created_at   DateTime     @default(now())
@@ -195,6 +197,11 @@ enum ChildStatus {
   pending
 }
 
+enum Gender {
+  male
+  female
+}
+
 model MedCheckUp {
   id                  Int                @id @default(autoincrement())
   child_id            Int
@@ -205,7 +212,7 @@ model MedCheckUp {
   circumference       Float
   created_at          DateTime           @default(now())
   updated_at          DateTime           @updatedAt
-  user_id             Int
+  user_id             Int // Admin Posyandu yang cek
   user                User               @relation(fields: [user_id], references: [id], onDelete: Cascade)
   result_med_check_up ResultMedCheckUp[]
 }
@@ -214,7 +221,7 @@ model ResultMedCheckUp {
   id              Int            @id @default(autoincrement())
   imt             Float
   ipb             Float
-  status          StuntingStatus @default(false)
+  status          StuntingStatus @default(normal)
   med_check_up_id Int
   med_check_up    MedCheckUp     @relation(fields: [med_check_up_id], references: [id], onDelete: Cascade)
   created_at      DateTime       @default(now())
@@ -222,22 +229,24 @@ model ResultMedCheckUp {
 }
 
 enum StuntingStatus {
-  true
-  false
+  normal // Status normal
+  stunting // Stunting (kurang gizi)
+  overweight // Kelebihan berat badan
+  obese // Obesitas
 }
 
 model Notification {
-  id          Int      @id @default(autoincrement())
-  user_id     Int
-  type        String
-  title       String
-  message     String
-  url         String?  // Optional
-  is_read     Boolean  @default(false)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  sent_at     DateTime?
-  meta_data   Json?    // Optional
-  priority    Int?     // Optional
-  user        User     @relation(fields: [user_id], references: [id])
+  id         Int       @id @default(autoincrement())
+  user_id    Int
+  type       String
+  title      String
+  message    String
+  url        String? // Optional
+  is_read    Boolean   @default(false)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  sent_at    DateTime?
+  meta_data  Json? // Optional
+  priority   Int? // Optional
+  user       User      @relation(fields: [user_id], references: [id])
 }

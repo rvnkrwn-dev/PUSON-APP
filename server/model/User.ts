@@ -81,8 +81,8 @@ export class User {
                 public_id_profile: true,
                 created_at: true,
                 updated_at: true,
-                child: true,
-                detail_user: true,
+                child: false,
+                detail_user: false,
                 logs: false,
                 refresh_token: false,
                 puskesmas: false,
@@ -95,6 +95,10 @@ export class User {
         });
     };
 
+
+    static countAllUsers = () => {
+        return prisma.user.count();
+    };
 
 
     static deleteUser = (id: number) => {

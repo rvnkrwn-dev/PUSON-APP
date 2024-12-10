@@ -29,6 +29,12 @@ export interface LoginResponse {
     },
 }
 
+export interface LogRequest {
+    user_id: number;
+    action: string;
+    description: string;
+}
+
 export interface PuskesmasRequest {
     name: string;
     address: string;
@@ -55,3 +61,40 @@ export interface NIKRequest {
     user_id: number;
     kk_id: number;
 }
+
+export interface StaffPuskesmasRequest {
+    name: string;
+    user_id: number;
+    puskesmas_id: number;
+}
+
+export interface PosyanduRequest {
+    name: string;
+    address: string;
+    phone: string;
+    user_id: number;
+    puskesmas_id: number;
+}
+
+export interface StaffPosyanduRequest {
+    name: string;
+    user_id: number;
+    posyandu_id: number;
+}
+
+export interface NIKChildRequest {
+    number: string;
+    userId: number;
+    kkId: number;
+    childId?: number; // Optional
+}
+
+export interface ChildRequest {
+    name: string;
+    dob: string; // ISO string format for date
+    gender: 'male' | 'female'; // Use enum values
+    status: 'active' | 'suspend' | 'pending'; // Use enum values
+    userId: number;
+    posyanduId: number;
+}
+
