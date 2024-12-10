@@ -5,6 +5,7 @@ import {User} from "~/server/model/User";
 export default defineEventHandler( async (event) => {
     try {
         const endpoints = [
+            '/api/auth/user',
             '/api/auth/logout',
             '/api/auth/users',
             '/api/auth/users/:id',
