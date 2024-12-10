@@ -5,6 +5,7 @@ import {User} from "~/server/model/User";
 export default defineEventHandler( async (event) => {
     try {
         const endpoints = [
+            '/api/auth/logout',
             '/api/auth/users',
             '/api/auth/users/:id',
             '/api/auth/users?page=:page&pagesize=:pagesize',
@@ -21,6 +22,21 @@ export default defineEventHandler( async (event) => {
             '/api/auth/nik',
             '/api/auth/nik/:id',
             '/api/auth/nik?page=:page&pagesize=:pagesize',
+            '/api/auth/staff-puskesmas',
+            '/api/auth/staff-puskesmas/:id',
+            '/api/auth/staff-puskesmas?page=:page&pagesize=:pagesize',
+            '/api/auth/posyandu',
+            '/api/auth/posyandu/:id',
+            '/api/auth/posyandu?page=:page&pagesize=:pagesize',
+            '/api/auth/staff-posyandu',
+            '/api/auth/staff-posyandu/:id',
+            '/api/auth/staff-posyandu?page=:page&pagesize=:pagesize',
+            '/api/auth/child',
+            '/api/auth/child/:id',
+            '/api/auth/uahsouahas?page=:page&pagesize=:pagesize',
+            '/api/auth/nik-child',
+            '/api/auth/nik-child/:id',
+            '/api/auth/nik-uahsouahas?page=:page&pagesize=:pagesize',
         ]
 
         const isHandledByThisMiddleware = endpoints.some(endopoint => {

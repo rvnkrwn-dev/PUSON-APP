@@ -50,6 +50,8 @@ export interface DetailUser {
     bod?: Date;
     user_id: number;
     user: User;
+    created_at: Date;
+    updated_at: Date;
 }
 
 export interface KK {
