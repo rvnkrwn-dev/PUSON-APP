@@ -73,10 +73,10 @@ const users = computed(() => usersData.value)
 const fetchUsers = async () => {
   try {
     const response: any = await useFetchApi(`/api/auth/users?page=${page.value}&pagesize=${pageSize.value}`);
-    usersData.value = response?.data;
-    totalPages.value = response?.totalPages;
-    nextPage.value = response?.next;
-    prevPage.value = response?.prev;
+    usersData.value = response?.data?.users;
+    totalPages.value = response?.meta?.totalPages;
+    nextPage.value = response?.meta?.next;
+    prevPage.value = response?.meta?.prev;
   } catch (e) {
     console.error(e);
   }
@@ -85,11 +85,11 @@ const fetchUsers = async () => {
 const handleChangeFetchData = async (payload: any) => {
   try {
     const response: any = await useFetchApi(payload.url);
-    usersData.value = response?.data;
-    totalPages.value = response?.totalPages;
+    usersData.value = response?.data?.users;
+    totalPages.value = response?.meta?.totalPages;
+    nextPage.value = response?.meta?.next;
+    prevPage.value = response?.meta?.prev;
     currentPage.value = payload.currentPage;
-    nextPage.value = response?.next;
-    prevPage.value = response?.prev;
   } catch (e) {
     console.error(e);
   }

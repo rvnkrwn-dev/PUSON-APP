@@ -135,10 +135,11 @@ const user = computed(() => useAuthUser().value as User)
 const handleLogout = async () => {
   try {
     await logout()
-    return navigateTo('/auth/login'); // Setelah logout berhasil, arahkan ke halaman login
   } catch (error: any) {
-    console.log(error); // Menangani error jika logout gagal
-    $toast('Email atau kata sandi tidak cocok.', 'error'); // Menampilkan pesan kesalahan menggunakan toast
+    return
+  } finally {
+    $toast('Berhasil menghapus sesi masuk.', 'success'); // Menampilkan pesan kesalahan menggunakan toast
+    navigateTo('/auth/login'); // Setelah logout berhasil, arahkan ke halaman login
   }
 }
 </script>
