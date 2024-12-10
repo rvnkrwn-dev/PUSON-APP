@@ -2,17 +2,19 @@ import {jwtDecode} from "jwt-decode"
 
 export default () => {
     const config = useRuntimeConfig();
-    const apiUrl = config.public.apiUrl;
     const useAuthToken = () => useState('auth_token')
+    const useAuthTokenCookie = () => useCookie('access_token')
     const useAuthUser = () => useState('auth_user')
     const isLoggedIn = () => useCookie('isLoggedIn')
 
-    const setToken = (newToken: string) => {
+    const setToken = (newToken: string | null) => {
         const authToken = useAuthToken()
         authToken.value = newToken
+        const authTokenCookie = useAuthTokenCookie()
+        authTokenCookie.value = newToken
     }
 
-    const setUser = (newUser: string) => {
+    const setUser = (newUser: string | null) => {
         const authUser = useAuthUser()
         authUser.value = newUser
     }
@@ -20,7 +22,7 @@ export default () => {
     const login = ({ email, password, ip_address }: {email: string, password: string, ip_address: string}) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const response: any = await useFetchApi(`/api/auth/login`, {
+                const response: any = await useFetchApi('/api/auth/login', {
                     method: 'POST',
                     body: {
                         email,
@@ -42,7 +44,7 @@ export default () => {
     const refreshToken = () => {
         return new Promise(async (resolve, reject) => {
             try {
-                const response: any = await useFetchApi(`/api/auth/refresh`, {
+                const response: any = await useFetchApi('/api/auth/refresh', {
                     method: 'POST',
                 })
                 setToken(response?.access_token)
@@ -57,7 +59,7 @@ export default () => {
     const getUser = () => {
         return new Promise(async (resolve, reject) => {
             try {
-                const response: any = await useFetchApi(`/api/auth/user`)
+                const response: any = await useFetchApi('/api/auth/user')
 
                 setUser(response?.data?.user)
                 resolve(true)
@@ -68,15 +70,15 @@ export default () => {
     }
 
     const reRefreshAccessToken = () => {
-        const authToken = useAuthToken()
+        const authToken = useAuthToken().value
 
-        if (!authToken.value) {
+        if (!authToken) {
             return
         }
 
-        const jwt = jwtDecode(authToken.value)
+        const jwt: any = jwtDecode(authToken as string)
 
-        const newRefreshTime = jwt.exp - 60000
+        const newRefreshTime = jwt?.exp - 60000
 
         setTimeout(async () => {
             await refreshToken()
@@ -106,14 +108,16 @@ export default () => {
     const logout = () => {
         return new Promise(async (resolve, reject) => {
             try {
-                await useFetchApi(`${apiUrl}/auth/logout`, {
-                    method: 'POST'
+                await useFetchApi('/api/auth/logout', {
+                    method: 'GET'
                 })
 
                 setToken(null)
                 setUser(null)
+                isLoggedIn().value = String(false)
                 resolve(true)
             } catch (error) {
+                isLoggedIn().value = String(false)
                 reject(error)
             }
         })
@@ -123,6 +127,7 @@ export default () => {
         login,
         useAuthUser,
         useAuthToken,
+        useAuthTokenCookie,
         initAuth,
         logout,
         isLoggedIn

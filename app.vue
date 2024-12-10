@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 const {initAuth} = useAuth()
 
-onBeforeMount(() => {
+onMounted(() => {
   initAuth()
 })
 </script>

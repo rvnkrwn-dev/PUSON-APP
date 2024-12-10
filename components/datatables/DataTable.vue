@@ -69,7 +69,7 @@
           class="min-h-[38px] min-w-[38px] py-2 px-2.5 inline-flex justify-center items-center gap-x-2 text-sm rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
           aria-label="Previous"
           :disabled="currentPage === 1"
-          @click="changePage(currentPage - 1)"
+          @click="changePage(prevPage, currentPage -1)"
       >
         <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m15 18-6-6 6-6"></path>
@@ -91,8 +91,8 @@
           type="button"
           class="min-h-[38px] min-w-[38px] py-2 px-2.5 inline-flex justify-center items-center gap-x-2 text-sm rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
           aria-label="Next"
+          @click="changePage(nextPage, currentPage + 1)"
           :disabled="currentPage === totalPages"
-          @click="changePage(currentPage + 1)"
       >
         <span class="sr-only">Next</span>
         <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -123,25 +123,32 @@ const props = defineProps({
     type: Number,
     default: 10,
   },
-});
-
-const currentPage = ref(1);
-const totalPages = computed(() => Math.ceil(props.data.length / props.perPage));
-
-// Method to handle page changes
-const changePage = (newPage: number) => {
-  if (newPage > 0 && newPage <= totalPages.value) {
-    currentPage.value = newPage;
+  totalPages: {
+    type: Number,
+    required: true, // Prop totalPages diterima dari komponen induk
+  },
+  currentPage: {
+    type: Number,
+    default: 1
+  },
+  prevPage: {
+    type: String,
+    default: null,
+  },
+  nextPage: {
+    type: String,
+    default: null,
   }
-};
-
-// Paginate the data based on currentPage and perPage
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * props.perPage;
-  const end = start + props.perPage;
-  return props.data.slice(start, end);
 });
+
+const emits = defineEmits(['fetchData'])
+
+const changePage = (url: string, currentPage: number) => {
+  const payload = {url, currentPage};
+  emits('fetchData', payload)
+}
 </script>
+
 
 <style lang="css" scoped>
 </style>

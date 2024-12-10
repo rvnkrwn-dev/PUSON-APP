@@ -39,9 +39,9 @@
             <select id="status"
                     class="py-3 px-4 pe-9 block col-span-2 w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
               <option selected>-Pilih-</option>
-              <option value="active">Super Admin</option>
-              <option value="suspend">Admin Puskesmas</option>
-              <option value="pending">Admin Posyandu</option>
+              <option value="active">active</option>
+              <option value="suspend">suspend</option>
+              <option value="pending">pending</option>
             </select>
           </div>
           <div class="space-x-3 self-end">

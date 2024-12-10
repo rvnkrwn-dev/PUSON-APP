@@ -85,7 +85,7 @@
                 role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-account">
               <div class="py-3 px-5 bg-gray-100 rounded-t-lg">
                 <p class="text-sm text-gray-500">Masuk sebagai</p>
-                <p class="text-sm font-medium text-gray-800">Revan Kurniawan</p>
+                <p class="text-sm font-medium text-gray-800">{{ user?.full_name }}</p>
               </div>
               <div class="p-1.5 space-y-0.5">
                 <NuxtLink
@@ -104,7 +104,7 @@
               <div class="p-1.5 space-y-0.5">
                 <NuxtLink
                     class="cursor-pointer flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                    @click="">
+                    @click="handleLogout">
                   <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none"
                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                        class="lucide lucide-log-out">
@@ -126,6 +126,21 @@
 
 <script setup lang="ts">
 import AppLogo from "~/components/AppLogo.vue";
+import type {User} from "~/types/TypesModel";
+const {$toast} = useNuxtApp();
+const {logout, useAuthUser} = useAuth()
+
+const user = computed(() => useAuthUser().value as User)
+
+const handleLogout = async () => {
+  try {
+    await logout()
+    return navigateTo('/auth/login'); // Setelah logout berhasil, arahkan ke halaman login
+  } catch (error: any) {
+    console.log(error); // Menangani error jika logout gagal
+    $toast('Email atau kata sandi tidak cocok.', 'error'); // Menampilkan pesan kesalahan menggunakan toast
+  }
+}
 </script>
 
 <style lang="css" scoped>
