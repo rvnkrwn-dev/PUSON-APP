@@ -110,4 +110,23 @@ export class User {
     static countUsers = () => {
         return prisma.user.count();
     };
+
+    static searchUser = (search: string) => {
+        return prisma.user.findMany({
+            where: {
+                OR: [
+                    {
+                        full_name: {
+                            contains: search
+                        }
+                    },
+                    {
+                        email: {
+                            contains: search
+                        }
+                    }
+                ]
+            }
+        })
+    }
 }

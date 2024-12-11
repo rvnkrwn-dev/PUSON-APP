@@ -9,6 +9,7 @@ export default defineEventHandler( async (event) => {
             '/api/auth/logout',
             '/api/auth/users',
             '/api/auth/users/:id',
+            '/api/auth/users/search?q=:q',
             '/api/auth/users?page=:page&pagesize=:pagesize',
             '/api/auth/logs?page=:page&pagesize=:pagesize',
             '/api/auth/puskesmas',
