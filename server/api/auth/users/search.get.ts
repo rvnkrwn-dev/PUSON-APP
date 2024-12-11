@@ -7,9 +7,9 @@ export default defineEventHandler(async (event) => {
         const { q } = getQuery(event);
 
         // Validasi parameter pencarian
-        if (!q) {
+        if (typeof q !== 'string' || !q) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Search parameter is required.' };
+            return { code: 400, message: 'Search parameter is required and must be a string.' };
         }
 
         // Cari pengguna berdasarkan nama lengkap atau email
