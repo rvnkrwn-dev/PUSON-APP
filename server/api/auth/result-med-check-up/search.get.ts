@@ -1,4 +1,4 @@
-import { User } from '~/server/model/User';
+import { ResultMedCheckUp } from '~/server/model/ResultMedCheckUp';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -12,15 +12,15 @@ export default defineEventHandler(async (event) => {
         }
 
         // Cari pengguna berdasarkan nama lengkap atau email
-        const users = await User.searchUser(q);
+        const ResultmedCheckUp = await ResultMedCheckUp.searchResultMedCheckUp(q);
 
         // Set response status dan kembalikan hasil pencarian
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "Users retrieved successfully.",
+            message: "ResultMedCheckUp retrieved successfully.",
             data: {
-                users: users
+                users: ResultmedCheckUp
             },
         };
     } catch (error: any) {

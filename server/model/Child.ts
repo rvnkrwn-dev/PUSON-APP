@@ -9,12 +9,12 @@ export class Child {
                 bod: data.bod,
                 gender: data.gender,
                 status: data.status,
-                user_id: data.userId,
+                user_id: data.user_id,
                 posyandu_id: data.posyanduId,
                 nik: {
                     create: {
                         number: data.nik.number,
-                        user_id: data.userId,
+                        user_id: data.user_id,
                         kk_id: data.nik.kk_id,
                     }
                 }
@@ -30,8 +30,8 @@ export class Child {
                 bod: data.bod,
                 gender: data.gender,
                 status: data.status,
-                user_id: data.userId,
-                posyandu_id: data.posyanduId,
+                user_id: data.user_id,
+                posyandu_id: data.posyandu_id,
             },
             include: {
                 user: {
@@ -59,7 +59,7 @@ export class Child {
                 },
                 posyandu: true,
                 med_check_up: true,
-                nik: true,
+                nik: true
             }
         });
     };
@@ -173,4 +173,25 @@ export class Child {
     static countAllChildren = () => {
         return prisma.child.count();
     };
+
+    static searchChild = (search: string) => {
+        return prisma.child.findMany({
+            where: {
+                OR: [
+                    {
+                        name: {
+                            contains: search,
+                        }
+                    },
+                    {
+                        user: {
+                            full_name: {
+                                contains: search,
+                            }
+                        }
+                    },
+                ]
+            }
+        })
+    }
 }

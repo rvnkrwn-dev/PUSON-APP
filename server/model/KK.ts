@@ -170,7 +170,32 @@ export class KK {
             })
         ]);
     };
+
     static countAllKK = () => {
         return prisma.kK.count();
     };
+
+    static searchKK = (search: string) => {
+        return prisma.kK.findMany({
+            where: {
+                OR: [
+                    {
+                        number: {
+                            contains: search
+                        }
+                    },
+                    {
+                        user: {
+                            email: {
+                                contains: search
+                            },
+                            full_name: {
+                                contains: search
+                            }
+                        }
+                    }
+                ]
+            }
+        })
+    }
 }

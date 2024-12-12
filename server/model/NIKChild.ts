@@ -1,14 +1,14 @@
-import { prisma } from "~/server/config/db";
-import { NIKChildRequest } from "~/types/AuthType";
+import {prisma} from "~/server/config/db";
+import {NIKChildRequest} from "~/types/AuthType";
 
 export class NIKChild {
     static createNIKChild = (data: NIKChildRequest) => {
         return prisma.nIKChild.create({
             data: {
                 number: data.number,
-                user_id: data.userId,
-                kk_id: data.kkId,
-                child_id: data.childId || null
+                user_id: data.user_id,
+                kk_id: data.kk_id,
+                child_id: data.child_id || null
             },
             include: {
                 user: {
@@ -42,12 +42,12 @@ export class NIKChild {
 
     static updateNIKChild = (id: number, data: NIKChildRequest) => {
         return prisma.nIKChild.update({
-            where: { id },
+            where: {id},
             data: {
                 number: data.number,
-                user_id: data.userId,
-                kk_id: data.kkId,
-                child_id: data.childId || null,
+                user_id: data.user_id,
+                kk_id: data.kk_id,
+                child_id: data.child_id || null,
             },
             include: {
                 user: {
@@ -81,7 +81,7 @@ export class NIKChild {
 
     static deleteNIKChild = (id: number) => {
         return prisma.nIKChild.delete({
-            where: { id },
+            where: {id},
             include: {
                 user: {
                     select: {
@@ -114,7 +114,7 @@ export class NIKChild {
 
     static getNIKChildById = (id: number) => {
         return prisma.nIKChild.findUnique({
-            where: { id },
+            where: {id},
             include: {
                 user: {
                     select: {
@@ -185,4 +185,33 @@ export class NIKChild {
     static countAllNIKChildren = () => {
         return prisma.nIKChild.count();
     };
+
+    static searchNIKChild = (search: string) => {
+        return prisma.nIKChild.findMany({
+            where: {
+                OR: [
+                    {
+                        number: {
+                            contains: search,
+                        }
+                    },
+                    {
+                        Child: {
+                            name: {
+                                contains: search,
+                            }
+                        }
+                    },
+                    {
+                        kk: {
+                            number: {
+                                contains: search,
+                            }
+                        }
+                    }
+
+                ]
+            }
+        })
+    }
 }

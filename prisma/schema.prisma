@@ -208,7 +208,7 @@ model MedCheckUp {
   child               Child              @relation(fields: [child_id], references: [id], onDelete: Cascade)
   height              Float
   weight              Float
-  Age                 Float
+  age                 Float
   circumference       Float
   created_at          DateTime           @default(now())
   updated_at          DateTime           @updatedAt

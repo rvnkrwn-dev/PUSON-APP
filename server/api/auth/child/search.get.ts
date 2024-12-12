@@ -1,4 +1,4 @@
-import { User } from '~/server/model/User';
+import { Child } from '~/server/model/Child';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -12,15 +12,15 @@ export default defineEventHandler(async (event) => {
         }
 
         // Cari pengguna berdasarkan nama lengkap atau email
-        const users = await User.searchUser(q);
+        const child = await Child.searchChild(q);
 
         // Set response status dan kembalikan hasil pencarian
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "Users retrieved successfully.",
+            message: "Child retrieved successfully.",
             data: {
-                users: users
+                users: child
             },
         };
     } catch (error: any) {

@@ -220,4 +220,16 @@ export class Puskesmas {
     static countAllPuskesmas = () => {
         return prisma.puskesmas.count();
     };
+
+    static searchPuskesmas = (search: string) => {
+        return prisma.puskesmas.findMany({
+            where: {
+                OR: [
+                    { name: { contains: search } },
+                    { address: { contains: search } },
+                    { phone: { contains: search } },
+                ]
+            }
+        })
+    }
 }
