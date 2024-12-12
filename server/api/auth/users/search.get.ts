@@ -1,4 +1,5 @@
 import { User } from '~/server/model/User';
+import { setResponseStatus, getQuery } from 'h3';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -11,8 +12,25 @@ export default defineEventHandler(async (event) => {
             return { code: 400, message: 'Search parameter is required and must be a string.' };
         }
 
+        // Check if user exists
+        const authUser = event.context.auth?.user;
+
+        if (!authUser) {
+            setResponseStatus(event, 403);
+            return { code: 403, message: 'Invalid user' };
+        }
+
         // Cari pengguna berdasarkan nama lengkap atau email
         const users = await User.searchUser(q);
+
+        // Hapus pengguna yang sedang terautentikasi dari hasil pencarian
+        const filteredUsers = users.filter(usr => usr.id !== authUser.id);
+
+        // Jika pencarian hanya menghasilkan pengguna terautentikasi, tidak tampilkan data apapun
+        if (filteredUsers.length === 0 || (q === String(authUser.id))) {
+            setResponseStatus(event, 403);
+            return { code: 403, message: "Cannot search for yourself." };
+        }
 
         // Set response status dan kembalikan hasil pencarian
         setResponseStatus(event, 200);
@@ -20,7 +38,7 @@ export default defineEventHandler(async (event) => {
             code: 200,
             message: "Users retrieved successfully.",
             data: {
-                users: users
+                users: filteredUsers
             },
         };
     } catch (error: any) {
