@@ -107,30 +107,11 @@ const {$toast} = useNuxtApp();
 // Mendeklarasikan state dengan tipe data yang sesuai untuk form login
 const email = ref<string | null>(null); // email untuk form login
 const password = ref<string | null>(null); // password untuk form login
-const ipAddress = ref<string | null>(null); // ipAddress untuk mencatat alamat IP pengguna
+const ipAddress = ref<string>(useState('ip_address').value as string); // ipAddress untuk mencatat alamat IP pengguna
 const isRemember = ref<boolean>(false); // flag untuk mengingat pengguna (not used dalam kode ini)
 const isLoading = ref<boolean>(false); // flag untuk menandakan proses loading
 
 const {login} = useAuth()
-
-// Mendefinisikan tipe data untuk response IP address
-interface ResponseIpAddress {
-  ip: string; // properti ip pada response
-}
-
-// Fungsi untuk mengambil alamat IP pengguna dengan menggunakan API eksternal
-const getIpAddressUser = async () => {
-  try {
-    isLoading.value = true; // Menandakan loading dimulai sebelum request
-    // Melakukan request ke API untuk mendapatkan alamat IP pengguna
-    const response: ResponseIpAddress = await $fetch<ResponseIpAddress>("https://api.ipify.org?format=json");
-    ipAddress.value = response.ip; // Menyimpan hasil IP address ke state
-  } catch (e) {
-    console.error(e); // Menangani error jika request gagal
-  } finally {
-    isLoading.value = false; // Menandakan loading selesai, baik berhasil maupun gagal
-  }
-}
 
 // Fungsi untuk menangani submit form login
 const handleSubmit = async () => {
@@ -159,7 +140,6 @@ const handleSubmit = async () => {
 
 // Menjalankan fungsi getIpAddressUser ketika komponen dipasang (mounted)
 onMounted(() => {
-  getIpAddressUser(); // Mendapatkan IP address pengguna saat halaman dimuat
   email.value = localStorage.getItem("email") || null;
 });
 </script>

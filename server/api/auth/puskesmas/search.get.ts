@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
             code: 200,
             message: "Puskesmas retrieved successfully.",
             data: {
-                users: puskesmas
+                puskesmas: puskesmas
             },
         };
     } catch (error: any) {
