@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
             message: "Data retrieved successfully.",
             data: data,
         };
-    } catch (error) {
+    } catch (error: any) {
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: error.message || "Internal Server Error" })
