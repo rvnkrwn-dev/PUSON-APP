@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
         // Set refresh token in cookie
         sendRefreshToken(event, refreshToken);
 
-        await createLog(user.id, 'Login', `User logged in from IP ${data.ip_address}`);
+        // await createLog(user.id, 'Login', `User logged in from IP ${data.ip_address}`);
 
         // Return access token in response
         return <LoginResponse> {

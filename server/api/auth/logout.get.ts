@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
         await RefreshToken.deleteToken(refreshToken);
 
         // Log the logout activity
-        await createLog(user.id, 'Logout', `User logged out`);
+        // await createLog(user.id, 'Logout', `User logged out`);
 
         // Delete refresh token from cookies
         deleteRefreshToken(event);

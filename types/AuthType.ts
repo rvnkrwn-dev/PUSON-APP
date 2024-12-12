@@ -32,8 +32,12 @@ export interface LoginResponse {
 export interface LogRequest {
     user_id: number;
     action: string;
+    device: string;
+    ip_address: string;
+    location: string;
     description: string;
 }
+
 
 export interface PuskesmasRequest {
     name: string;

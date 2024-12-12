@@ -217,6 +217,7 @@ export class Puskesmas {
             }
         })
     };
+
     static countAllPuskesmas = () => {
         return prisma.puskesmas.count();
     };
