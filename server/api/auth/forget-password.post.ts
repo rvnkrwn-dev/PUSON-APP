@@ -14,8 +14,8 @@ export default defineEventHandler(async (event) => {
             where: { email }
         });
         if (!user) {
-            setResponseStatus(event, 400);
-            return { code: 400, message: 'User not found.' };
+            setResponseStatus(event, 200);
+            return { code: 400, message: 'A password reset link has been sent to your email if registered.' };
         }
 
         // Buat token reset dengan waktu berlaku 15 menit
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
         await SendEmailResetPassword(email, 'Reset Password', `Click the link to reset your password: ${resetUrl}`, emailHtml);
 
         // Mengembalikan respons sukses
-        return { code: 200, message: 'Password reset link has been sent to your email.' };
+        return { code: 200, message: 'A password reset link has been sent to your email if registered.' };
 
     } catch (error: any) {
         console.error('Forget password error:', error);
