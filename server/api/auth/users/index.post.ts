@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
             status: status || 'pending',
         });
 
-        await createLog(user.id, 'Tambah User', 'Berhasil menambahkan pengguna baru');
+        // await createLog(user.id, 'Tambah User', 'Berhasil menambahkan pengguna baru');
 
         // Send email with account details
         await SendEmailCreateAccount(email, full_name, password);

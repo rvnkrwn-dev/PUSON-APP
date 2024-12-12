@@ -26,11 +26,6 @@ export default defineEventHandler(async (event) => {
         // Hapus pengguna yang sedang terautentikasi dari hasil pencarian
         const filteredUsers = users.filter(usr => usr.id !== authUser.id);
 
-        // Jika pencarian hanya menghasilkan pengguna terautentikasi, tidak tampilkan data apapun
-        if (filteredUsers.length === 0 || (q === String(authUser.id))) {
-            setResponseStatus(event, 403);
-            return { code: 403, message: "Cannot search for yourself." };
-        }
 
         // Set response status dan kembalikan hasil pencarian
         setResponseStatus(event, 200);
