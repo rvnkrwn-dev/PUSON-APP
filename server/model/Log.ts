@@ -1,5 +1,5 @@
-import {prisma} from '~/server/config/db';
-import {LogRequest} from '~/types/AuthType';
+import { prisma } from '~/server/config/db';
+import { LogRequest } from '~/types/AuthType';
 
 export class Log {
     static createLog = (data: LogRequest) => {
@@ -7,6 +7,9 @@ export class Log {
             data: {
                 user_id: data.user_id,
                 action: data.action,
+                device: data.device,
+                ip_address: data.ip_address,
+                location: data.location,
                 description: data.description,
             },
             include: {
@@ -19,22 +22,25 @@ export class Log {
                     }
                 }
             }
-        })
+        });
     };
 
     static updateLog = async (id: number, data: LogRequest) => {
         // Check if the record exists
-        const existingRecord = await prisma.log.findUnique({where: {id}});
+        const existingRecord = await prisma.log.findUnique({ where: { id } });
 
         if (!existingRecord) {
             throw new Error('Record to update not found.');
         }
 
         return prisma.log.update({
-            where: {id},
+            where: { id },
             data: {
                 user_id: data.user_id,
                 action: data.action,
+                device: data.device,
+                ip_address: data.ip_address,
+                location: data.location,
                 description: data.description,
             },
             include: {
@@ -47,12 +53,12 @@ export class Log {
                     }
                 }
             }
-        })
+        });
     };
 
     static deleteLog = (id: number) => {
         return prisma.log.delete({
-            where: {id},
+            where: { id },
             include: {
                 user: {
                     select: {
@@ -63,12 +69,12 @@ export class Log {
                     }
                 }
             }
-        })
+        });
     };
 
     static getLogById = (id: number) => {
         return prisma.log.findUnique({
-            where: {id},
+            where: { id },
             include: {
                 user: {
                     select: {
@@ -79,7 +85,7 @@ export class Log {
                     }
                 }
             }
-        })
+        });
     };
 
     static getAllLogs = (page: number, pageSize: number) => {
@@ -98,7 +104,7 @@ export class Log {
                     }
                 }
             }
-        })
+        });
     };
 
     static getAllLogsByUserId = (user_id: number, page: number, pageSize: number) => {
@@ -107,10 +113,10 @@ export class Log {
 
         return Promise.all([
             prisma.log.count({
-                where: {user_id}
+                where: { user_id }
             }), // Get total count of logs for the user
             prisma.log.findMany({
-                where: {user_id},
+                where: { user_id },
                 skip: skip,
                 take: take,
                 include: {

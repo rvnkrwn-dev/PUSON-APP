@@ -112,6 +112,9 @@ model Log {
   user_id     Int
   user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   action      String
+  device      String
+  ip_address  String
+  location    String
   description String   @db.Text
   created_at  DateTime @default(now())
 }

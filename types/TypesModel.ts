@@ -4,6 +4,11 @@ export enum UserStatus {
     Pending = "pending",
 }
 
+export enum Gender {
+    Male = "male",
+    Female = "female",
+}
+
 export enum Role {
     SuperAdmin = "super_admin",
     AdminPuskesmas = "admin_puskesmas",
@@ -96,6 +101,9 @@ export interface Log {
     user_id: number;
     user: User;
     action: string;
+    device: string;
+    ip_address: string;
+    location: string;
     description: string;
     created_at: Date;
 }
