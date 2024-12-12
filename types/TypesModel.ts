@@ -17,13 +17,11 @@ export enum ChildStatus {
     Pending = "pending",
 }
 
-export enum Gender {
-    Male = "male",
-    Female = "female",
-}
 export enum StuntingStatus {
-    True = "true",
-    False = "false",
+    normal = "normal",
+    stunting = "stunting",
+    overweight = "overweight",
+    obese = "obese"
 }
 
 export interface User {

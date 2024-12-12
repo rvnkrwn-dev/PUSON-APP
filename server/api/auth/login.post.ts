@@ -24,12 +24,6 @@ export default defineEventHandler(async (event) => {
             return { code: 400, message: 'Invalid credentials.' };
         }
 
-        // Check users status
-        if (user.status !== UserStatus.Active) {
-            setResponseStatus(event, 403);
-            return { code: 403, message: `User account is ${user.status}. Please contact support.` };
-        }
-
         // Check password
         const isPasswordValid = bcrypt.compareSync(data.password, user.password);
         if (!isPasswordValid) {

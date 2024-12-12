@@ -1,4 +1,4 @@
-import { prisma } from '~/server/config/db';
+import {prisma} from '~/server/config/db';
 import {DetailUserRequest} from "~/types/AuthType";
 
 export class DetailUser {
@@ -42,7 +42,7 @@ export class DetailUser {
 
     static updateDetailUser = (id: number, data: DetailUserRequest) => {
         return prisma.detailUser.update({
-            where: { id },
+            where: {id},
             data: {
                 phone: data.phone,
                 address: data.address,
@@ -81,7 +81,7 @@ export class DetailUser {
 
     static deleteDetailUser = (id: number) => {
         return prisma.detailUser.delete({
-            where: { id },
+            where: {id},
             include: {
                 user: {
                     select: {
@@ -112,7 +112,7 @@ export class DetailUser {
 
     static getDetailUserById = (id: number) => {
         return prisma.detailUser.findUnique({
-            where: { id },
+            where: {id},
             include: {
                 user: {
                     select: {
@@ -179,4 +179,36 @@ export class DetailUser {
     static countAllDetailUser = () => {
         return prisma.detailUser.count();
     };
+
+    static searchDetailUser = (search: string) => {
+        return prisma.detailUser.findMany({
+            where: {
+                OR: [
+                    {
+                        phone: {
+                            contains: search
+                        },
+                    }, {
+                        address: {
+                            contains: search
+                        },
+                    }, {
+                        city: {
+                            contains: search
+                        },
+                    },
+                    {
+                        user: {
+                            email: {
+                                contains: search
+                            },
+                            full_name: {
+                                contains: search
+                            }
+                        }
+                    }
+                ]
+            }
+        })
+    }
 }

@@ -32,7 +32,8 @@ export class NIK {
                         staff_posyandu: false,
                         med_check_up: false,
                     }
-                }
+                },
+                kk: true,
             }
         })
     };
@@ -173,4 +174,35 @@ export class NIK {
     static countAllNIK = () => {
         return prisma.nIK.count();
     };
+
+    static searchNIK = (search: string) => {
+        return prisma.nIK.findMany({
+            where: {
+                OR: [
+                    {
+                        number: {
+                            contains: search,
+                        }
+                    },
+                    {
+                        user: {
+                            email: {
+                                contains: search
+                            },
+                            full_name: {
+                                contains: search
+                            }
+                        }
+                    },
+                    {
+                        kk: {
+                            number: {
+                                contains: search,
+                            }
+                        }
+                    }
+                ]
+            }
+        })
+    }
 }

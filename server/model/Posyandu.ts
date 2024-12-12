@@ -217,4 +217,16 @@ export class Posyandu {
     static countAllPosyandu = () => {
         return prisma.posyandu.count();
     };
+
+    static searchPosyandu = (search: string) => {
+        return prisma.posyandu.findMany({
+            where: {
+                OR: [
+                    { name: { contains: search } },
+                    { address: { contains: search } },
+                    { phone: { contains: search } },
+                ]
+            }
+        })
+    }
 }

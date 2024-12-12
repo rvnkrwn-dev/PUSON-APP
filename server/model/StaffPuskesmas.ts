@@ -212,4 +212,28 @@ export class StaffPuskesmas {
     static countAllStaffPuskesmas = () => {
         return prisma.staffPuskesmas.count();
     };
+
+    static searchStaffPuskesmas = (search: string) => {
+        return prisma.staffPuskesmas.findMany({
+            where: {
+                OR: [
+                    {
+                        name: {
+                            contains: search
+                        }
+                    },
+                    {
+                        user: {
+                            email : {
+                                contains: search
+                            },
+                            full_name: {
+                                contains: search
+                            }
+                        }
+                    }
+                ]
+            }
+        })
+    }
 }

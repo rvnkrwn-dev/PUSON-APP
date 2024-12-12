@@ -1,6 +1,7 @@
 import {prisma} from "~/server/config/db";
 import {RegisterRequest} from "~/types/AuthType";
 import {getUserByEmailType, UpdateUserType} from "~/types/UserType";
+import {UserStatus} from "@prisma/client";
 
 export class User {
     static createUser = (data: any ) => {
@@ -37,10 +38,25 @@ export class User {
         });
     };
 
+    static updateUserStatus = (id: number, status: UserStatus) => {
+        return prisma.user.update({
+            where: {
+                id: id
+            },
+            data: { status }
+        });
+    };
+
 
     static getUserByEmail = (email: string) => {
+        if (!email) {
+            throw new Error("Email must be provided");
+        }
+
         return prisma.user.findUnique({
-            where: { email },
+            where: {
+                email: email, // Ensure email is properly passed here
+            },
             select: {
                 id: true,
                 full_name: true,
@@ -55,12 +71,13 @@ export class User {
                 status: true,
                 detail_user: true,
             },
-        }) as Promise<getUserByEmailType | null>;
+        });
     };
+
 
     static getUserById = (id: number) => {
         return prisma.user.findUnique({
-            where: {id},
+            where: {id: id},
         });
     };
 
@@ -110,4 +127,23 @@ export class User {
     static countUsers = () => {
         return prisma.user.count();
     };
+
+    static searchUser = (search: string) => {
+        return prisma.user.findMany({
+            where: {
+                OR: [
+                    {
+                        full_name: {
+                            contains: search
+                        }
+                    },
+                    {
+                        email: {
+                            contains: search
+                        }
+                    }
+                ]
+            }
+        })
+    }
 }

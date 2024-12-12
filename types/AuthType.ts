@@ -1,4 +1,4 @@
-import type {Role, UserStatus, User, ChildStatus, Gender} from "~/types/TypesModel";
+import type {Role, UserStatus, User, ChildStatus, Gender, StuntingStatus} from "~/types/TypesModel";
 
 export interface RegisterRequest {
     full_name: string;
@@ -84,17 +84,33 @@ export interface StaffPosyanduRequest {
 
 export interface NIKChildRequest {
     number: string;
-    userId: number;
-    kkId: number;
-    childId?: number; // Optional
+    user_id: number;
+    kk_id: number;
+    child_id?: number; // Optional
 }
 
 export interface ChildRequest {
     name: string;
     bod: Date; // ISO string format for date
+    age: number;
     gender: Gender; // Use enum values
     status: ChildStatus; // Use enum values
-    userId: number;
-    posyanduId: number;
+    user_id: number;
+    posyandu_id: number;
 }
 
+export interface MedCheckUpRequest {
+    child_id: number;
+    height: number;
+    weight: number;
+    Age: number;
+    circumference: number;
+    user_id: number;
+}
+
+export interface ResultMedCheckUpRequest {
+    imt: number;
+    ipb: number;
+    status: StuntingStatus;
+    med_check_up_id: number;
+}

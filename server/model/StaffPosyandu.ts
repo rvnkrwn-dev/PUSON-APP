@@ -214,4 +214,28 @@ export class StaffPosyandu {
     static countAllStaffPosyandu = () => {
         return prisma.staffPosyandu.count();
     };
+
+    static searchStaffPosyandu = (search: string) => {
+        return prisma.staffPosyandu.findMany({
+            where: {
+                OR: [
+                    {
+                        name: {
+                            contains: search
+                        }
+                    },
+                    {
+                        created_by: {
+                            email : {
+                                contains: search
+                            },
+                            full_name: {
+                                contains: search
+                            }
+                        }
+                    }
+                ]
+            }
+        })
+    }
 }
