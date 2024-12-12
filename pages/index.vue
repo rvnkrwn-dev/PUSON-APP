@@ -299,11 +299,11 @@
 // Data untuk grafik area
 const chartData = ref([
   {
-    name: 'Pendapatan',
+    name: 'Laki - Laki',
     data: [30, 40, 45, 50, 49, 60, 70, 30, 40, 45, 50, 49], // Data untuk grafik
   },
   {
-    name: 'Pengeluaran',
+    name: 'Perempuan',
     data: [20, 25, 35, 45, 40, 60, 65, 20, 25, 35, 45, 40], // Data untuk grafik
   },
 ]);
