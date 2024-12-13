@@ -29,7 +29,7 @@
           </svg>
         </li>
         <li class="text-sm font-semibold text-gray-800 truncate" aria-current="page">
-          Pengguna
+          Puskesmas
         </li>
       </ol>
       <!-- End Breadcrumb -->
@@ -41,7 +41,7 @@
     <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
       <client-only>
         <DatatablesDataTable
-            :title="'Pengguna'"
+            :title="'Puskesmas'"
             :fields="[
       { label: 'Nama', key: 'name' },
       { label: 'Alamat', key: 'address' },
@@ -54,7 +54,9 @@
             :currentPage="currentPage"
             :prevPage="prevPage"
             :nextPage="nextPage"
+            :isLoading="isLoading"
             @fetchData="(e) => handleChangeFetchData(e)"
+            @searchData="(e) => handleSearchData(e)"
         />
       </client-only>
     </div>
@@ -62,43 +64,83 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+
+// Ambil fungsi untuk penanganan error
+const { handleError } = useErrorHandling();
+
+// State untuk pagination dan data Puskesmas
 const page = ref(1)
-const pageSize = ref(5)
+const pageSize = ref(10)
 const totalPages = ref(1)
 const currentPage = ref(1)
 const nextPage = ref()
 const prevPage = ref()
-const puskesmasData = ref([])
 
+// State untuk data Puskesmas dan status loading
+const puskesmasData = ref([])
+const isLoading = ref<boolean>(false)
+
+// Computed property untuk mengambil data Puskesmas
 const puskesmas = computed(() => puskesmasData.value)
 
-const fetchpuskesmas = async () => {
+// Fungsi untuk mengambil data Puskesmas
+const fetchPuskesmas = async () => {
   try {
+    isLoading.value = true
     const response: any = await useFetchApi(`/api/auth/puskesmas?page=${page.value}&pagesize=${pageSize.value}`);
     puskesmasData.value = response?.data?.puskesmas;
     totalPages.value = response?.meta?.totalPages;
     nextPage.value = response?.meta?.next;
     prevPage.value = response?.meta?.prev;
   } catch (e) {
-    console.error(e);
+    handleError(e)
+  } finally {
+    isLoading.value = false
   }
 }
 
+// Fungsi untuk menangani perubahan halaman atau pengambilan data berdasarkan URL
 const handleChangeFetchData = async (payload: any) => {
   try {
+    isLoading.value = true
     const response: any = await useFetchApi(payload.url);
     puskesmasData.value = response?.data?.puskesmas;
     totalPages.value = response?.meta?.totalPages;
     nextPage.value = response?.meta?.next;
     prevPage.value = response?.meta?.prev;
-    currentPage.value = payload.currentPage;
+    currentPage.value = payload?.currentPage;
   } catch (e) {
-    console.error(e);
+    handleError(e)
+  } finally {
+    isLoading.value = false
   }
 }
 
+// Fungsi untuk menangani pencarian data Puskesmas
+const handleSearchData = async (query: string) => {
+  try {
+    // Jika query kosong, ambil data Puskesmas dari awal
+    if (query.length === 0) {
+      await fetchPuskesmas()
+      return
+    }
+    isLoading.value = true
+    const response: any = await useFetchApi(`/api/auth/puskesmas/search?q=${query}`);
+    puskesmasData.value = response?.data?.puskesmas;
+    totalPages.value = 1;  // Karena pencarian biasanya hanya menghasilkan satu halaman
+    nextPage.value = null;
+    prevPage.value = null;
+  } catch (e) {
+    handleError(e)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// Ambil data Puskesmas saat komponen dimuat pertama kali
 onMounted(async () => {
-  await fetchpuskesmas()
+  await fetchPuskesmas()
 })
 </script>
 

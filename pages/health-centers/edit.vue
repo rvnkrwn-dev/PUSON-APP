@@ -37,16 +37,17 @@
   </div>
   <!-- End Breadcrumb -->
 
-  <div class="w-full lg:ps-64">
+  <div class="w-full min-h-screen lg:ps-64">
     <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-      <FormAddHealthCenter />
+      <client-only>
+        <FormEditHealthCenter />
+      </client-only>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import FormAddHealthCenter from "~/components/form/health-centers/FormAddHealthCenter.vue";
-
+import FormEditHealthCenter from "~/components/form/health-centers/FormEditHealthCenter.vue";
 </script>
 
 <style scoped>
