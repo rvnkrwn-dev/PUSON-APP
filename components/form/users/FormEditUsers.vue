@@ -11,7 +11,7 @@
       <form v-if="selectedUser" @submit.prevent="handleSubmit">
         <div class="space-y-4 flex flex-col">
           <!-- Nama Lengkap -->
-          <div class="grid grid-cols-3">
+          <div class="grid sm:grid-cols-3">
             <label for="name" class="block text-sm font-medium mb-2 w-full">Nama Lengkap</label>
             <input
                 type="text"
@@ -22,9 +22,8 @@
                 required
             />
           </div>
-
           <!-- Email -->
-          <div class="grid grid-cols-3">
+          <div class="grid sm:grid-cols-3">
             <label for="email" class="block text-sm font-medium mb-2 w-full">Email</label>
             <input
                 type="email"
@@ -35,9 +34,8 @@
                 required
             />
           </div>
-
           <!-- Role -->
-          <div class="grid grid-cols-3">
+          <div class="grid sm:grid-cols-3">
             <label for="role" class="block text-sm font-medium mb-2 w-full">Role</label>
             <select
                 id="role"
@@ -52,9 +50,8 @@
               <option value="user">User</option>
             </select>
           </div>
-
           <!-- Status -->
-          <div class="grid grid-cols-3">
+          <div class="grid sm:grid-cols-3">
             <label for="status" class="block text-sm font-medium mb-2 w-full">Status</label>
             <select
                 id="status"
@@ -91,44 +88,51 @@
       <!-- Jika tidak ada pengguna yang dipilih, tampilkan combobox pencarian -->
       <div v-else>
         <label for="hs-combobox-basic-usage" class="block text-sm font-medium mb-2 w-full">Cari Pengguna</label>
-        <ComboBoxUser @selectedUser="handleSelectedUser" />
+        <ComboBoxUser @selectedUser="handleSelectedUser"/>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { User } from "~/types/TypesModel";
+import {ref} from 'vue';
+import type {User} from "~/types/TypesModel";
 import ComboBoxUser from "~/components/form/advanced/ComboBoxUser.vue";
 
-const { $toast } = useNuxtApp();
+const {$toast} = useNuxtApp();
 
-// Reactive state
-const selectedUser = ref<User | null>(null);
-const ipAddress = ref<string>(useState('ip_address').value as string);
+const selectedUser = ref<any>(null)
+const isLoading = ref<boolean>(false)
 
-// Handle user selection from ComboBoxUser
 const handleSelectedUser = (user: User) => {
-  selectedUser.value = { ...user }; // Deep copy user data to avoid mutation
-};
+  selectedUser.value = {
+    id: user.id,
+    full_name: user.full_name,
+    email: user.email,
+    role: user.role,
+    status: user.password,
+  }
+}
 
-
-// Handle form submission to update the user
 const handleSubmit = async () => {
   try {
+    isLoading.value = true;
+    const ip_address = useState('ip_address').value
     await useFetchApi(`/api/auth/users/${selectedUser.value?.id}`, {
       method: 'PUT',
       body: {
         ...selectedUser.value,
-        ip_address: ipAddress.value,
-      },
-    });
+        ip_address
+      }
+    })
+
     $toast('Berhasil mengubah data pengguna.', 'success');
   } catch (error) {
     $toast('Gagal mengubah data pengguna.', 'error');
+  } finally {
+    isLoading.value = false;
   }
-};
+}
 </script>
 
 <style scoped>

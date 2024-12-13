@@ -10,10 +10,13 @@
             name="hs-table-search"
             id="hs-table-search"
             class="py-2 px-3 ps-9 block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-            placeholder="Search for items"
+            placeholder="Cari disini"
+            v-model="searchText"
         />
         <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
-          <svg class="size-4 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="size-4 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24"
+               height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.3-4.3"></path>
           </svg>
@@ -45,15 +48,37 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                 <!-- Render rows dynamically based on props.data -->
-                <tr v-for="(row, index) in data" :key="index">
-                  <td
-                      v-for="field in fields"
-                      :key="field.key"
-                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
-                  >
-                    {{ row[field.key] }}
-                  </td>
-                </tr>
+                <template v-if="isLoading">
+                  <tr>
+                    <td
+                        :colspan="fields.length"
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center"
+                    >
+                      Memuat data...
+                    </td>
+                  </tr>
+                </template>
+                <template v-else-if="!isLoading && data.length > 0">
+                  <tr v-for="(row, index) in data" :key="index">
+                    <td
+                        v-for="field in fields"
+                        :key="field.key"
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
+                    >
+                      {{ row[field.key] }}
+                    </td>
+                  </tr>
+                </template>
+                <template v-else>
+                  <tr>
+                    <td
+                        :colspan="fields.length"
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center"
+                    >
+                      Data Tidak Ditemukan
+                    </td>
+                  </tr>
+                </template>
                 </tbody>
               </table>
             </div>
@@ -71,7 +96,8 @@
           :disabled="currentPage === 1"
           @click="changePage(prevPage, currentPage -1)"
       >
-        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m15 18-6-6 6-6"></path>
         </svg>
         <span class="sr-only">Previous</span>
@@ -84,7 +110,9 @@
           {{ currentPage }}
         </span>
         <span class="min-h-[38px] flex justify-center items-center text-gray-500 py-2 px-1.5 text-sm">of</span>
-        <span class="min-h-[38px] flex justify-center items-center text-gray-500 py-2 px-1.5 text-sm">{{ totalPages }}</span>
+        <span class="min-h-[38px] flex justify-center items-center text-gray-500 py-2 px-1.5 text-sm">{{
+            totalPages
+          }}</span>
       </div>
 
       <button
@@ -95,7 +123,8 @@
           :disabled="currentPage === totalPages"
       >
         <span class="sr-only">Next</span>
-        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m9 18 6-6-6-6"></path>
         </svg>
       </button>
@@ -105,6 +134,7 @@
 </template>
 
 <script setup lang="ts">
+import {debounce} from 'lodash';
 // Define the props
 const props = defineProps({
   title: {
@@ -138,15 +168,25 @@ const props = defineProps({
   nextPage: {
     type: String,
     default: null,
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
   }
 });
 
-const emits = defineEmits(['fetchData'])
-
+const emits = defineEmits(['fetchData', 'searchData'])
+const searchText = ref('')
 const changePage = (url: string, currentPage: number) => {
   const payload = {url, currentPage};
   emits('fetchData', payload)
 }
+
+const handleSearch = debounce(async () => {
+  emits('searchData', searchText.value);
+}, 500);
+
+watch(searchText, handleSearch)
 </script>
 
 

@@ -53,45 +53,75 @@
           :currentPage="currentPage"
           :prevPage="prevPage"
           :nextPage="nextPage"
+          :isLoading="isLoading"
           @fetchData="(e) => handleChangeFetchData(e)"
+          @searchData="(e) => handleSearchData(e)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const {handleError} = useErrorHandling();
+
 const page = ref(1)
-const pageSize = ref(5)
+const pageSize = ref(10)
 const totalPages = ref(1)
 const currentPage = ref(1)
 const nextPage = ref()
 const prevPage = ref()
 const usersData = ref([])
+const isLoading = ref<boolean>(false)
 
 const users = computed(() => usersData.value)
 
 const fetchUsers = async () => {
   try {
+    isLoading.value = true
     const response: any = await useFetchApi(`/api/auth/users?page=${page.value}&pagesize=${pageSize.value}`);
     usersData.value = response?.data?.users;
     totalPages.value = response?.meta?.totalPages;
     nextPage.value = response?.meta?.next;
     prevPage.value = response?.meta?.prev;
   } catch (e) {
-    console.error(e);
+    handleError(e)
+  } finally {
+    isLoading.value = false
   }
 }
 
 const handleChangeFetchData = async (payload: any) => {
   try {
+    isLoading.value = true
     const response: any = await useFetchApi(payload.url);
     usersData.value = response?.data?.users;
     totalPages.value = response?.meta?.totalPages;
     nextPage.value = response?.meta?.next;
     prevPage.value = response?.meta?.prev;
-    currentPage.value = payload.currentPage;
+    currentPage.value = payload?.currentPage;
   } catch (e) {
-    console.error(e);
+    handleError(e)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const handleSearchData = async (query: string) => {
+  try {
+    if (query.length === 0) {
+      await fetchUsers()
+      return
+    }
+    isLoading.value = true
+    const response: any = await useFetchApi(`/api/auth/users/search?q=${query}`);
+    usersData.value = response?.data?.users;
+    totalPages.value = 1;
+    nextPage.value = null;
+    prevPage.value = null;
+  } catch (e) {
+    handleError(e)
+  } finally {
+    isLoading.value = false
   }
 }
 

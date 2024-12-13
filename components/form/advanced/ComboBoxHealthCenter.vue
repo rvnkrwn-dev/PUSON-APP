@@ -24,7 +24,7 @@
           type="text"
           role="combobox"
           aria-expanded="false"
-          placeholder="Type a name"
+          placeholder="Cari disini"
           v-model="searchText"
           @input="onSearch"
       />

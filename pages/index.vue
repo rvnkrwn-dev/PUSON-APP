@@ -287,7 +287,7 @@
 
         <div id="recently-activities" class="h-full w-full mt-2">
           <client-only>
-            <DatatablesDataTables/>
+            <DataTables />
           </client-only>
         </div>
       </div>
@@ -297,6 +297,8 @@
 
 <script setup lang="ts">
 // Data untuk grafik area
+import DataTables from "~/components/datatables/DataTables.vue";
+
 const chartData = ref([
   {
     name: 'Laki - Laki',

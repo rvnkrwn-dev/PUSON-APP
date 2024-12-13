@@ -80,7 +80,9 @@ export default defineNuxtPlugin(nuxtApp => {
             duration: 3000,  // Durasi toast
             escapeMarkup: false, // Untuk memungkinkan markup HTML di dalam toast
             ariaLive: 'polite', // Membantu pembaca layar
-            backgroundColor: 'white',
+            style: {
+                background: 'white',
+            }
         }).showToast();
     };
 

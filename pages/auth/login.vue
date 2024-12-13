@@ -95,50 +95,67 @@
 </template>
 
 <script setup lang="ts">
-import AppLogo from "~/components/AppLogo.vue"; // Impor komponen AppLogo untuk digunakan di template
+import AppLogo from "~/components/AppLogo.vue"; // Impor komponen AppLogo
 
+// Menentukan metadata halaman
 definePageMeta({
-  layout: false
-})
+  layout: false // Menggunakan layout custom
+});
 
-// Menyediakan akses ke nuxtApp untuk mengambil instance nuxt dan memanfaatkan toast untuk notifikasi
-const {$toast} = useNuxtApp();
+// Mendapatkan instance nuxtApp untuk menggunakan toast
+const { $toast } = useNuxtApp();
 
-// Mendeklarasikan state dengan tipe data yang sesuai untuk form login
-const email = ref<string | null>(null); // email untuk form login
-const password = ref<string | null>(null); // password untuk form login
-const ipAddress = ref<string>(useState('ip_address').value as string); // ipAddress untuk mencatat alamat IP pengguna
-const isRemember = ref<boolean>(false); // flag untuk mengingat pengguna (not used dalam kode ini)
-const isLoading = ref<boolean>(false); // flag untuk menandakan proses loading
+// Mendeklarasikan state untuk form login
+const email = ref<string | null>(null); // Menyimpan email
+const password = ref<string | null>(null); // Menyimpan password
+const isRemember = ref<boolean>(false); // Flag untuk "Ingat Saya"
+const isLoading = ref<boolean>(false); // Flag untuk status loading
 
-const {login} = useAuth()
+// Mengambil fungsi login dari composable useAuth
+const { login } = useAuth();
 
-// Fungsi untuk menangani submit form login
+// Fungsi untuk menangani pengiriman form login
 const handleSubmit = async () => {
   try {
-    isLoading.value = true; // Menandakan proses loading saat pengiriman form
+    // Menandakan proses loading dimulai
+    isLoading.value = true;
+
+    // Validasi jika email dan password belum diisi
     if (!email.value || !password.value) {
-      return
+      return;
     }
 
-    // Melakukan request POST ke endpoint API login dengan data form
-    await login({email: email.value, password: password.value, ip_address: ipAddress.value})
+    // Mengambil alamat IP pengguna dari state
+    const ipAddress = useState('ip_address').value as string;
 
+    // Melakukan proses login
+    await login({
+      email: email.value,
+      password: password.value,
+      ip_address: ipAddress,
+    });
+
+    // Menyimpan atau menghapus email di localStorage jika "Ingat Saya" diaktifkan
     if (isRemember.value && email.value) {
       localStorage.setItem("email", email.value);
     } else {
       localStorage.removeItem("email");
     }
-    return navigateTo('/'); // Setelah login berhasil, arahkan ke halaman utama
-  } catch (error: any) {
-    console.log(error); // Menangani error jika login gagal
-    $toast('Email atau kata sandi tidak cocok.', 'error'); // Menampilkan pesan kesalahan menggunakan toast
-  } finally {
-    isLoading.value = false; // Menandakan proses loading selesai, baik berhasil maupun gagal
-  }
-}
 
-// Menjalankan fungsi getIpAddressUser ketika komponen dipasang (mounted)
+    // Setelah berhasil login, arahkan ke halaman utama
+    return navigateTo('/');
+
+  } catch (error: any) {
+    // Menangani error dan menampilkan pesan kesalahan
+    console.error(error);
+    $toast('Email atau kata sandi tidak cocok.', 'error');
+  } finally {
+    // Menghentikan status loading setelah proses selesai
+    isLoading.value = false;
+  }
+};
+
+// Menyimpan email pengguna di localStorage ketika komponen dipasang
 onMounted(() => {
   email.value = localStorage.getItem("email") || null;
 });

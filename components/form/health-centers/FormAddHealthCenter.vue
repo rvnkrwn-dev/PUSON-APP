@@ -11,30 +11,31 @@
     <div class="h-full w-full mt-2 overflow-y-auto">
       <form @submit.prevent="handleSubmit">
         <div class="space-y-4 flex flex-col">
-          <div class="grid grid-cols-3">
-            <label for="name" class="block text-sm font-medium mb-2 w-full">Nama Lengkap</label>
+          <div class="grid sm:grid-cols-3">
+            <label for="name" class="block text-sm font-medium mb-2 w-full">Nama Puskesmas</label>
             <input type="text" id="name"
                    v-model="name"
                    class="col-span-2 py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                   placeholder="Masukan nama">
+                   placeholder="Puskesmas Raya">
           </div>
-          <div class="grid grid-cols-3">
-            <label for="phone" class="block text-sm font-medium mb-2 w-full">Nomer telepon</label>
+          <div class="grid sm:grid-cols-3">
+            <label for="phone" class="block text-sm font-medium mb-2 w-full">Nomor telepon</label>
             <input type="text" id="phone"
                    v-model="phone"
                    class="col-span-2 py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                   placeholder="Masukan nomer telepon">
+                   placeholder="08xx xxxx xxxx">
           </div>
-          <div class="grid grid-cols-3">
+          <div class="grid sm:grid-cols-3">
             <label for="address" class="block text-sm font-medium mb-2 w-full">Alamat</label>
             <textarea id="address"
-                   v-model="address"
-                   class="col-span-2 py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                   placeholder="Masukan alamat" />
+                      v-model="address"
+                      class="col-span-2 py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                      placeholder="Jl. Raya 1234"/>
           </div>
           <div class="space-x-3 self-end">
             <button type="submit"
-                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    :disabled="isLoading">
               Simpan
             </button>
           </div>
@@ -50,10 +51,12 @@ const {$toast} = useNuxtApp();
 const name = ref(null)
 const address = ref(null)
 const phone = ref(null)
+const isLoading = ref<boolean>(false)
 
 
 const handleSubmit = async () => {
   try {
+    isLoading.value = true
     await useFetchApi('/api/auth/puskesmas', {
       method: 'POST',
       body: {
@@ -63,9 +66,11 @@ const handleSubmit = async () => {
       }
     })
 
-    $toast('Berhasil menambahkan puskesmas baru.', 'success');
+    $toast('Berhasil menambahkan data puskesmas.', 'success');
   } catch (error) {
-    $toast('Gagal menambahkan puskesmas baru.', 'success');
+    $toast('Gagal menambahkan data puskesmas.', 'error');
+  } finally {
+    isLoading.value = false
   }
 }
 </script>

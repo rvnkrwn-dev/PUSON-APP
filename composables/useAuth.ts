@@ -103,10 +103,10 @@ export default () => {
     const initAuth = () => {
         return new Promise(async (resolve, reject) => {
             try {
+                await getIpAddressUser()
                 if (!isLoggedIn().value) return
                 await refreshToken()
                 await getUser()
-                await getIpAddressUser()
                 reRefreshAccessToken()
 
                 resolve(true)
