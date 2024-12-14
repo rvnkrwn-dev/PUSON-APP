@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
         const user = event.context?.auth?.user;
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Pengguna tidak valid' };
         }
 
         // Ambil parameter `page` dan `pagesize` dari query string
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         if (page <= 0 || pagesize <= 0) {
             throw createError({
                 statusCode: 400,
-                message: "Page and pagesize must be positive integers.",
+                message: "Halaman dan ukuran halaman harus berupa bilangan bulat positif.",
             });
         }
 
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
 
         // Return hasil data
         return {
-            message: "Users retrieved successfully.",
+            message: "Akun pengguna berhasil dikembalikan.",
             data: {
                 users
             },

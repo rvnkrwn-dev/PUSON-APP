@@ -1,4 +1,6 @@
 import {Puskesmas} from "~/server/model/Puskesmas";
+import {LogRequest} from "~/types/AuthType";
+import {ActionLog} from "~/types/TypesModel";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -7,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid users' };
+            return { code: 403, message: 'Pengguna tidak valid' };
         }
 
         const id = parseInt(event.context.params?.id as string);
@@ -15,8 +17,21 @@ export default defineEventHandler(async (event) => {
         // Validate ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return {code: 400, message: 'Invalid health-centers ID.'};
+            return {code: 400, message: 'ID tidak valid.'};
         }
+
+        const data = await readBody(event)
+
+        const payload : LogRequest = {
+            user_id : user.id,
+            action : ActionLog.Hapus,
+            device : data.device,
+            ip_address : data.ip_address,
+            location : data.location,
+            description : `Data puskesmas dengan ID ${id}, berhasil dihapus`,
+        }
+
+        await createLog(payload)
 
         // Delete Puskesmas from the database
         const puskesmas = await Puskesmas.deletePuskesmas(id);
@@ -24,7 +39,7 @@ export default defineEventHandler(async (event) => {
         // Return the deleted Puskesmas
         return {
             code: 200,
-            message: 'Puskesmas deleted successfully!',
+            message: 'Data puskesmas berhasil dihapus!',
             data: {
                 puskesmas
             },

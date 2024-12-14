@@ -119,6 +119,15 @@ model Log {
   created_at  DateTime @default(now())
 }
 
+enum Action {
+  Masuk
+  Keluar
+  Tambah
+  Perbarui
+  Hapus
+  Reset
+}
+
 model RefreshToken {
   id            Int      @id @default(autoincrement())
   user_id       Int

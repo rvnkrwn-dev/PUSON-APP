@@ -4,6 +4,8 @@ import { createLog } from '~/server/utils/atLog';
 import { customAlphabet } from "nanoid";
 import { defineEventHandler, setResponseStatus, createError, sendError, readBody } from 'h3';
 import { SendEmailCreateAccount } from '~/server/utils/SendEmailCreateAccount';
+import {LogRequest} from "~/types/AuthType";
+import {ActionLog} from "~/types/TypesModel";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -12,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid users' };
+            return { code: 403, message: 'Pengguna tidak valid' };
         }
 
         // Read the request body
@@ -23,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
         if (!full_name || !email) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Please provide all required fields (full_name, email).' };
+            return { code: 400, message: 'Harap berikan semua kolom yang diperlukan (nama lengkap, email).' };
         }
 
         // Generate random password if not provided
@@ -42,7 +44,16 @@ export default defineEventHandler(async (event) => {
             status: status || 'pending',
         });
 
-        // await createLog(user.id, 'Tambah User', 'Berhasil menambahkan pengguna baru');
+        const payload : LogRequest = {
+            user_id : user.id,
+            action : ActionLog.Tambah,
+            device : data.device,
+            ip_address : data.ip_address,
+            location : data.location,
+            description : `Akun pengguna dengan email: ${email}, berhasil ditambahkan`,
+        }
+
+        await createLog(payload)
 
         // Send email with account details
         await SendEmailCreateAccount(email, full_name, password);
@@ -54,7 +65,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 201);
         return {
             code: 201,
-            message: 'Account created successfully!',
+            message: 'Akun pengguna berhasil ditambahkan!',
             data: {
                 user: userData,
                 plainPassword: password // Return plain password if needed

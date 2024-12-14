@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
         if (page <= 0 || pagesize <= 0) {
             throw createError({
                 statusCode: 400,
-                message: "Page and pagesize must be positive integers.",
+                message: "Halaman dan ukuran halaman harus berupa bilangan bulat positif.",
             });
         }
 
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
         // Return hasil data
         return {
             code: 200,
-            message: 'ResultMedCheckUp fetched successfully!',
+            message: 'Data hasil pemeriksaan berhasil dikembalikan!',
             data: resultMedCheckUps,
             totalPages,
             prev: prevPage,

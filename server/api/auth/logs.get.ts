@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid users' };
+            return { code: 403, message: 'Pengguna tidak valid' };
         }
 
         const user_id = user.id;
@@ -29,19 +29,19 @@ export default defineEventHandler(async (event) => {
         // Return hasil data
         return {
             code: 200,
-            message: 'Staff Puskesmas fetched successfully!',
+            message: 'Log berhasil diambil!',
             data: log,
             totalPages,
             prev: prevPage,
             next: nextPage,
         };
     } catch (error) {
-        console.error('Error fetching logs:', error);
+        console.error('Terjadi kesalahan saat mengambil log:', error);
         setResponseStatus(event, 500);
         if (error instanceof Error) {
             return { error: error.message };
         } else {
-            return { error: 'An unexpected error occurred' };
+            return { error: 'Terjadi kesalahan tak terduga' };
         }
     }
 });

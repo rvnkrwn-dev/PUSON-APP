@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
         });
         if (!user) {
             setResponseStatus(event, 200);
-            return { code: 400, message: 'A password reset link has been sent to your email if registered.' };
+            return { code: 400, message: 'Tautan pengaturan ulang kata sandi telah dikirim ke email Anda jika terdaftar.' };
         }
 
         // Buat token reset dengan waktu berlaku 15 menit
@@ -33,13 +33,12 @@ export default defineEventHandler(async (event) => {
         `;
 
         // Kirim email dengan URL reset kata sandi
-        await SendEmailResetPassword(email, 'Reset Password', `Click the link to reset your password: ${resetUrl}`, emailHtml);
+        await SendEmailResetPassword(email, 'Setel Ulang Kata Sandi', `Klik tautan untuk mengatur ulang kata sandi anda: ${resetUrl}`, emailHtml);
 
         // Mengembalikan respons sukses
-        return { code: 200, message: 'A password reset link has been sent to your email if registered.' };
+        return { code: 200, message: 'Tautan pengaturan ulang kata sandi telah dikirim ke email Anda jika terdaftar.' };
 
     } catch (error: any) {
-        console.error('Forget password error:', error);
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: 'Internal Server Error' })

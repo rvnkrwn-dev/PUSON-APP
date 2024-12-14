@@ -1,13 +1,14 @@
-import {Log} from "~/server/model/Log";
+import { Log } from "~/server/model/Log";
+import {LogRequest} from "~/types/AuthType";
 
-export const createLog = (user_id: number, action: string, device: string, ip_address: string, location: string, description: string) => {
+export const createLog = async (data: LogRequest) => {
     const logData = {
-        user_id,
-        action,
-        device,
-        ip_address,
-        location,
-        description,
+        user_id : data.user_id,
+        action : data.action,
+        device : data.device,
+        ip_address : data.ip_address,
+        location : data.location,
+        description : data.description,
     };
     return Log.createLog(logData);
 };

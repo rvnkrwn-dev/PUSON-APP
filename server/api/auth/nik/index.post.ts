@@ -1,4 +1,6 @@
 import { NIK } from '~/server/model/NIK';
+import {LogRequest} from "~/types/AuthType";
+import {ActionLog} from "~/types/TypesModel";
 
 export default defineEventHandler(async (event) => {
     // Check if user exists
@@ -6,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
     if (!user) {
         setResponseStatus(event, 403);
-        return { code: 403, message: 'Invalid users' };
+        return { code: 403, message: 'Pengguna tidak valid' };
     }
 
     try {
@@ -21,9 +23,20 @@ export default defineEventHandler(async (event) => {
 
         const nik = await NIK.createNIK(newData);
 
+        const payload : LogRequest = {
+            user_id : user.id,
+            action : ActionLog.Tambah,
+            device : data.device,
+            ip_address : data.ip_address,
+            location : data.location,
+            description : `NIK dengan ID ${user.id}, berhasil ditambahkan`,
+        }
+
+        await createLog(payload)
+
         return {
             code: 201,
-            message: 'NIK created successfully!',
+            message: 'NIK berhasil ditambahkan!',
             data: nik,
         };
     } catch (error: any) {

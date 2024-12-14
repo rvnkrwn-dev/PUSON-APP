@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
     if (!user) {
         setResponseStatus(event, 403);
-        return { code: 403, message: 'Invalid users' };
+        return { code: 403, message: 'Pengguna tidak valid' };
     }
 
     try {
@@ -15,16 +15,15 @@ export default defineEventHandler(async (event) => {
 
         if (!nik) {
             setResponseStatus(event, 404);
-            return { code: 404, message: 'NIK not found' };
+            return { code: 404, message: 'NIK tidak ditemukan' };
         }
 
         return {
             code: 200,
-            message: 'NIK retrieved successfully!',
+            message: 'NIK berhasil dikembalikan!',
             data: nik,
         };
     } catch (error: any) {
-        console.error('Error retrieving NIK:', error);
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

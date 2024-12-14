@@ -1,24 +1,37 @@
 import { NIKChild } from '~/server/model/NIKChild';
+import {LogRequest} from "~/types/AuthType";
+import {ActionLog} from "~/types/TypesModel";
 
 export default defineEventHandler(async (event) => {
     // Check if user exists
     const user = event.context.auth.user;
     if (!user) {
         setResponseStatus(event, 403);
-        return { code: 403, message: 'Invalid users' };
+        return { code: 403, message: 'Pengguna tidak valid' };
     }
 
     try {
         const id = parseInt(event.context.params?.id as string, 10);
+
+        const data = await readBody(event)
+
+        const payload : LogRequest = {
+            user_id : user.id,
+            action : ActionLog.Hapus,
+            device : data.device,
+            ip_address : data.ip_address,
+            location : data.location,
+            description : `NIK Anak dengan ID ${id}, berhasil dihapus`,
+        }
+
         const nikchild = await NIKChild.deleteNIKChild(id);
 
         return {
             code: 200,
-            message: 'NIK deleted successfully!',
+            message: 'NIK berhasil dihapus!',
             data: nikchild,
         };
     } catch (error: any) {
-        console.error('Error deleting NIK:', error);
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         // Validasi parameter pencarian
         if (typeof q !== 'string' || !q) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Search parameter is required and must be a string.' };
+            return { code: 400, message: 'Parameter pencarian diperlukan dan harus berupa string.' };
         }
 
         // Check if user exists
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
         if (!authUser) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Pengguna tidak valid' };
         }
 
         // Cari pengguna berdasarkan nama lengkap atau email
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "Users retrieved successfully.",
+            message: "Pengguna berhasil dikembalikan.",
             data: {
                 users: filteredUsers
             },

@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "Statistics retrieved successfully.",
+            message: "Berhasil mengembalikan data stats",
             data: {
                 puskesmas,
                 posyandu,

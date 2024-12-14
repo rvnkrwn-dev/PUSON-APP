@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
         const user = event.context?.auth?.user;
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Pengguna tidak valid' };
         }
 
         // Ambil parameter `page` dan `pagesize` dari query string
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         if (page <= 0 || pagesize <= 0) {
             throw createError({
                 statusCode: 400,
-                message: "Page and pagesize must be positive integers.",
+                message: "Halaman dan ukuran halaman harus berupa bilangan bulat positif.",
             });
         }
 
@@ -37,14 +37,13 @@ export default defineEventHandler(async (event) => {
         // Return hasil data
         return {
             code: 200,
-            message: 'Staff Puskesmas fetched successfully!',
+            message: 'Staff Puskesmas berhasil dikembalikan!',
             data: staff_puskesmas,
             totalPages,
             prev: prevPage,
             next: nextPage,
         };
     } catch (error: any) {
-        console.error('Error fetching Staff Puskesmas:', error);
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

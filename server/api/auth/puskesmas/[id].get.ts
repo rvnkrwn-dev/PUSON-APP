@@ -7,8 +7,9 @@ export default defineEventHandler(async (event) => {
         // Validate ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return {code: 400, message: 'Invalid health-centers ID.'};
+            return {code: 400, message: 'ID tidak valid.'};
         }
+
 
         // get the user
         const puskesmas = await Puskesmas.getPuskesmasById(id);
@@ -17,7 +18,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "User retrieved successfully.",
+            message: "Data puskesmas berhasil dikembalikan.",
             data: {
                 puskesmas: puskesmas
             },

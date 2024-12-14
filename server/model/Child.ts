@@ -1,5 +1,5 @@
 import {prisma} from "~/server/config/db";
-import {ChildRequest} from "~/types/AuthType";
+import {ChildRequest, LogDeleteRequest} from "~/types/AuthType";
 
 export class Child {
     static createChild = (data: any) => {
@@ -10,7 +10,7 @@ export class Child {
                 gender: data.gender,
                 status: data.status,
                 user_id: data.user_id,
-                posyandu_id: data.posyanduId,
+                posyandu_id: data.posyandu_id,
                 nik: {
                     create: {
                         number: data.nik.number,
@@ -67,34 +67,6 @@ export class Child {
     static deleteChild = (id: number) => {
         return prisma.child.delete({
             where: {id},
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        full_name: true,
-                        email: true,
-                        password: false,
-                        role: true,
-                        status: true,
-                        url_profile: false,
-                        secure_url_profile: false,
-                        public_id_profile: false,
-                        created_at: false,
-                        updated_at: false,
-                        child: false,
-                        detail_user: false,
-                        logs: false,
-                        refresh_token: false,
-                        puskesmas: false,
-                        posyandu: false,
-                        staff_posyandu: false,
-                        med_check_up: false,
-                    }
-                },
-                posyandu: true,
-                med_check_up: true,
-                nik: true,
-            }
         });
     };
 

@@ -24,4 +24,8 @@ export type UpdateUserType = {
     password?: string;
     role?: Role;
     status?: UserStatus;
+    user_id: number;
+    ip_address: string;
+    device: string;
+    location: string;
 };

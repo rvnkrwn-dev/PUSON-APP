@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
         // Validasi parameter pencarian
         if (typeof q !== 'string' || !q) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Search parameter is required and must be a string.' };
+            return { code: 400, message: 'Halaman dan ukuran halaman harus berupa bilangan bulat positif.' };
         }
 
         // Cari pengguna berdasarkan nama lengkap atau email
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "KK retrieved successfully.",
+            message: "KK berhasil dikembalikan.",
             data: {
                 users: kk
             },

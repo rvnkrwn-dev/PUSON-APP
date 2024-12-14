@@ -24,6 +24,9 @@ export default defineEventHandler(async (event) => {
             },
         };
     } catch (error: any) {
+        if (error.code === "P2025"){
+            return { code: 404, message: 'Data tidak ditemukan' };
+        }
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: error.message || "Internal Server Error" })

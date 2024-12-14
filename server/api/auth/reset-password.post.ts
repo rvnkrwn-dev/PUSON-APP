@@ -13,19 +13,19 @@ export default defineEventHandler(async (event) => {
 
         if (!token || !newPassword || !confirmNewPassword) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'All fields are required.' };
+            return { code: 400, message: 'Dibutuhkan semua inputan' };
         }
 
         if (newPassword !== confirmNewPassword) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'Passwords do not match.' };
+            return { code: 400, message: 'Kata sandi tidak sama' };
         }
 
         // Periksa apakah token ada di database
         const tokenInDb = await RefreshToken.findToken(token);
         if (!tokenInDb) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid or expired token.' };
+            return { code: 403, message: 'Tidak valid atau token sudah kadaluarsa' };
         }
 
         // Verifikasi token reset
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
             decoded = jwt.verify(token, REFRESH_TOKEN_SECRET);
         } catch (error) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid or expired token.' };
+            return { code: 403, message: 'Tidak valid atau token sudah kadaluarsa' };
         }
 
         // Periksa apakah users ada
@@ -43,14 +43,14 @@ export default defineEventHandler(async (event) => {
         });
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid users associated with token.' };
+            return { code: 403, message: 'Pengguna tidak valid dengan pengguna' };
         }
 
         // Check if the new password is different from the old password
         const isPasswordSame = bcrypt.compareSync(newPassword, user.password);
         if (isPasswordSame) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'New password cannot be the same as the old password.' };
+            return { code: 400, message: 'Kata sandi baru tidak boleh sama dengan kata sandi lama.' };
         }
 
         // Hash new password
@@ -66,10 +66,10 @@ export default defineEventHandler(async (event) => {
         await RefreshToken.deleteToken(token);
 
         // Return success response
-        return { code: 200, message: 'Password has been reset successfully.' };
+        return { code: 200, message: 'Kata sandi telah berhasil diatur ulang.' };
 
     } catch (error: any) {
-        console.error('Reset password error:', error);
+        console.error('Kesalahan pengaturan ulang kata sandi:', error);
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: 'Internal Server Error' })

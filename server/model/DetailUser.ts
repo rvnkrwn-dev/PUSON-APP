@@ -2,7 +2,7 @@ import {prisma} from '~/server/config/db';
 import {DetailUserRequest} from "~/types/AuthType";
 
 export class DetailUser {
-    static createDetailUser = (data: any) => {
+    static createDetailUser = (data: DetailUserRequest) => {
         return prisma.detailUser.create({
             data: {
                 phone: data.phone,
