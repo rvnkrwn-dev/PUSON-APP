@@ -117,12 +117,14 @@ const handleSelectedUser = (user: User) => {
 const handleSubmit = async () => {
   try {
     isLoading.value = true;
-    const ip_address = useState('ip_address').value
+    const {deviceType, os, browser} = getDeviceAndBrowserInfo()
     await useFetchApi(`/api/auth/users/${selectedUser.value?.id}`, {
       method: 'PUT',
       body: {
         ...selectedUser.value,
-        ip_address
+        ip_address: useState('ip_address').value,
+        device: `${deviceType}, ${os} on ${browser}`,
+        location: "Unknown"
       }
     })
 

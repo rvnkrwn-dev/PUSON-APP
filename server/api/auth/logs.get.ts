@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
         const page = parseInt(query.page as string, 10) || 1;
         const pagesize = parseInt(query.pagesize as string, 10) || 10;
 
-        const log = await Log.getAllLogsByUserId (user_id, page, pagesize);
+        const logs = await Log.getAllLogsByUserId (user_id, page, pagesize);
         // Hitung total halaman
         const totalUsers = await Log.countAllLog();
         const totalPages = Math.ceil(totalUsers / pagesize);
@@ -30,10 +30,14 @@ export default defineEventHandler(async (event) => {
         return {
             code: 200,
             message: 'Log berhasil diambil!',
-            data: log,
-            totalPages,
-            prev: prevPage,
-            next: nextPage,
+            data: {
+                logs: logs
+            },
+            meta: {
+                totalPages,
+                prev: prevPage,
+                next: nextPage,
+            }
         };
     } catch (error) {
         console.error('Terjadi kesalahan saat mengambil log:', error);

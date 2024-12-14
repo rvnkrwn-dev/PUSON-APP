@@ -90,13 +90,17 @@ const handleSubmit = async () => {
   try {
     isLoading.value = true;
     if (!validateForm()) return
+    const {deviceType, os, browser} = getDeviceAndBrowserInfo()
     await useFetchApi('/api/auth/users', {
       method: 'POST',
       body: {
         full_name: fullName.value,
         email: email.value,
         role: role.value,
-        status: status.value
+        status: status.value,
+        ip_address: useState('ip_address').value,
+        device: `${deviceType}, ${os} on ${browser}`,
+        location: "Unknown"
       }
     })
 

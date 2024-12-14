@@ -125,14 +125,10 @@ const handleSubmit = async () => {
       return;
     }
 
-    // Mengambil alamat IP pengguna dari state
-    const ipAddress = useState('ip_address').value as string;
-
     // Melakukan proses login
     await login({
       email: email.value,
-      password: password.value,
-      ip_address: ipAddress,
+      password: password.value
     });
 
     // Menyimpan atau menghapus email di localStorage jika "Ingat Saya" diaktifkan

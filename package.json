@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
+    "mobile-detect": "^1.4.5",
     "nodemailer": "^6.9.16",
     "nuxt": "^3.14.1592",
     "preline": "^2.6.0",

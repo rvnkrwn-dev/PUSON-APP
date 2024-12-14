@@ -76,12 +76,14 @@ const handleSelectedPuskesmas = (puskesmas: Puskesmas) => {
 const handleSubmit = async () => {
   try {
     isLoading.value = true;
-    const ip_address = useState('ip_address').value
+    const {deviceType, os, browser} = getDeviceAndBrowserInfo()
     await useFetchApi(`/api/auth/puskesmas/${selectedPuskesmas.value?.id}`, {
       method: 'PUT',
       body: {
         ...selectedPuskesmas.value,
-        ip_address
+        ip_address: useState('ip_address').value,
+        device: `${deviceType}, ${os} on ${browser}`,
+        location: "Unknown"
       }
     })
 
