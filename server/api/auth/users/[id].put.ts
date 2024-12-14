@@ -1,5 +1,7 @@
 import {User} from "~/server/model/User";
 import {UpdateUserType} from "~/types/UserType";
+import {ActionLog, UpdateUserRequest} from "~/types/TypesModel";
+import {LogRequest} from "~/types/AuthType";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -11,13 +13,26 @@ export default defineEventHandler(async (event) => {
         // Validate ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return {code: 400, message: 'Invalid users ID.'};
+            return {code: 400, message: 'Pengguna tidak valid'};
         }
 
-        const data: UpdateUserType = await readBody(event);
+        const data = await readBody(event);
+
+        const payload : LogRequest = {
+            user_id : user.id,
+            action : ActionLog.Perbarui,
+            device : data.device,
+            ip_address : data.ip_address,
+            location : data.location,
+            description : `Akun dengan dengan ID ${id}, berhasil diperbarui`,
+        }
+
+        await createLog(payload)
 
         // Update the users
         const updatedUser = await User.updateUser(id, data);
+
+        // await createLog(user.id, 'Perbarui User', 'Berhasil memperbarui pengguna baru');
 
         // Exclude password from the response
         const {password, ...userData} = updatedUser;
@@ -26,12 +41,13 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: 'User updated successfully!',
+            message: 'Akun pengguna berhasil diperbarui!',
             data: {
                 user: userData,
             },
         };
     } catch (error: any) {
+        console.error(error);
         return sendError(
             event,
             createError({statusCode: 500, statusMessage: error?.message || 'Internal Server Error'})
