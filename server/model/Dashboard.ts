@@ -39,9 +39,6 @@ export class Dashboard {
         return {
             stunting: [
                 {
-                    createAt: year
-                },
-                {
                     name: 'Laki - Laki',
                     data: stunting.male,
                 },
