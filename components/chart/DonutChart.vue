@@ -4,7 +4,7 @@
       <ApexCharts
           type="donut"
           :options="computedChartOptions"
-          :series="series"
+          :series="computedSeries"
           width="100%"
           height="300"
       />
@@ -22,6 +22,8 @@ const props = defineProps<{
   labels: string[];  // Label untuk setiap bagian donut chart
   colors: string[];  // Warna untuk setiap bagian donut chart
 }>();
+
+const computedSeries = computed(() => props.series)
 
 // Menghitung konfigurasi chart secara dinamis berdasarkan props yang diberikan
 const computedChartOptions = computed(() => ({

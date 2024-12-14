@@ -68,7 +68,7 @@
 
             <div class="mt-1 flex items-center gap-x-2">
               <h3 class="text-xl sm:text-2xl font-medium text-gray-800">
-                2000
+                {{ stats?.puskesmas }}
               </h3>
             </div>
           </div>
@@ -102,7 +102,7 @@
 
             <div class="mt-1 flex items-center gap-x-2">
               <h3 class="text-xl sm:text-2xl font-medium text-gray-800">
-                2000
+                {{ stats?.posyandu }}
               </h3>
             </div>
           </div>
@@ -136,7 +136,7 @@
 
             <div class="mt-1 flex items-center gap-x-2">
               <h3 class="text-xl sm:text-2xl font-medium text-gray-800">
-                2000
+                {{ stats?.anak }}
               </h3>
             </div>
           </div>
@@ -170,7 +170,7 @@
 
             <div class="mt-1 flex items-center gap-x-2">
               <h3 class="text-xl sm:text-2xl font-medium text-gray-800">
-                2000
+                {{ stats?.pengguna }}
               </h3>
             </div>
           </div>
@@ -197,7 +197,7 @@
             <div>
               <div class="relative">
                 <client-only>
-                  <select data-hs-select='{
+                  <select v-model="year" data-hs-select='{
       "placeholder": "Select option...",
       "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
       "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
@@ -226,8 +226,8 @@
           <div id="hs-single-area-chart" class="h-full w-full">
             <client-only>
               <ChartAreaChart
-                  :series="chartData"
-                  :categories="categories"
+                  :series="stuntingGraph?.stunting??[]"
+                  :categories="stuntingGraph?.categories??[]"
                   :color="chartColors"
               />
             </client-only>
@@ -253,23 +253,25 @@
 
           <div id="hs-single-area-chart" class="h-full w-full flex flex-col justify-center items-center p-2">
             <client-only>
-              <template v-if="childGraph?.anak && childGraph?.label">
-                <ChartDonutChart
-                    :series="childGraph?.anak"
-                    :labels="childGraph?.label"
-                    :colors="chartColors"
-                />
-              </template>
+              <ChartDonutChart
+                  :series="childGraph?.anak??[]"
+                  :labels="childGraph?.label??[]"
+                  :colors="chartColors"
+              />
             </client-only>
             <!-- Legend Indicator -->
             <div class="flex justify-center sm:justify-end items-center gap-x-4 mt-3 sm:mt-6">
               <div class="inline-flex items-center">
                 <span class="size-2.5 inline-block bg-blue-600 rounded-sm me-2"></span>
-                <span class="text-[13px] text-gray-600">Laki - Laku</span>
+                <span class="text-[13px] text-gray-600">{{
+                    childGraph && childGraph?.label && childGraph.label.length > 0 ? childGraph.label[0] : "Unknown"
+                  }}</span>
               </div>
               <div class="inline-flex items-center">
                 <span class="size-2.5 inline-block bg-cyan-500 rounded-sm me-2"></span>
-                <span class="text-[13px] text-gray-600">Perempuan</span>
+                <span class="text-[13px] text-gray-600">{{
+                    childGraph && childGraph?.label && childGraph.label.length > 0 ? childGraph.label[1] : "Unknown"
+                  }}</span>
               </div>
             </div>
           </div>
@@ -289,7 +291,7 @@
 
         <div id="recently-activities" class="h-full w-full mt-2">
           <client-only>
-            <DataTables/>
+            <DataTablesRecentlyActivities :data="recentlyActivities" />
           </client-only>
         </div>
       </div>
@@ -299,11 +301,30 @@
 
 <script setup lang="ts">
 // Data untuk grafik area
-import DataTables from "~/components/datatables/DataTables.vue";
+import DataTablesRecentlyActivities from "~/components/datatables/DataTablesRecentlyActivities.vue";
 
-const childDataGraph = ref({})
+const childDataGraph = ref([])
+const stuntingDataGraph = ref([])
+const year = ref(new Date().getFullYear())
+const recentlyActivitiesData = ref([])
+const statsData = ref([])
 
-const childGraph = computed(() => childDataGraph.value)
+// Warna untuk setiap garis pada grafik
+const chartColors = ref(['#2563EB', '#22d3ee']); // Warna garis yang berbeda
+
+const stats: any = computed(() => statsData.value)
+const childGraph: any = computed(() => childDataGraph.value)
+const stuntingGraph: any = computed(() => stuntingDataGraph.value)
+const recentlyActivities: any = computed(() => recentlyActivitiesData.value)
+
+const fetchStatsData = async () => {
+  try {
+    const response: any = await useFetchApi('/api/auth/stats')
+    statsData.value = response?.data
+  } catch (e) {
+
+  }
+}
 
 const fetchChildDataGraph = async () => {
   try {
@@ -314,28 +335,32 @@ const fetchChildDataGraph = async () => {
   }
 }
 
+const fetchStuntingDataGraph = async () => {
+  try {
+    const response: any = await useFetchApi(`/api/auth/graph/stunting?year=${year.value}`)
+    stuntingDataGraph.value = response?.data
+  } catch (e) {
+
+  }
+}
+
+const fetchRecentlyActivitiesData = async () => {
+  try {
+    const response: any = await useFetchApi(`/api/auth/logs`)
+    recentlyActivitiesData.value = response?.data?.logs
+  } catch (e) {
+
+  }
+}
+
+watch(year, fetchStuntingDataGraph)
+
 onMounted(() => {
+  fetchStatsData()
   fetchChildDataGraph()
+  fetchStuntingDataGraph()
+  fetchRecentlyActivitiesData()
 })
-
-const chartData = ref([
-  {
-    name: 'Laki - Laki',
-    data: [30, 40, 45, 50, 49, 60, 70, 30, 40, 45, 50, 49], // Data untuk grafik
-  },
-  {
-    name: 'Perempuan',
-    data: [20, 25, 35, 45, 40, 60, 65, 20, 25, 35, 45, 40], // Data untuk grafik
-  },
-]);
-
-// Kategori sumbu X (misalnya minggu atau bulan)
-const categories = ref([
-  'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-]);
-
-// Warna untuk setiap garis pada grafik
-const chartColors = ref(['#2563EB', '#22d3ee']); // Warna garis yang berbeda
 </script>
 
 <style scoped>

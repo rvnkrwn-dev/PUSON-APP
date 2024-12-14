@@ -1,5 +1,5 @@
-import { prisma } from '~/server/config/db';
-import { LogRequest } from '~/types/AuthType';
+import {prisma} from '~/server/config/db';
+import {LogRequest} from '~/types/AuthType';
 
 export class Log {
     static createLog = async (data: LogRequest) => {
@@ -17,14 +17,14 @@ export class Log {
 
     static updateLog = async (id: number, data: LogRequest) => {
         // Check if the record exists
-        const existingRecord = await prisma.log.findUnique({ where: { id } });
+        const existingRecord = await prisma.log.findUnique({where: {id}});
 
         if (!existingRecord) {
             throw new Error('Record to update not found.');
         }
 
         return prisma.log.update({
-            where: { id },
+            where: {id},
             data: {
                 user_id: data.user_id,
                 action: data.action,
@@ -48,7 +48,7 @@ export class Log {
 
     static deleteLog = (id: number) => {
         return prisma.log.delete({
-            where: { id },
+            where: {id},
             include: {
                 user: {
                     select: {
@@ -64,7 +64,7 @@ export class Log {
 
     static getLogById = (id: number) => {
         return prisma.log.findUnique({
-            where: { id },
+            where: {id},
             include: {
                 user: {
                     select: {
@@ -100,27 +100,21 @@ export class Log {
     static getAllLogsByUserId = (user_id: number, page: number, pageSize: number) => {
         const skip = (page - 1) * pageSize;
         const take = pageSize;
-
-        return Promise.all([
-            prisma.log.count({
-                where: { user_id }
-            }), // Get total count of logs for the user
-            prisma.log.findMany({
-                where: { user_id },
-                skip: skip,
-                take: take,
-                include: {
-                    user: {
-                        select: {
-                            id: true,
-                            full_name: true,
-                            email: true,
-                            role: true,
-                        }
+        return prisma.log.findMany({
+            where: {user_id},
+            skip: skip,
+            take: take,
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        full_name: true,
+                        email: true,
+                        role: true,
                     }
                 }
-            })
-        ]);
+            }
+        })
     };
 
     static countAllLog = () => {

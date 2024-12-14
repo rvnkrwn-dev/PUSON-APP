@@ -4,7 +4,7 @@
       <ApexCharts
           type="area"
           :options="computedChartOptions"
-          :series="series"
+          :series="computedSeries"
           width="100%"
           height="300"
       />
@@ -21,6 +21,8 @@ const props = defineProps<{
   categories: string[];
   color: string[];
 }>();
+
+const computedSeries = computed(() => props.series)
 
 // Computed chart options that use passed props
 const computedChartOptions = computed(() => ({
