@@ -2,7 +2,7 @@ import { prisma } from '~/server/config/db';
 import { LogRequest } from '~/types/AuthType';
 
 export class Log {
-    static createLog = (data: LogRequest) => {
+    static createLog = async (data: LogRequest) => {
         return prisma.log.create({
             data: {
                 user_id: data.user_id,
@@ -12,16 +12,6 @@ export class Log {
                 location: data.location,
                 description: data.description,
             },
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        full_name: true,
-                        email: true,
-                        role: true,
-                    }
-                }
-            }
         });
     };
 

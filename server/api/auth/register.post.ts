@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
         // Validasi input
         if (!data.full_name || !data.email || !data.password) {
             setResponseStatus(event, 400);
-            return {code: 400, message: "Please provide all required fields (full_name, email, password)."};
+            return {code: 400, message: "Harap berikan semua kolom yang diperlukan (nama lengkap, email, kata sandi)."};
         }
 
         // Hash password
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
         await SendEmailRegister(user.email, user.full_name);
         return <RegisterResponse>{
             code: 201,
-            message: "User registered successfully!",
+            message: "Pengguna berhasil terdaftar!",
             data: {
                 user: {
                     id: user.id,

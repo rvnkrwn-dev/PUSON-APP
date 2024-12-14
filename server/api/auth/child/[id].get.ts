@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
         // Validate ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return {code: 400, message: 'Invalid Child ID.'};
+            return {code: 400, message: 'ID anak tidak valid.'};
         }
 
         // get the user
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "Childs retrieved successfully.",
+            message: "Berhasil mengembalika data anak!.",
             data: {
                 child
             },

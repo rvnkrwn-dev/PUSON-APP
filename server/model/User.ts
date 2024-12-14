@@ -2,6 +2,7 @@ import {prisma} from "~/server/config/db";
 import {RegisterRequest} from "~/types/AuthType";
 import {getUserByEmailType, UpdateUserType} from "~/types/UserType";
 import {UserStatus} from "@prisma/client";
+import {UpdateUserRequest} from "~/types/AuthType";
 
 export class User {
     static createUser = (data: any ) => {
@@ -29,12 +30,21 @@ export class User {
         });
     };
 
-    static updateUser = (id: number, data: UpdateUserType) => {
+    static updateUser = (id: number, data: UpdateUserRequest) => {
         return prisma.user.update({
             where: {
                 id: id
-            },
-            data: data
+            },data:
+                {
+                    full_name: data.full_name,
+                    url_profile: data.url_profile,
+                    secure_url_profile: data.secure_url_profile,
+                    public_id_profile: data.public_id_profile,
+                    email: data.email,
+                    password: data.password,
+                    role: data?.role,
+                    status: data.status,
+                }
         });
     };
 

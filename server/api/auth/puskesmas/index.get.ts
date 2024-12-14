@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
         if (page <= 0 || pagesize <= 0) {
             throw createError({
                 statusCode: 400,
-                message: "Page and pagesize must be positive integers.",
+                message: "Halaman dan ukuran halaman harus berupa bilangan bulat positif.",
             });
         }
 
@@ -32,13 +32,13 @@ export default defineEventHandler(async (event) => {
 
         if (!puskesmas) {
             setResponseStatus(event, 404);
-            return { code: 404, message: 'Puskesmas not found' };
+            return { code: 404, message: 'Puskesmas tidak ditemukan' };
         }
 
         // Return the fetched Puskesmas
         return {
             code: 200,
-            message: 'Puskesmas fetched successfully!',
+            message: 'Data puskesmas berhasil dikembalikan!',
             data: {
                 puskesmas
             },

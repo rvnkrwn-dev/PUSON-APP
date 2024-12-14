@@ -29,6 +29,16 @@ export enum StuntingStatus {
     obese = "obese"
 }
 
+export enum ActionLog {
+    Masuk = 'Masuk',
+    Keluar = 'Keluar',
+    Tambah = 'Tambah',
+    Perbarui = 'Perbarui',
+    Hapus = 'Hapus',
+    Reset = 'Reset'
+}
+
+
 export interface User {
     id: number;
     full_name: string;

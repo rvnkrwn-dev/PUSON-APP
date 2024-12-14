@@ -1,5 +1,6 @@
-import { PuskesmasRequest } from '~/types/AuthType';
+import {LogRequest, PuskesmasRequest} from '~/types/AuthType';
 import {Puskesmas} from "~/server/model/Puskesmas";
+import {ActionLog} from "~/types/TypesModel";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -26,6 +27,17 @@ export default defineEventHandler(async (event) => {
             ...data,
             user_id: user.id
         };
+
+        const payload : LogRequest = {
+            user_id : user.id,
+            action : ActionLog.Perbarui,
+            device : data.device,
+            ip_address : data.ip_address,
+            location : data.location,
+            description : `Data puskesmas dengan ID ${id}, berhasil diperbarui`,
+        }
+
+        await createLog(payload)
 
         // Update Puskesmas in the database
         const puskesmas = await Puskesmas.updatePuskesmas(id, updatedData);

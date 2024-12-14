@@ -1,4 +1,6 @@
 import { StaffPuskesmas } from '~/server/model/StaffPuskesmas';
+import {ActionLog} from "~/types/TypesModel";
+import {LogRequest} from "~/types/AuthType";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -6,7 +8,7 @@ export default defineEventHandler(async (event) => {
         const user = event.context?.auth?.user;
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Pengguna tidak valid' };
         }
 
         // Read the request body
@@ -18,11 +20,22 @@ export default defineEventHandler(async (event) => {
             user_id: user.id,
         };
 
+        const payload : LogRequest = {
+            user_id : user.id,
+            action : ActionLog.Hapus,
+            device : data.device,
+            ip_address : data.ip_address,
+            location : data.location,
+            description : `Data staff puskesmas dengan ID ${user.id}, berhasil ditambahkan`,
+        }
+
+        await createLog(payload)
+
         const staffPuskesmas = await StaffPuskesmas.createStaffPuskesmas(newData);
 
         return {
             code: 201,
-            message: 'Staff Puskesmas created successfully!',
+            message: 'Staff Puskesmas berhasil ditambahkan!',
             data: staffPuskesmas,
         };
     } catch (error: any) {

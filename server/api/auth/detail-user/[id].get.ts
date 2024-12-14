@@ -20,11 +20,13 @@ export default defineEventHandler(async (event) => {
 
         return {
             code: 200,
-            message: 'Detail user retrieved successfully!',
+            message: 'Detail pengguna berhasil dikembalikan!',
             data: detailUser,
         };
     } catch (error: any) {
-        console.error('Error retrieving detail user:', error);
+        if (error.code === "P2025"){
+            return { code: 404, message: 'Data tidak ditemukan' };
+        }
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

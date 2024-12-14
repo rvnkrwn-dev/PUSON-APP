@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "Data retrieved successfully.",
+            message: "Data berhasil dikembalikan.",
             data: data,
         };
     } catch (error: any) {

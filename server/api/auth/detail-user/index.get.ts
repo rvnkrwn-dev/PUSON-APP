@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         if (page <= 0 || pagesize <= 0) {
             throw createError({
                 statusCode: 400,
-                message: "Page and pagesize must be positive integers.",
+                message: "Halaman dan ukuran halaman harus berupa bilangan bulat positif.",
             });
         }
 
@@ -37,14 +37,16 @@ export default defineEventHandler(async (event) => {
         // Return hasil data
         return {
             code: 200,
-            message: 'DetailUser fetched successfully!',
+            message: 'Detail pengguna berhasil dikembalikan!',
             data: detailUsers,
             totalPages,
             prev: prevPage,
             next: nextPage,
         };
     } catch (error: any) {
-        console.error('Error retrieving detail users:', error);
+        if (error.code === "P2025"){
+            return { code: 404, message: 'Data tidak ditemukan' };
+        }
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

@@ -1,5 +1,6 @@
 import { DetailUser } from '~/server/model/DetailUser';
-import {DetailUserRequest} from "~/types/AuthType";
+import {DetailUserRequest, LogRequest} from "~/types/AuthType";
+import {ActionLog} from "~/types/TypesModel";
 
 export default defineEventHandler(async (event) => {
 
@@ -24,13 +25,26 @@ export default defineEventHandler(async (event) => {
 
         const detailUser = await DetailUser.updateDetailUser(id, updatedData);
 
+        const payload : LogRequest = {
+            user_id : user.id,
+            action : ActionLog.Perbarui,
+            device : data.device,
+            ip_address : data.ip_address,
+            location : data.location,
+            description : `Data Detail Pengguna dengan ID ${user.id}, berhasil diperbarui`,
+        }
+
+        await createLog(payload)
+
         return {
             code: 200,
-            message: 'Detail user updated successfully!',
+            message: 'Detail pengguna berhasil diperbarui!',
             data: detailUser,
         };
     } catch (error: any) {
-        console.error('Error updating detail user:', error);
+        if (error.code === "P2025"){
+            return { code: 404, message: 'Data tidak ditemukan' };
+        }
         return sendError(event, createError({ statusCode: 500, statusMessage: 'Internal Server Error' }));
     }
 });

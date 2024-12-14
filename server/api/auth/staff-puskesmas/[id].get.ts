@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
         const user = event.context?.auth?.user;
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid user' };
+            return { code: 403, message: 'Pengguna tidak valid' };
         }
 
         const id = parseInt(event.context.params?.id as string, 10);
@@ -14,12 +14,12 @@ export default defineEventHandler(async (event) => {
 
         if (!staffPuskesmas) {
             setResponseStatus(event, 404);
-            return { code: 404, message: 'Staff Puskesmas not found' };
+            return { code: 404, message: 'Staff Puskesmas tidak ditemukan' };
         }
 
         return {
             code: 200,
-            message: 'Staff Puskesmas fetched successfully!',
+            message: 'Staff Puskesmas berhasil dikembalikan!',
             data: staffPuskesmas,
         };
     } catch (error: any) {

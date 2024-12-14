@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
         // Validate ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return {code: 400, message: 'Invalid users ID.'};
+            return {code: 400, message: 'Pengguna tidak valid'};
         }
 
         // get the user
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 200);
         return {
             code: 200,
-            message: "User retrieved successfully.",
+            message: "Akun pengunna berhasil dikembalikan",
             data: {
                 user: user
             },

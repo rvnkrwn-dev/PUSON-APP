@@ -9,14 +9,14 @@ export default defineEventHandler(async (event) => {
 
         if (!refreshToken) {
             setResponseStatus(event, 400);
-            return { code: 400, message: 'No refresh token found in cookies.' };
+            return { code: 400, message: 'Tidak ada refresh token yang ditemukan dalam cookie.' };
         }
 
         // Check if the refresh token exists in the database
         const storedToken = await RefreshToken.findToken(refreshToken);
         if (!storedToken) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid refresh token.' };
+            return { code: 403, message: 'Refresh token tidak valid' };
         }
 
         // Verify the refresh token
@@ -25,14 +25,14 @@ export default defineEventHandler(async (event) => {
             decoded = decodeRefreshToken(refreshToken);
         } catch (error) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid refresh token.' };
+            return { code: 403, message: 'Refresh token tidak valid' };
         }
 
         // Check if the users exists
         const user = await User.getUserById(decoded.id);
         if (!user) {
             setResponseStatus(event, 403);
-            return { code: 403, message: 'Invalid users associated with refresh token.' };
+            return { code: 403, message: 'Pengguna tidak valid dengan refresh token.' };
         }
 
         // Generate new access token
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
         // Return new access token in response
         return {
             code: 200,
-            message: 'New access token generated successfully!',
+            message: 'Token akses baru berhasil dibuat!',
             access_token: accessToken,
         };
     } catch (error: any) {
