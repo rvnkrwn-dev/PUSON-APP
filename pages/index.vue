@@ -253,11 +253,13 @@
 
           <div id="hs-single-area-chart" class="h-full w-full flex flex-col justify-center items-center p-2">
             <client-only>
-              <ChartDonutChart
-                  :series="chartDataDonut"
-                  :labels="chartLabels"
-                  :colors="chartColors"
-              />
+              <template v-if="childGraph?.anak && childGraph?.label">
+                <ChartDonutChart
+                    :series="childGraph?.anak"
+                    :labels="childGraph?.label"
+                    :colors="chartColors"
+                />
+              </template>
             </client-only>
             <!-- Legend Indicator -->
             <div class="flex justify-center sm:justify-end items-center gap-x-4 mt-3 sm:mt-6">
@@ -287,7 +289,7 @@
 
         <div id="recently-activities" class="h-full w-full mt-2">
           <client-only>
-            <DataTables />
+            <DataTables/>
           </client-only>
         </div>
       </div>
@@ -299,6 +301,23 @@
 // Data untuk grafik area
 import DataTables from "~/components/datatables/DataTables.vue";
 
+const childDataGraph = ref({})
+
+const childGraph = computed(() => childDataGraph.value)
+
+const fetchChildDataGraph = async () => {
+  try {
+    const response: any = await useFetchApi('/api/auth/graph/child')
+    childDataGraph.value = response?.data
+  } catch (e) {
+
+  }
+}
+
+onMounted(() => {
+  fetchChildDataGraph()
+})
+
 const chartData = ref([
   {
     name: 'Laki - Laki',
@@ -309,11 +328,6 @@ const chartData = ref([
     data: [20, 25, 35, 45, 40, 60, 65, 20, 25, 35, 45, 40], // Data untuk grafik
   },
 ]);
-
-const chartDataDonut = ref([47, 23]);
-
-// Labels untuk setiap bagian donut (misalnya kategori produk atau wilayah)
-const chartLabels = ref(['Produk A', 'Produk B']);
 
 // Kategori sumbu X (misalnya minggu atau bulan)
 const categories = ref([

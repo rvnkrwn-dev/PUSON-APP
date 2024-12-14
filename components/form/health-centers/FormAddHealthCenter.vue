@@ -57,12 +57,16 @@ const isLoading = ref<boolean>(false)
 const handleSubmit = async () => {
   try {
     isLoading.value = true
+    const {deviceType, os, browser} = getDeviceAndBrowserInfo()
     await useFetchApi('/api/auth/puskesmas', {
       method: 'POST',
       body: {
         name: name.value,
         address: address.value,
         phone: phone.value,
+        ip_address: useState('ip_address').value,
+        device: `${deviceType}, ${os} on ${browser}`,
+        location: "Unknown"
       }
     })
 

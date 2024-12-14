@@ -33,15 +33,18 @@ export default () => {
         })
     }
 
-    const login = ({email, password, ip_address}: { email: string, password: string, ip_address: string }) => {
+    const login = ({email, password}: { email: string, password: string }) => {
         return new Promise(async (resolve, reject) => {
             try {
+                const {deviceType, os, browser} = getDeviceAndBrowserInfo()
                 const response: any = await useFetchApi('/api/auth/login', {
                     method: 'POST',
                     body: {
-                        email,
-                        password,
-                        ip_address
+                        email: email,
+                        password: password,
+                        ip_address: ipAddress().value,
+                        device: `${deviceType}, ${os} on ${browser}`,
+                        location: "Unknown"
                     }
                 })
 

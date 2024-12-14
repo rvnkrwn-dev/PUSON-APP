@@ -1,6 +1,6 @@
 <template>
-  <div id="hs-single-donut-chart" class="w-full">
-    <client-only>
+  <client-only>
+    <div id="hs-single-donut-chart" class="w-full">
       <ApexCharts
           type="donut"
           :options="computedChartOptions"
@@ -8,12 +8,12 @@
           width="100%"
           height="300"
       />
-    </client-only>
-  </div>
+    </div>
+  </client-only>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed} from 'vue';
 import ApexCharts from 'vue3-apexcharts';
 
 // Definisikan props yang diterima oleh komponen
