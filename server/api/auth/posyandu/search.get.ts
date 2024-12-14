@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
             code: 200,
             message: "Data posyandu berhasil dikembalikan.",
             data: {
-                users: posyandu
+                posyandu: posyandu
             },
         };
     } catch (error: any) {

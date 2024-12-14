@@ -1,11 +1,11 @@
 import {jwtDecode} from "jwt-decode"
 
 export default () => {
-    const config = useRuntimeConfig();
     const useAuthToken = () => useState('auth_token')
     const useAuthTokenCookie = () => useCookie('access_token')
     const useAuthUser = () => useState('auth_user')
     const isLoggedIn = () => useCookie('isLoggedIn')
+
 
     const ipAddress = () => useState('ip_address')
 
@@ -33,7 +33,7 @@ export default () => {
         })
     }
 
-    const login = ({ email, password, ip_address }: {email: string, password: string, ip_address: string}) => {
+    const login = ({email, password, ip_address}: { email: string, password: string, ip_address: string }) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const response: any = await useFetchApi('/api/auth/login', {
