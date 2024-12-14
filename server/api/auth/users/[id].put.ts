@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
         // Update the users
         const updatedUser = await User.updateUser(id, data);
 
-        await createLog(user.id, 'Perbarui User', 'Berhasil memperbarui pengguna baru');
+        // await createLog(user.id, 'Perbarui User', 'Berhasil memperbarui pengguna baru');
 
         // Exclude password from the response
         const {password, ...userData} = updatedUser;

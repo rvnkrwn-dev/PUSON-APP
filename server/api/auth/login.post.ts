@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
             email: user.email,
             role: user.role
         });
-        const { password, ...userData } = user;
+        const { password, ...userData } = usergit ;
 
         // Store refresh token in the database
         await RefreshToken.create(user.id, refreshToken);
