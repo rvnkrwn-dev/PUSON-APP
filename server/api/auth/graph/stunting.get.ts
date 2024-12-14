@@ -1,13 +1,15 @@
-import {Dashboard} from "~/server/model/Dashboard";
+import { Dashboard } from "~/server/model/Dashboard";
 
 export default defineEventHandler(async (event) => {
     try {
-        // Ambil parameter tahun dari body permintaan
-        const body = await readBody(event);
-        const year = parseInt(body.year, 10) || new Date().getFullYear();
+        // Ambil parameter tahun dari query permintaan
+        const { year } = getQuery(event);
+        const currentYear = new Date().getFullYear();
+        const yearString = Array.isArray(year) ? year[0] : year;  // Pastikan year adalah string
+        const yearInt = yearString ? parseInt(yearString, 10) : currentYear;
 
         // Gunakan model untuk mendapatkan data dashboard stunting berdasarkan tahun
-        const data = await Dashboard.getStuntingDashboard(year);
+        const data = await Dashboard.getStuntingDashboard(yearInt);
 
         // Set response status dan kembalikan data
         setResponseStatus(event, 200);
@@ -23,7 +25,3 @@ export default defineEventHandler(async (event) => {
         );
     }
 });
-
-
-
-

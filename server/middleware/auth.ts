@@ -56,6 +56,9 @@ export default defineEventHandler( async (event) => {
             '/api/auth/result-med-check-up',
             '/api/auth/result-med-check-up/:id',
             '/api/auth/result-med-check-up?page=:page&pagesize=:pagesize',
+            '/api/auth/graph/child',
+            '/api/auth/graph/stunting?year=:year',
+            "/api/auth/stats"
         ]
 
         const isHandledByThisMiddleware = endpoints.some(endopoint => {
