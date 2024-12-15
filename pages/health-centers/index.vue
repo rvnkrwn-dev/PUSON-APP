@@ -55,8 +55,10 @@
             :prevPage="prevPage"
             :nextPage="nextPage"
             :isLoading="isLoading"
+            :deleteAction="true"
             @fetchData="(e) => handleChangeFetchData(e)"
             @searchData="(e) => handleSearchData(e)"
+            @deleteData="(e) => handleDeleteData(e)"
         />
       </client-only>
     </div>
@@ -64,10 +66,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
 
 // Ambil fungsi untuk penanganan error
-const { handleError } = useErrorHandling();
+import type {Puskesmas} from "~/types/TypesModel";
+
+const {handleError} = useErrorHandling();
+const {$toast} = useNuxtApp();
 
 // State untuk pagination dan data Puskesmas
 const page = ref(1)
@@ -135,6 +139,25 @@ const handleSearchData = async (query: string) => {
     handleError(e)
   } finally {
     isLoading.value = false
+  }
+}
+
+const handleDeleteData = async (id: number) => {
+  try {
+    if (!confirm("Anda yakin ingin menghapus ini?")) return
+    const {deviceType, os, browser} = getDeviceAndBrowserInfo()
+    await useFetchApi(`/api/auth/puskesmas/${id}`, {
+      method: 'DELETE',
+      body: {
+        ip_address: useState('ip_address').value,
+        device: `${deviceType}, ${os} on ${browser}`,
+        location: "Unknown"
+      }
+    })
+    puskesmasData.value = puskesmasData.value.filter((item: Puskesmas) => item.id !== id)
+    $toast('Berhasil mengubah data.', 'success');
+  } catch (e) {
+    $toast('Gagal mengubah data.', 'error');
   }
 }
 

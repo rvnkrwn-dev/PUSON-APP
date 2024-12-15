@@ -105,11 +105,11 @@ const handleSubmit = async () => {
     })
 
     $toast('Berhasil menambahkan pengguna baru.', 'success');
+    clearForm()
   } catch (error) {
     $toast('Gagal menambahkan pengguna baru.', 'success');
   } finally {
     isLoading.value = false;
-    clearForm()
   }
 }
 </script>

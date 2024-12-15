@@ -53,6 +53,11 @@ const address = ref(null)
 const phone = ref(null)
 const isLoading = ref<boolean>(false)
 
+const clearForm = () => {
+  name.value = null
+  address.value = null
+  phone.value = null
+}
 
 const handleSubmit = async () => {
   try {
@@ -69,8 +74,8 @@ const handleSubmit = async () => {
         location: "Unknown"
       }
     })
-
     $toast('Berhasil menambahkan data puskesmas.', 'success');
+    clearForm()
   } catch (error) {
     $toast('Gagal menambahkan data puskesmas.', 'error');
   } finally {

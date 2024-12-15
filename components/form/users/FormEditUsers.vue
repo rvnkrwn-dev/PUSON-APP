@@ -129,6 +129,7 @@ const handleSubmit = async () => {
     })
 
     $toast('Berhasil mengubah data pengguna.', 'success');
+    selectedUser.value = null
   } catch (error) {
     $toast('Gagal mengubah data pengguna.', 'error');
   } finally {
