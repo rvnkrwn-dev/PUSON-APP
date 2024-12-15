@@ -88,6 +88,7 @@ const handleSubmit = async () => {
     })
 
     $toast('Berhasil mengubah data puskesmas.', 'success');
+    selectedPuskesmas.value = null
   } catch (error) {
     $toast('Gagal mengubah data puskesmas.', 'error');
   } finally {
