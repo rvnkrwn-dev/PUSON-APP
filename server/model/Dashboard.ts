@@ -1,5 +1,6 @@
-import { prisma } from '~/server/config/db';
-import { Gender } from '@prisma/client';
+import {prisma} from '~/server/config/db';
+import {Gender} from '@prisma/client';
+import items from "@redocly/ajv/lib/vocabularies/applicator/items";
 
 export class Dashboard {
     static getStuntingDashboard = async (year: number) => {
@@ -17,6 +18,7 @@ export class Dashboard {
                 med_check_up: {
                     include: {
                         child: true,
+                        _count: true
                     },
                 },
             },
@@ -36,6 +38,15 @@ export class Dashboard {
             }
         });
 
+        let totals = 0;
+        stunting.male.forEach((item: number) => {
+            totals += item;
+        })
+
+        stunting.female.forEach((item: number) => {
+            totals += item;
+        })
+
         return {
             stunting: [
                 {
@@ -47,6 +58,7 @@ export class Dashboard {
                     data: stunting.female,
                 }
             ],
+            totals: totals,
             categories: [
                 'January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'November', 'December'
@@ -55,17 +67,17 @@ export class Dashboard {
     };
 
 
-
-
     static getChildDashboard = async () => {
         const children = await prisma.child.findMany();
 
         const childCount = {
             male: 0,
             female: 0,
+            totals: 0,
         };
 
         children.forEach(child => {
+            childCount.totals++;
             if (child.gender === Gender.male) {
                 childCount.male++;
             } else if (child.gender === Gender.female) {
@@ -75,7 +87,8 @@ export class Dashboard {
 
         return {
             anak: [childCount.male, childCount.female],
-            label: ['Laki - Laki', 'Perempuan']
+            label: ['Laki - Laki', 'Perempuan'],
+            totals: childCount.totals,
         };
     };
 
