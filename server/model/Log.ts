@@ -104,6 +104,9 @@ export class Log {
             where: {user_id},
             skip: skip,
             take: take,
+            orderBy: {
+                created_at: "desc"
+            },
             include: {
                 user: {
                     select: {

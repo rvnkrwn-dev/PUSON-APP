@@ -190,7 +190,7 @@
                 Stunting
               </h2>
               <p class="text-xl sm:text-2xl font-medium text-gray-800">
-                100
+                {{ stuntingGraph?.totals }}
               </p>
             </div>
 
@@ -245,7 +245,7 @@
                 Anak
               </h2>
               <p class="text-xl sm:text-2xl font-medium text-gray-800">
-                100
+                {{ childGraph?.totals }}
               </p>
             </div>
           </div>
@@ -289,7 +289,7 @@
         </div>
         <!-- End Header -->
 
-        <div id="recently-activities" class="h-full w-full mt-2">
+        <div id="recently-activities" class="h-full w-full mt-2 overflow-auto">
           <client-only>
             <DataTablesRecentlyActivities :data="recentlyActivities" />
           </client-only>
