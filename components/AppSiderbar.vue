@@ -420,11 +420,11 @@
             </li>
 
             <li>
-              <NuxtLink class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="/report" active-class="bg-gray-100">
+              <button class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                        @click="handleLogout">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
                 Keluar
-              </NuxtLink>
+              </button>
             </li>
           </ul>
         </nav>
@@ -436,6 +436,19 @@
 </template>
 
 <script setup lang="ts">
+const {logout} = useAuth()
+const {$toast} = useNuxtApp();
+
+const handleLogout = async () => {
+  try {
+    await logout()
+  } catch (error: any) {
+    return
+  } finally {
+    $toast('Berhasil menghapus sesi masuk.', 'success'); // Menampilkan pesan kesalahan menggunakan toast
+    navigateTo('/auth/login'); // Setelah logout berhasil, arahkan ke halaman login
+  }
+}
 </script>
 
 <style scoped>
