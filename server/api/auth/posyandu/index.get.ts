@@ -39,10 +39,14 @@ export default defineEventHandler(async (event) => {
         return {
             code: 200,
             message: 'Posyandu fetched successfully!',
-            data: posyandu,
-            totalPages,
-            prev: prevPage,
-            next: nextPage,
+            data: {
+                posyandu
+            },
+            meta: {
+                totalPages,
+                prev: prevPage,
+                next: nextPage,
+            }
         };
     } catch (error: any) {
         console.error('Error fetching Posyandu:', error);
