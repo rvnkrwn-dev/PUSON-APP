@@ -34,7 +34,6 @@ model User {
   staff_posyandu     StaffPosyandu[]
   child              Child[]
   med_check_up       MedCheckUp[]
-  respons            Respon[]
   kk                 KK[]
   nik                NIK[]
   nik_child          NIKChild[]
@@ -228,8 +227,6 @@ model MedCheckUp {
   user_id             Int // Admin Posyandu yang cek
   user                User               @relation(fields: [user_id], references: [id], onDelete: Cascade)
   result_med_check_up ResultMedCheckUp[]
-  respons             Respon[]
-  income_level        IncomeLevel[]
 }
 
 model ResultMedCheckUp {
@@ -248,48 +245,6 @@ enum StuntingStatus {
   stunting
   overweight
   obese
-}
-
-model Question {
-  id            Int      @id @default(autoincrement())
-  question_text String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  respons       Respon[]
-}
-
-model Respon {
-  id              Int        @id @default(autoincrement())
-  user_id         Int
-  user            User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  question_id     Int
-  question        Question   @relation(fields: [question_id], references: [id], onDelete: Cascade)
-  med_check_up_id Int
-  med_check_up    MedCheckUp @relation(fields: [med_check_up_id], references: [id], onDelete: Cascade)
-  answer          Answer
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-}
-
-enum Answer {
-  SL
-  S
-  J
-  TP
-}
-
-model IncomeLevel {
-  id                         Int        @id @default(autoincrement())
-  monthly_income             Float
-  child_expense              Float
-  family_expense             Float
-  dependents_count           Int
-  social_assistance_received Float?
-  total_family_expense       Float
-  created_at                 DateTime   @default(now())
-  updated_at                 DateTime   @updatedAt
-  med_check_up_id            Int
-  med_check_up               MedCheckUp @relation(fields: [med_check_up_id], references: [id], onDelete: Cascade)
 }
 
 model Notification {
