@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
             return { code: 403, message: 'Pengguna tidak valid dengan pengguna' };
         }
 
-        // Check if the new password is different from the old password
+        // Periksa apakah kata sandi baru berbeda dari kata sandi lama
         const isPasswordSame = bcrypt.compareSync(newPassword, user.password);
         if (isPasswordSame) {
             setResponseStatus(event, 400);
@@ -69,7 +69,6 @@ export default defineEventHandler(async (event) => {
         return { code: 200, message: 'Kata sandi telah berhasil diatur ulang.' };
 
     } catch (error: any) {
-        console.error('Kesalahan pengaturan ulang kata sandi:', error);
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: 'Internal Server Error' })

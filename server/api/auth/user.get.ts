@@ -1,20 +1,21 @@
 import { User } from '~/server/model/User';
-import {createLog} from "~/server/utils/atLog";
+import { createLog } from "~/server/utils/atLog";
 
 export default defineEventHandler(async (event) => {
     try {
+        // Mengambil ID pengguna dari konteks otentikasi
         const id = parseInt(event.context.auth?.user?.id as string);
 
-        // Validate ID
+        // Validasi ID
         if (!id || isNaN(id)) {
             setResponseStatus(event, 400);
-            return {code: 400, message: 'Pengguna tidak valid'};
+            return { code: 400, message: 'Pengguna tidak valid' };
         }
 
-        // get the user
+        // Mengambil data pengguna berdasarkan ID
         const user = await User.getUserById(id);
 
-        // Set response status and return success response
+        // Mengatur status respons dan mengembalikan respons sukses
         setResponseStatus(event, 200);
         return {
             code: 200,

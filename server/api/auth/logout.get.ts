@@ -7,37 +7,39 @@ import {ActionLog} from "~/types/TypesModel";
 
 export default defineEventHandler(async (event) => {
     try {
-        // Check if user exists
+        // Memeriksa apakah pengguna ada
         const user = event.context.auth.user;
         if (!user) {
             setResponseStatus(event, 403);
             return { code: 403, message: 'Pengguna tidak valid' };
         }
 
+        // Memeriksa header otorisasi
         const authHeader = event.req.headers['authorization'];
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             setResponseStatus(event, 401);
             return { error: 'Tidak terotorisasi' };
         }
 
+        // Memverifikasi token
         const token = authHeader.split(' ')[1];
         verifyToken(token);
 
-        // Add access token to the blacklist
+        // Menambahkan token akses ke dalam daftar hitam
         addToBlacklist(token);
 
-        // Retrieve refresh token from the cookie using getCookie
-        const refreshToken = getCookie(event, 'refresh_token'); // Ensure the cookie name matches
+        // Mengambil refresh token dari cookie menggunakan getCookie
+        const refreshToken = getCookie(event, 'refresh_token'); // Pastikan nama cookie cocok
 
         if (!refreshToken) {
             setResponseStatus(event, 400);
             return { code: 400, message: 'Tidak ada refresh token yang ditemukan dalam cookie.' };
         }
 
-        // Delete refresh token from the database
+        // Menghapus refresh token dari basis data
         await RefreshToken.deleteToken(refreshToken);
 
-        const data = await readBody(event)
+        const data = await readBody(event);
 
         const payload : LogRequest = {
             user_id : user.id,
@@ -48,21 +50,17 @@ export default defineEventHandler(async (event) => {
             description : `Pengguna dengan ID ${user.id}, berhasil keluar`,
         }
 
-        await createLog(payload)
+        await createLog(payload);
 
-        // Log the logout activity
-        // await createLog(user.id, 'Logout', `User logged out`);
-
-        // Delete refresh token from cookies
+        // Menghapus refresh token dari cookie
         deleteRefreshToken(event);
 
-        // Append the Set-Cookie header to remove the refresh token
+        // Menambahkan header Set-Cookie untuk menghapus refresh token
         appendHeader(event, 'Set-Cookie', 'refresh_token=; HttpOnly; Path=/; Max-Age=0');
 
-        // Return success response
+        // Mengembalikan respons sukses
         return { code: 200, message: 'Berhasil keluar!' };
     } catch (error: any) {
-        console.error('Kesalahan ketika keluar:', error);
         return sendError(
             event,
             createError({ statusCode: 500, statusMessage: 'Internal Server Error' }),

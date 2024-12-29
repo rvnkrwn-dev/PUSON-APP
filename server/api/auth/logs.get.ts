@@ -40,7 +40,6 @@ export default defineEventHandler(async (event) => {
             }
         };
     } catch (error) {
-        console.error('Terjadi kesalahan saat mengambil log:', error);
         setResponseStatus(event, 500);
         if (error instanceof Error) {
             return { error: error.message };
