@@ -40,7 +40,6 @@ export default defineEventHandler(async (event) => {
             },
         };
     } catch (error: any) {
-        // Mengembalikan error jika ada
         return sendError(
             event,
             createError({statusCode: 500, statusMessage: error.message || "Internal Server Error"})
