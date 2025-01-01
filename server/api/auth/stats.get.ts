@@ -3,11 +3,12 @@ import { Stats } from '~/server/model/Stats';
 export default defineEventHandler(async (event) => {
     try {
         // Ambil data statistik dari model
-        const [puskesmas, posyandu, anak, pengguna] = await Promise.all([
+        const [puskesmas, posyandu, anak, pengguna, tahun] = await Promise.all([
             Stats.countAllPuskesmas(),
             Stats.countAllPosyandu(),
             Stats.countAllChildren(),
             Stats.countUsers(),
+            Stats.countAllYear()
         ]);
 
         // Set response status dan kembalikan data statistik
@@ -19,7 +20,8 @@ export default defineEventHandler(async (event) => {
                 puskesmas,
                 posyandu,
                 anak,
-                pengguna
+                pengguna,
+                tahun
             },
         };
     } catch (error: any) {
