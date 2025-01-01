@@ -180,13 +180,10 @@ export class KK {
             where: {
                 OR: [
                     {
-                        id: {
-                            equals: parseInt(search, 10),
-                        },
                         number: {
                             contains: search
                         }
-                    },
+                    }
                 ]
             }
         })
