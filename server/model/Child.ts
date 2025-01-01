@@ -4,19 +4,23 @@ import {data} from "autoprefixer";
 
 export class Child {
     static createChild = (data: any) => {
+        if (!data.user_id) {
+            throw new Error('User ID is required');
+        }
+
         return prisma.child.create({
             data: {
                 name: data.name,
                 bod: data.bod,
                 gender: data.gender,
                 status: data.status,
-                user_id: data.user_id,
-                posyandu_id: data.posyandu_id,
+                user_id: data.user_id, // Ensure this is provided
+                posyandu_id: data.posyandu_id, // Ensure this is provided
                 nik: {
                     create: {
                         number: data.nik.number,
-                        user_id: data.user_id,
-                        kk_id: data.nik.kk_id,
+                        user_id: data.user_id, // Ensure this is provided
+                        kk_id: data.nik.kk_id
                     }
                 }
             }

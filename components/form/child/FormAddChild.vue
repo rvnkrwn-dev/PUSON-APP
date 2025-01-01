@@ -56,9 +56,9 @@
             <ComboBoxPosyandu class="col-span-2" @selectedPosyandu="handleSelectPosyandu" />
           </div>
 
-          <!-- Nomor Kartu Keluarga (KK) -->
+          <!-- Nomor Induk Kependudukan (NIK) -->
           <div class="grid sm:grid-cols-3">
-            <label for="nik" class="block text-sm font-medium mb-2 w-full">Nomor Kartu Keluarga</label>
+            <label for="nik" class="block text-sm font-medium mb-2 w-full">Nomor Induk Kependudukan</label>
             <input type="text" id="nik"
                    v-model="nik"
                    class="col-span-2 py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
@@ -119,10 +119,10 @@ const handleSubmit = async () => {
       method: 'POST',
       body: {
         name: name.value,
-        bod: bod.value,
+        bod: new Date(bod.value as string).toISOString(),
         gender: gender.value,
         status: status.value,
-        posyanduId: posyandu_id.value,
+        posyandu_id: posyandu_id.value,
         nik: {
           number: nik.value,
           kk_id: posyandu_id.value, // Assuming posyandu_id is linked to KK (Kartu Keluarga)

@@ -175,16 +175,10 @@ export class KK {
         return prisma.kK.count();
     };
 
-    static searchKK = (search: string) => {
-        return prisma.kK.findMany({
+    static searchKK = (kk_number: string) => {
+        return prisma.kK.findFirst({
             where: {
-                OR: [
-                    {
-                        number: {
-                            contains: search
-                        }
-                    }
-                ]
+                number: kk_number
             }
         })
     }

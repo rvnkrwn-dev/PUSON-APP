@@ -175,33 +175,10 @@ export class NIK {
         return prisma.nIK.count();
     };
 
-    static searchNIK = (search: string) => {
-        return prisma.nIK.findMany({
+    static searchNIK = (nik: string) => {
+        return prisma.nIK.findFirst({
             where: {
-                OR: [
-                    {
-                        number: {
-                            contains: search,
-                        }
-                    },
-                    {
-                        user: {
-                            email: {
-                                contains: search
-                            },
-                            full_name: {
-                                contains: search
-                            }
-                        }
-                    },
-                    {
-                        kk: {
-                            number: {
-                                contains: search,
-                            }
-                        }
-                    }
-                ]
+                number: nik
             }
         })
     }
