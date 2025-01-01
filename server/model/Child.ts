@@ -121,10 +121,14 @@ export class Child {
                 nik: true,
             },
         }).then(children => {
-            return children.map(child => ({
-                ...child,
-                bod: new Date(child.bod) // Konversi `bod` ke Date
-            }));
+            return children.map(child => {
+                const age = calculateAge(child.bod);
+                return {
+                    ...child,
+                    bod: new Date(child.bod),
+                    age: age
+                };
+            });
         });
     };
 

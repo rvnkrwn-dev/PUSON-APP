@@ -1,5 +1,18 @@
 import { Child } from "~/server/model/Child";
 
+function calculateAge(birthDate: any): number {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDifference = today.getMonth() - birthDateObj.getMonth();
+
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+        age--;
+    }
+
+    return age;
+};
+
 export default defineEventHandler(async (event) => {
     try {
         // Check if user exists
@@ -34,10 +47,20 @@ export default defineEventHandler(async (event) => {
         const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pagesize=${pagesize}` : null;
         const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pagesize=${pagesize}` : null;
 
+        // Format bod ke Date dan tambahkan age
+        const formattedChildren = children.map(child => {
+            const age = calculateAge(child.bod);
+            return {
+                ...child,
+                bod: new Date(child.bod),
+                age: age
+            };
+        });
+
         // Return hasil data
         return {
             message: "Data anak berhasil dikembalikan!",
-            data: children,
+            data: formattedChildren,
             totalPages,
             prev: prevPage,
             next: nextPage,
