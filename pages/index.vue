@@ -286,10 +286,10 @@
         <div class="flex justify-between items-center">
           <div>
             <h2 class="text-sm text-gray-500">
-              Prediksi Stunting
+              Prediksi Stunting (akurasi: {{ stuntingPredictionDataGraph?.model_evaluation?.accuracy ?? "0%" }})
             </h2>
             <p class="text-xl sm:text-2xl font-medium text-gray-800">
-              {{ stuntingGraph?.totals }}
+              <span class="text-sm">Tahun </span> {{ stuntingPredictionGraph?.tahun_predeksi ?? new Date().getFullYear()}}
             </p>
           </div>
 
@@ -350,8 +350,8 @@
         <div id="hs-single-area-chart" class="h-full w-full">
           <client-only>
             <ChartAreaChart
-                :series="stuntingGraph?.stunting??[]"
-                :categories="stuntingGraph?.categories??[]"
+                :series="stuntingPredictionGraph?.prediksi??[]"
+                :categories="stuntingPredictionGraph?.categories??[]"
                 :color="chartColors"
             />
           </client-only>
@@ -387,7 +387,7 @@ const childDataGraph = ref([])
 const stuntingDataGraph = ref([])
 const stuntingPredictionDataGraph = ref([])
 const year = ref(new Date().getFullYear())
-const startYear = ref(new Date().getFullYear())
+const startYear = ref(new Date().getFullYear() - 1)
 const endYear = ref(new Date().getFullYear())
 const recentlyActivitiesData = ref([])
 const statsData = ref([])
@@ -398,6 +398,7 @@ const chartColors = ref(['#2563EB', '#22d3ee']); // Warna garis yang berbeda
 const stats: any = computed(() => statsData.value)
 const childGraph: any = computed(() => childDataGraph.value)
 const stuntingGraph: any = computed(() => stuntingDataGraph.value)
+const stuntingPredictionGraph: any = computed(() => stuntingPredictionDataGraph.value)
 const recentlyActivities: any = computed(() => recentlyActivitiesData.value)
 
 const fetchStatsData = async () => {
@@ -429,8 +430,9 @@ const fetchStuntingDataGraph = async () => {
 
 const fetchStuntingPredictionDataGraph = async () => {
   try {
-    const response: any = await useFetchApi(`https://extra-reba-fazza-abiyyu-a1cfd750.koyeb.app/predict?start_year=${startYear.value}&end_year=${endYear.value}`)
-    stuntingDataGraph.value = response?.data
+    const response: any = await $fetch(`https://extra-reba-fazza-abiyyu-a1cfd750.koyeb.app/predict?start_year=${startYear.value}&end_year=${endYear.value}`)
+    stuntingPredictionDataGraph.value = response?.data
+    console.log(stuntingPredictionDataGraph.value)
   } catch (e) {
 
   }
