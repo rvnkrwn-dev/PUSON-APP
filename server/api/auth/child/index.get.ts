@@ -22,12 +22,12 @@ export default defineEventHandler(async (event) => {
             });
         }
 
-        // Panggil fungsi `getAllUsers` dari UserService
-        const child = await Child.getAllChildren(page, pagesize);
+        // Panggil fungsi `getAllChildren` dari Child model
+        const children = await Child.getAllChildren(page, pagesize);
 
         // Hitung total halaman (ini hanya contoh, sesuaikan dengan kebutuhan Anda)
-        const totalUsers = await Child.countAllChildren();
-        const totalPages = Math.ceil(totalUsers / pagesize);
+        const totalChildren = await Child.countAllChildren();
+        const totalPages = Math.ceil(totalChildren / pagesize);
 
         // Buat URL untuk prev dan next
         const baseUrl = "/api/auth/child";
@@ -36,19 +36,19 @@ export default defineEventHandler(async (event) => {
 
         // Return hasil data
         return {
-            message: "Data anak berhasil dikebalikan!",
-            data: child,
+            message: "Data anak berhasil dikembalikan!",
+            data: children,
             totalPages,
             prev: prevPage,
             next: nextPage,
         };
     } catch (error: any) {
-        if (error.code === "P2025"){
+        if (error.code === "P2025") {
             return { code: 404, message: 'Data tidak ditemukan' };
         }
         return sendError(
             event,
-            createError({statusCode: 500, statusMessage: error?.message || 'Internal Server Error'})
+            createError({ statusCode: 500, statusMessage: error?.message || 'Internal Server Error' })
         );
     }
 });
