@@ -183,16 +183,6 @@ export class KK {
                         number: {
                             contains: search
                         }
-                    },
-                    {
-                        user: {
-                            email: {
-                                contains: search
-                            },
-                            full_name: {
-                                contains: search
-                            }
-                        }
                     }
                 ]
             }
