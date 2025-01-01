@@ -205,7 +205,7 @@
       "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
       "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
     }'>
-                    <option v-for="(year,i) in [2024,2023, 2022, 2021]" :value="year" :key="i"
+                    <option v-for="(year,i) in [2025, 2024,2023, 2022, 2021]" :value="year" :key="i"
                             :selected="year === new Date().getFullYear()">{{ year }}
                     </option>
                   </select>
@@ -279,6 +279,86 @@
         <!-- End Card -->
       </div>
 
+      <!-- Card -->
+      <div
+          class="p-4 md:col-span-2 md:p-5 min-h-[410px] flex flex-col bg-white border shadow-sm rounded-xl">
+        <!-- Header -->
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-sm text-gray-500">
+              Prediksi Stunting
+            </h2>
+            <p class="text-xl sm:text-2xl font-medium text-gray-800">
+              {{ stuntingGraph?.totals }}
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="relative">
+              <client-only>
+                <select v-model="startYear" data-hs-select='{
+      "placeholder": "Select option...",
+      "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+      "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+      "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+      "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+      "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+    }'>
+                  <option v-for="(year,i) in [2025, 2024,2023, 2022, 2021]" :value="year" :key="i"
+                          :selected="year === new Date().getFullYear()">{{ year }}
+                  </option>
+                </select>
+              </client-only>
+              <div class="absolute top-1/2 end-2.5 -translate-y-1/2">
+                <svg class="shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <path d="m7 15 5 5 5-5"></path>
+                  <path d="m7 9 5-5 5 5"></path>
+                </svg>
+              </div>
+            </div>
+            <span>-</span>
+            <div class="relative">
+              <client-only>
+                <select v-model="endYear" data-hs-select='{
+      "placeholder": "Select option...",
+      "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+      "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+      "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+      "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+      "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+    }'>
+                  <option v-for="(year,i) in [2025, 2024,2023, 2022, 2021]" :value="year" :key="i"
+                          :selected="year === new Date().getFullYear()">{{ year }}
+                  </option>
+                </select>
+              </client-only>
+              <div class="absolute top-1/2 end-2.5 -translate-y-1/2">
+                <svg class="shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <path d="m7 15 5 5 5-5"></path>
+                  <path d="m7 9 5-5 5 5"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Header -->
+
+        <div id="hs-single-area-chart" class="h-full w-full">
+          <client-only>
+            <ChartAreaChart
+                :series="stuntingGraph?.stunting??[]"
+                :categories="stuntingGraph?.categories??[]"
+                :color="chartColors"
+            />
+          </client-only>
+        </div>
+      </div>
+      <!-- End Card -->
+
       <div
           class="p-4 md:p-5 h-fit max-h-[410px] flex flex-col bg-white border shadow-sm rounded-xl">
         <!-- Header -->
@@ -305,7 +385,10 @@ import DataTablesRecentlyActivities from "~/components/datatables/DataTablesRece
 
 const childDataGraph = ref([])
 const stuntingDataGraph = ref([])
+const stuntingPredictionDataGraph = ref([])
 const year = ref(new Date().getFullYear())
+const startYear = ref(new Date().getFullYear())
+const endYear = ref(new Date().getFullYear())
 const recentlyActivitiesData = ref([])
 const statsData = ref([])
 
@@ -344,6 +427,15 @@ const fetchStuntingDataGraph = async () => {
   }
 }
 
+const fetchStuntingPredictionDataGraph = async () => {
+  try {
+    const response: any = await useFetchApi(`https://extra-reba-fazza-abiyyu-a1cfd750.koyeb.app/predict?start_year=${startYear.value}&end_year=${endYear.value}`)
+    stuntingDataGraph.value = response?.data
+  } catch (e) {
+
+  }
+}
+
 const fetchRecentlyActivitiesData = async () => {
   try {
     const response: any = await useFetchApi(`/api/auth/logs`)
@@ -354,12 +446,18 @@ const fetchRecentlyActivitiesData = async () => {
 }
 
 watch(year, fetchStuntingDataGraph)
+watch([startYear, endYear], ([newStartYear, newEndYear]) => {
+  if (newStartYear && newEndYear) {
+    fetchStuntingPredictionDataGraph();
+  }
+});
 
 onMounted(() => {
   fetchStatsData()
   fetchChildDataGraph()
   fetchStuntingDataGraph()
   fetchRecentlyActivitiesData()
+  fetchStuntingPredictionDataGraph()
 })
 </script>
 
