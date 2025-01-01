@@ -40,7 +40,7 @@
                 <div class="relative">
                   <input v-model="password" id="password" type="password"
                          class="py-3 ps-4 pe-10 block w-full border rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                         placeholder="Ulangi Kata Sandi">
+                         placeholder="Kata Sandi">
                   <button type="button" data-hs-toggle-password='{
         "target": "#password"
       }'
