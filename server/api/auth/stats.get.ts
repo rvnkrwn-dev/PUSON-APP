@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
                 posyandu,
                 anak,
                 pengguna,
-                tahun
+                tahun : [...new Set(tahun)],
             },
         };
     } catch (error: any) {
