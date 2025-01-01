@@ -8,7 +8,7 @@
 
     <hr>
 
-    <div class="h-full w-full mt-2 overflow-y-auto">
+    <div class="h-full w-full mt-2 ">
       <form v-if="selectedPosyandu" @submit.prevent="handleSubmit">
         <div class="space-y-4 flex flex-col">
           <!-- Nama Posyandu -->
