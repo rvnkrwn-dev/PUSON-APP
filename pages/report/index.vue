@@ -87,9 +87,9 @@ const fetchResultMedCheckUp = async () => {
     isLoading.value = true
     const response: any = await useFetchApi(`/api/auth/result-med-check-up?page=${page.value}&pagesize=${pageSize.value}`);
     resultMedCheckUpData.value = response?.data;
-    totalPages.value = response?.meta?.totalPages;
-    nextPage.value = response?.meta?.next;
-    prevPage.value = response?.meta?.prev;
+    totalPages.value = response?.totalPages;
+    nextPage.value = response?.next;
+    prevPage.value = response?.prev;
   } catch (e) {
     handleError(e)
   } finally {
@@ -102,9 +102,9 @@ const handleChangeFetchData = async (payload: any) => {
     isLoading.value = true
     const response: any = await useFetchApi(payload.url);
     resultMedCheckUpData.value = response?.data;
-    totalPages.value = response?.meta?.totalPages;
-    nextPage.value = response?.meta?.next;
-    prevPage.value = response?.meta?.prev;
+    totalPages.value = response?.totalPages;
+    nextPage.value = response?.next;
+    prevPage.value = response?.prev;
     currentPage.value = payload?.currentPage;
   } catch (e) {
     handleError(e)
