@@ -1,60 +1,153 @@
 <template>
-  <div class="w-full lg:ps-64">
-    <button type="button"
-            class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-            aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-logout"
-            data-hs-overlay="#hs-scale-animation-logout">
-      Open modal
-    </button>
+  <!-- Breadcrumb -->
+  <div
+      class="sticky top-0 inset-x-0 z-20 bg-white border-y px-4 sm:px-6 lg:px-8 lg:hidden">
+    <div class="flex items-center py-2">
+      <!-- Navigation Toggle -->
+      <button type="button"
+              class="size-8 flex justify-center items-center gap-x-2 border border-gray-200 text-gray-800 hover:text-gray-500 rounded-lg focus:outline-none focus:text-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+              aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-application-sidebar"
+              aria-label="Toggle navigation" data-hs-overlay="#hs-application-sidebar">
+        <span class="sr-only">Toggle Navigation</span>
+        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="18" x="3" y="3" rx="2"/>
+          <path d="M15 3v18"/>
+          <path d="m8 9 3 3-3 3"/>
+        </svg>
+      </button>
+      <!-- End Navigation Toggle -->
 
-    <div id="hs-scale-animation-logout"
-         class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
-         role="dialog" tabindex="-1" aria-labelledby="hs-scale-animation-logout-label">
-      <div
-          class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
-        <div
-            class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
-          <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
-            <h3 id="hs-scale-animation-logout-label" class="font-bold text-gray-800 dark:text-white">
-              Modal title
-            </h3>
-            <button type="button"
-                    class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
-                    aria-label="Close" data-hs-overlay="#hs-scale-animation-logout">
-              <span class="sr-only">Close</span>
-              <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 6 6 18"></path>
-                <path d="m6 6 12 12"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="p-4 overflow-y-auto">
-            <p class="mt-1 text-gray-800 dark:text-neutral-400">
-              This is a wider card with supporting text below as a natural lead-in to additional content.
-            </p>
-          </div>
-          <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
-            <button type="button"
-                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                    data-hs-overlay="#hs-scale-animation-logout">
-              Close
-            </button>
-            <button type="button"
-                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
-              Save changes
-            </button>
-          </div>
-        </div>
-      </div>
+      <!-- Breadcrumb -->
+      <ol class="ms-3 flex items-center whitespace-nowrap">
+        <li class="flex items-center text-sm text-gray-800">
+          Aplikasi
+          <svg class="shrink-0 mx-3 overflow-visible size-2.5 text-gray-400 " width="16"
+               height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </li>
+        <li class="text-sm font-semibold text-gray-800 truncate" aria-current="page">
+          Hasil Pemeriksaan Medis
+        </li>
+      </ol>
+      <!-- End Breadcrumb -->
+    </div>
+  </div>
+  <!-- End Breadcrumb -->
+
+  <div class="w-full lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <DatatablesDataTable
+          :title="'Hasil Pemeriksaan Medis'"
+          :fields="[
+            { label: 'ID Pemeriksaan', key: 'id' },
+            { label: 'Status', key: 'status' },
+            { label: 'IMT', key: 'imt' },
+            { label: 'IPB', key: 'ipb' },
+            { label: 'Tinggi Badan', key: 'med_check_up.height' },
+            { label: 'Berat Badan', key: 'med_check_up.weight' },
+            { label: 'Usia', key: 'med_check_up.age' },
+            { label: 'Lingkar Kepala', key: 'med_check_up.circumference' }
+          ]"
+          :data="resultMedCheckUp"
+          :perPage="pageSize"
+          :totalPages="totalPages"
+          :currentPage="currentPage"
+          :prevPage="prevPage"
+          :nextPage="nextPage"
+          :isLoading="isLoading"
+          :deleteAction="true"
+          @fetchData="(e) => handleChangeFetchData(e)"
+          @searchData="(e) => handleSearchData(e)"
+          @deleteData="(e) => handleDeleteData(e)"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const { handleError } = useErrorHandling();
+const {$toast} = useNuxtApp();
 
+const page = ref(1)
+const pageSize = ref(10)
+const totalPages = ref(1)
+const currentPage = ref(1)
+const nextPage = ref()
+const prevPage = ref()
+const resultMedCheckUpData = ref([])  // Changed to resultMedCheckUpData
+const isLoading = ref<boolean>(false)
+
+const resultMedCheckUp = computed(() => resultMedCheckUpData.value)
+
+const fetchResultMedCheckUp = async () => {
+  try {
+    isLoading.value = true
+    const response: any = await useFetchApi(`/api/auth/result-med-check-up?page=${page.value}&pagesize=${pageSize.value}`);
+    resultMedCheckUpData.value = response?.data;
+    totalPages.value = response?.meta?.totalPages;
+    nextPage.value = response?.meta?.next;
+    prevPage.value = response?.meta?.prev;
+  } catch (e) {
+    handleError(e)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const handleChangeFetchData = async (payload: any) => {
+  try {
+    isLoading.value = true
+    const response: any = await useFetchApi(payload.url);
+    resultMedCheckUpData.value = response?.data;
+    totalPages.value = response?.meta?.totalPages;
+    nextPage.value = response?.meta?.next;
+    prevPage.value = response?.meta?.prev;
+    currentPage.value = payload?.currentPage;
+  } catch (e) {
+    handleError(e)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const handleSearchData = async (query: string) => {
+  try {
+    if (query.length === 0) {
+      await fetchResultMedCheckUp()  // Adjusted to fetch resultMedCheckUp data
+      return
+    }
+    isLoading.value = true
+    const response: any = await useFetchApi(`/api/auth/result-med-check-up/search?q=${query}`);
+    resultMedCheckUpData.value = response?.data;
+    totalPages.value = 1;
+    nextPage.value = null;
+    prevPage.value = null;
+  } catch (e) {
+    handleError(e)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const handleDeleteData = async (id: number) => {
+  try {
+    if (!confirm("Anda yakin ingin menghapus ini?")) return
+    await useFetchApi(`/api/auth/result-med-check-up/${id}`, {
+      method: 'DELETE'
+    })
+    resultMedCheckUpData.value = resultMedCheckUpData.value.filter((item: any) => item.id !== id)
+    $toast('Berhasil menghapus data.', 'success');
+  } catch (e) {
+    $toast('Gagal menghapus data.', 'error');
+  }
+}
+
+onMounted(async () => {
+  await fetchResultMedCheckUp()
+})
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
