@@ -71,7 +71,8 @@
                         :key="field.key"
                         class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
                     >
-                      {{ row[field.key] }}
+                      <!-- Use getNestedValue function to access nested keys -->
+                      {{ getNestedValue(row, field.key) }}
                     </td>
                     <td
                         v-if="deleteAction"
@@ -149,6 +150,7 @@
 
 <script setup lang="ts">
 import {debounce} from 'lodash';
+
 // Define the props
 const props = defineProps({
   title: {
@@ -194,7 +196,13 @@ const props = defineProps({
 });
 
 const emits = defineEmits(['fetchData', 'searchData', 'deleteData']);
-const searchText = ref('')
+const searchText = ref('');
+
+// Function to get the value of a nested key (e.g., 'user.profile.name')
+const getNestedValue = (obj: Record<string, any>, key: string): any => {
+  return key.split('.').reduce((acc, part) => acc?.[part], obj);
+};
+
 const changePage = (url: string, currentPage: number) => {
   const payload = {url, currentPage};
   emits('fetchData', payload)
@@ -210,7 +218,6 @@ const handleSearch = debounce(async () => {
 
 watch(searchText, handleSearch)
 </script>
-
 
 <style lang="css" scoped>
 </style>
