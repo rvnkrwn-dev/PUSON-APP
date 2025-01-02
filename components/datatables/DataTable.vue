@@ -149,7 +149,8 @@
 </template>
 
 <script setup lang="ts">
-import {debounce} from 'lodash';
+import debounce from 'lodash/debounce';
+
 
 // Define the props
 const props = defineProps({
