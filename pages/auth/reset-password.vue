@@ -194,7 +194,6 @@
 
 <script setup lang="ts">
 import AppLogo from "~/components/AppLogo.vue";
-import {sleep} from "@antfu/utils"; // Impor komponen AppLogo untuk digunakan di template
 
 definePageMeta({
   layout: false
@@ -240,7 +239,6 @@ const handleSubmit = async () => {
     });
 
     $toast('Berhasil memperbaharui kata sandi.', 'success');
-    await sleep(500)
     return navigateTo('/auth/login')
   } catch (error: any) {
     return $toast('Gagal memperbaharui kata sandi.', 'error');
