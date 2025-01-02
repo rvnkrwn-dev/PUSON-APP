@@ -32,7 +32,7 @@
 
     <div
         id="hs-offcanvas-right"
-        class="hs-overlay hs-overlay-open:translate-x-0 hidden translate-x-full fixed top-0 end-0 transition-all duration-300 transform h-screen max-w-md w-full z-[80] bg-white border-s"
+        class="hs-overlay hs-overlay-open:translate-x-0 hidden translate-x-full fixed top-0 end-0 transition-all duration-300 transform h-screen max-w-md w-[80%] z-[80] bg-white border-s"
         role="dialog"
         tabindex="-1"
         aria-labelledby="hs-offcanvas-right-label"
