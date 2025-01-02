@@ -11,7 +11,8 @@
         <div class="space-y-4 flex flex-col">
           <!-- Nama Anak untuk Pencarian -->
           <div class="grid sm:grid-cols-3">
-            <ComboBoxChild @selectedChild="handleSelectChild" />
+            <label for="child" class="block text-sm font-medium mb-2 w-full">Anak</label>
+            <ComboBoxChild id="child" @selectedChild="handleSelectChild" />
           </div>
 
           <!-- Input Berat Badan -->

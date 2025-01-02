@@ -1,7 +1,7 @@
 <template>
-  <div class="relative space-y-3">
+  <div class="relative w-full space-y-3">
     <!-- Input Search Box -->
-    <div class="relative">
+    <div class="relative w-full">
       <!-- Icon Search -->
       <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
         <svg
@@ -77,7 +77,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
 import type { Child } from "~/types/TypesModel";  // Update this import to reflect your child type
 
 // Define emits
@@ -106,7 +105,7 @@ const onSearch = async () => {
   if (searchText.value.length > 0) {
     try {
       const response: any = await useFetchApi(`/api/auth/child/search?q=${searchText.value}`);
-      children.value = response.data.users;  // Response contains child data
+      children.value = response.data;  // Response contains child data
     } catch (error) {
       console.error('Error fetching children:', error);
       children.value = []; // Clear children if error occurs
