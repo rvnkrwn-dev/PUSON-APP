@@ -29,7 +29,7 @@
           </svg>
         </li>
         <li class="text-sm font-semibold text-gray-800 truncate" aria-current="page">
-          Posyandu
+          Pemeriksaan
         </li>
       </ol>
       <!-- End Breadcrumb -->
@@ -40,33 +40,32 @@
   <div class="w-full lg:ps-64">
     <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
       <DatatablesDataTable
-          :title="'Posyandu'"
-          :fields="[
-            { label: 'Nama Posyandu', key: 'name' },
-            { label: 'Alamat', key: 'address' },
-            { label: 'Telepon', key: 'phone' },
-          ]"
-          :data="posyandu"
-          :perPage="pageSize"
-          :totalPages="totalPages"
-          :currentPage="currentPage"
-          :prevPage="prevPage"
-          :nextPage="nextPage"
-          :isLoading="isLoading"
-          :deleteAction="true"
-          @fetchData="(e) => handleChangeFetchData(e)"
-          @searchData="(e) => handleSearchData(e)"
-          @deleteData="(e) => handleDeleteData(e)"
+          :title="'Pemeriksaan'"
+      :fields="[
+      { label: 'Nama Anak', key: 'child.name' },
+      { label: 'Tanggal Lahir', key: 'child.bod' },
+      { label: 'Jenis Kelamin', key: 'child.gender' },
+      { label: 'Tinggi Badan', key: 'height' },
+      { label: 'Berat Badan', key: 'weight' },
+      { label: 'Umur', key: 'age' },
+      { label: 'Lingkar Kepala', key: 'circumference' }
+      ]"
+      :data="medicalCheckups"
+      :perPage="pageSize"
+      :totalPages="totalPages"
+      :currentPage="currentPage"
+      :prevPage="prevPage"
+      :nextPage="nextPage"
+      :isLoading="isLoading"
+      @fetchData="(e) => handleChangeFetchData(e)"
+      @searchData="(e) => handleSearchData(e)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type {Puskesmas} from "~/types/TypesModel";
-
 const { handleError } = useErrorHandling();
-const {$toast} = useNuxtApp();
 
 const page = ref(1)
 const pageSize = ref(10)
@@ -74,19 +73,19 @@ const totalPages = ref(1)
 const currentPage = ref(1)
 const nextPage = ref()
 const prevPage = ref()
-const posyanduData = ref([])  // Changed to posyanduData
+const medicalCheckupsData = ref([])  // Ubah childrenData menjadi medicalCheckupsData
 const isLoading = ref<boolean>(false)
 
-const posyandu = computed(() => posyanduData.value)
+const medicalCheckups = computed(() => medicalCheckupsData.value)  // Ganti children menjadi medicalCheckups
 
-const fetchPosyandu = async () => {
+const fetchMedicalCheckups = async () => {
   try {
     isLoading.value = true
-    const response: any = await useFetchApi(`/api/auth/posyandu?page=${page.value}&pagesize=${pageSize.value}`);
-    posyanduData.value = response?.data?.posyandu; // Adjusted for posyandu data format
-    totalPages.value = response?.meta?.totalPages;
-    nextPage.value = response?.meta?.next;
-    prevPage.value = response?.meta?.prev;
+    const response: any = await useFetchApi(`/api/auth/med-check-up?page=${page.value}&pagesize=${pageSize.value}`);
+    medicalCheckupsData.value = response?.data; // Ubah menjadi medicalCheckupsData
+    totalPages.value = response?.totalPages;
+    nextPage.value = response?.next;
+    prevPage.value = response?.prev;
   } catch (e) {
     handleError(e)
   } finally {
@@ -98,10 +97,10 @@ const handleChangeFetchData = async (payload: any) => {
   try {
     isLoading.value = true
     const response: any = await useFetchApi(payload.url);
-    posyanduData.value = response?.data?.posyandu;
-    totalPages.value = response?.meta?.totalPages;
-    nextPage.value = response?.meta?.next;
-    prevPage.value = response?.meta?.prev;
+    medicalCheckupsData.value = response?.data; // Sesuaikan data pemeriksaan
+    totalPages.value = response?.totalPages;
+    nextPage.value = response?.next;
+    prevPage.value = response?.prev;
     currentPage.value = payload?.currentPage;
   } catch (e) {
     handleError(e)
@@ -113,12 +112,12 @@ const handleChangeFetchData = async (payload: any) => {
 const handleSearchData = async (query: string) => {
   try {
     if (query.length === 0) {
-      await fetchPosyandu()  // Adjusted to fetch posyandu data
+      await fetchMedicalCheckups()  // Ambil data pemeriksaan
       return
     }
     isLoading.value = true
-    const response: any = await useFetchApi(`/api/auth/posyandu/search?q=${query}`);
-    posyanduData.value = response?.data?.posyandu; // Adjusted for posyandu data format
+    const response: any = await useFetchApi(`/api/auth/med-check-up/search?q=${query}`);
+    medicalCheckupsData.value = response?.data; // Sesuaikan pencarian data pemeriksaan
     totalPages.value = 1;
     nextPage.value = null;
     prevPage.value = null;
@@ -129,28 +128,7 @@ const handleSearchData = async (query: string) => {
   }
 }
 
-const handleDeleteData = async (id: number) => {
-  try {
-    if (!confirm("Anda yakin ingin menghapus ini?")) return
-    const {deviceType, os, browser} = getDeviceAndBrowserInfo()
-    await useFetchApi(`/api/auth/posyandu/${id}`, {
-      method: 'DELETE',
-      body: {
-        ip_address: useState('ip_address').value,
-        device: `${deviceType}, ${os} on ${browser}`,
-        location: "Unknown"
-      }
-    })
-    posyanduData.value = posyanduData.value.filter((item: Puskesmas) => item.id !== id)
-    $toast('Berhasil mengubah data.', 'success');
-  } catch (e) {
-    $toast('Gagal mengubah data.', 'error');
-  }
-}
-
 onMounted(async () => {
-  await fetchPosyandu()
+  await fetchMedicalCheckups()  // Ambil data pemeriksaan saat komponen dimuat
 })
 </script>
-
-<style scoped></style>
