@@ -19,9 +19,7 @@ export default defineEventHandler(async (event) => {
         return {
             code: 200,
             message: "Berhasil mengembalikan data anak!",
-            data: {
-                users: child
-            },
+            data: child
         };
     } catch (error: any) {
         return sendError(
