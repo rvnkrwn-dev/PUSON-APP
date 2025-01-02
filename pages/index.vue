@@ -289,7 +289,7 @@
               Prediksi Stunting (akurasi: {{ stuntingPredictionDataGraph?.model_evaluation?.accuracy ?? "0%" }})
             </h2>
             <p class="text-xl sm:text-2xl font-medium text-gray-800">
-              <span class="text-sm">Tahun </span> {{ stuntingPredictionGraph?.tahun_predeksi ?? new Date().getFullYear()}}
+              <span class="text-sm">Tahun </span> {{ yearPrediction }}
             </p>
           </div>
 
@@ -391,6 +391,7 @@ const startYear = ref(new Date().getFullYear() - 1)
 const endYear = ref(new Date().getFullYear())
 const recentlyActivitiesData = ref([])
 const statsData = ref([])
+const yearPrediction = ref(endYear.value + 1)
 
 // Warna untuk setiap garis pada grafik
 const chartColors = ref(['#2563EB', '#22d3ee']); // Warna garis yang berbeda
@@ -432,7 +433,7 @@ const fetchStuntingPredictionDataGraph = async () => {
   try {
     const response: any = await $fetch(`https://extra-reba-fazza-abiyyu-a1cfd750.koyeb.app/predict?start_year=${startYear.value}&end_year=${endYear.value}`)
     stuntingPredictionDataGraph.value = response?.data
-    console.log(stuntingPredictionDataGraph.value)
+    yearPrediction.value = response?.tahun_prediksi
   } catch (e) {
 
   }

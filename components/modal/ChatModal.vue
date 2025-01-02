@@ -3,7 +3,6 @@
     <button
         type="button"
         class="m-1 ms-0 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-        @click="toggleChat"
         aria-haspopup="dialog"
         aria-expanded="false"
         aria-controls="hs-offcanvas-right"
@@ -36,7 +35,6 @@
         role="dialog"
         tabindex="-1"
         aria-labelledby="hs-offcanvas-right-label"
-        v-show="isChatVisible"
     >
       <div class="p-4 h-full overflow-y-auto">
         <div class="h-fit flex flex-col">
@@ -49,6 +47,17 @@
                     class="inline-block max-w-lg"
                 >
                   <p class="text-sm">{{ message.text }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat-message" v-if="isTyping">
+              <div class="text-left">
+                <div
+                    class="bg-gray-100 text-gray-800 p-4 rounded-2xl border border-gray-200 inline-block max-w-lg"
+                >
+                  <p class="text-sm italic">
+                    Mengetik...
+                  </p>
                 </div>
               </div>
             </div>
@@ -86,16 +95,11 @@ const genAI = new GoogleGenerativeAI('AIzaSyCWeeEOTyjOepsI2N84H4C1Gxl9pZN9_vk');
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // Chat state
-const isChatVisible = ref(false);
 const userInput = ref('');
 const messages = ref([
-  { text: 'Hai! Aku lagi ngobrolin stunting nih, ada yang mau gabung ngobrol? Atau mungkin ada info menarik tentang pencegahan stunting yang bisa kita share bareng?', isUser: false },
+  { text: 'Hai aku PUSONAI! Aku lagi ngobrolin stunting nih, ada yang mau gabung ngobrol? Atau mungkin ada info menarik tentang pencegahan stunting yang bisa kita share bareng?', isUser: false },
 ]);
-
-// Toggle chat visibility
-const toggleChat = () => {
-  isChatVisible.value = !isChatVisible.value;
-};
+const isTyping = ref<boolean>(false);
 
 // Function to send a message to the AI and get a response
 const sendMessage = async () => {
@@ -122,12 +126,15 @@ const sendMessage = async () => {
 // Function to fetch AI response from the Google Generative AI API
 const getAIResponse = async (input: string): Promise<string> => {
   try {
+    isTyping.value = true;
     userInput.value = '';
-    const result = await model.generateContent("Response ini dengan text chatting biasa tanpa markdown: "+input);
+    const result = await model.generateContent("Jawab kamu sebagai PUSONAI. Response ini dengan text chatting biasa tanpa markdown dan pertanyaan di luar topik stunting atau kesehatan anda harus jawab 'Saya hanya mengerti tentang stunting dan kesehatan': "+input);
     return result.response.text(); // Return the AI's response text
   } catch (error) {
     console.error('Error with Google Generative AI:', error);
     return 'I am sorry, I could not process your request.';
+  } finally {
+    isTyping.value = false;
   }
 };
 </script>
