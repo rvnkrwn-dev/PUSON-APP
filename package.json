@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@popperjs/core": "^2.11.8",
     "@preline/combobox": "^2.6.0",

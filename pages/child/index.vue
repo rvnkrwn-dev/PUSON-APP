@@ -53,14 +53,18 @@
           :prevPage="prevPage"
           :nextPage="nextPage"
           :isLoading="isLoading"
+          :deleteAction="true"
           @fetchData="(e) => handleChangeFetchData(e)"
           @searchData="(e) => handleSearchData(e)"
+          @deleteData="(e) => handleDeleteData(e)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type {Puskesmas} from "~/types/TypesModel";
+const {$toast} = useNuxtApp();
 const { handleError } = useErrorHandling();
 
 const page = ref(1)
@@ -121,6 +125,25 @@ const handleSearchData = async (query: string) => {
     handleError(e)
   } finally {
     isLoading.value = false
+  }
+}
+
+const handleDeleteData = async (id: number) => {
+  try {
+    if (!confirm("Anda yakin ingin menghapus ini?")) return
+    const {deviceType, os, browser} = getDeviceAndBrowserInfo()
+    await useFetchApi(`/api/auth/child/${id}`, {
+      method: 'DELETE',
+      body: {
+        ip_address: useState('ip_address').value,
+        device: `${deviceType}, ${os} on ${browser}`,
+        location: "Unknown"
+      }
+    })
+    childrenData.value = childrenData.value.filter((item: Puskesmas) => item.id !== id)
+    $toast('Berhasil mengubah data.', 'success');
+  } catch (e) {
+    $toast('Gagal mengubah data.', 'error');
   }
 }
 
